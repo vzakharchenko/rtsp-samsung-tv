@@ -33,7 +33,9 @@ git clone https://github.com/vzakharchenko/rtsp-samsung-tv
         {
           "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/1"
         },
-  ...
+        {
+          "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/n"
+        },
         {
           "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/n"
         }
@@ -46,7 +48,7 @@ cd rtsp-samsung-tv
 pm2 start server.js
 ```
 
-6. open http://<IP>:3004
+6. open http://SERVER_IP:3004
 
 # Install Samsung Application
 

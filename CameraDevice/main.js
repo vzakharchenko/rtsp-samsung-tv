@@ -1,5 +1,5 @@
 var serverInfo = {
-    ip: '0.0.0.0',
+    ip: '0.0.0.0', // <-- Server IP
     port:'3004',
 };
 

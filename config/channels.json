@@ -1,0 +1,13 @@
+{
+  "channels": [
+    {
+      "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/1"
+    },
+    {
+      "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/2"
+    },
+    {
+      "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/3"
+    }
+  ]
+}

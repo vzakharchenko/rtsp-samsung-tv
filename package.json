@@ -1,0 +1,26 @@
+{
+  "name": "rtsp-samsung-tv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vzakharchenko/rtsp-samsung-tv.git"
+  },
+  "author": "vzakharchenko",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/vzakharchenko/rtsp-samsung-tv/issues"
+  },
+  "homepage": "https://github.com/vzakharchenko/rtsp-samsung-tv#readme",
+  "dependencies": {
+    "cron": "^1.8.2",
+    "express": "^4.17.1",
+    "node-rtsp-stream": "0.0.9",
+    "querystring": "^0.2.0"
+  }
+}

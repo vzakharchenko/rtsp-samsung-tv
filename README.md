@@ -40,7 +40,8 @@ git clone https://github.com/vzakharchenko/rtsp-samsung-tv
           "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/1"
         },
         {
-          "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/n"
+          "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/n",
+           "transport": "tcp",
         },
         {
           "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/n"

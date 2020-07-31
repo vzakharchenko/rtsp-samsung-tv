@@ -76,12 +76,13 @@ function recreateStream() {
         stream.mpeg1Muxer.stream.kill();
         stream.wsServer.close();
     }
+    let channel = channels[currentChannel];
     stream = new Stream({
         name: currentChannel,
-        streamUrl: channels[currentChannel].streamUrl,
+        streamUrl: channel.streamUrl,
         wsPort: 9999,
         ffmpegOptions: { // options ffmpeg flags
-            '-rtsp_transport':config.transport || 'udp',
+            '-rtsp_transport':channel.transport || config.transport || 'udp',
             '-vf': `scale=${width}:${height}`,
             '-nostats': '',
             '-loglevel': 'quiet',

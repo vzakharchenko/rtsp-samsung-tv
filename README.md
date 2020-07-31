@@ -6,6 +6,7 @@ Display  RTSP streams from IP Cameras on Samsung TV
 # Features
  - use server to convert rtsp streams using ffmpeg
  - support for multiple IP cameras (switch between cameras using remote control)
+ - support udp and tcp transport
  - tizen samsung tv application
 
 # Server Installation
@@ -33,6 +34,7 @@ git clone https://github.com/vzakharchenko/rtsp-samsung-tv
 5. edit file rtsp-samsung-tv/channels.json (or create /opt/config/channels.json) and add rtsp streams
 ```json
 {
+    "transport": "udp",
     "channels":[
         {
           "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/1"
@@ -46,6 +48,9 @@ git clone https://github.com/vzakharchenko/rtsp-samsung-tv
     ]
 }
 ```
+where
+transport: udp or tcp (default is udp)
+
 6. start server
 ```
 cd rtsp-samsung-tv
@@ -63,7 +68,7 @@ var serverInfo = {
 };
 ```
 2. install java jdk
-3. install Tizen SDK on your PC [https://developer.tizen.org/development/tizen-studio/download](https://developer.tizen.org/development/tizen-studio/download)  
+3. install Tizen SDK on your PC [https://developer.tizen.org/development/tizen-studio/download](https://developer.tizen.org/development/tizen-studio/download)
 4. in "Tizen Studio Package manager" install  "Tizen SDK Tools"
 5. "Extension SDK" install "extras"
 6. open "Tizen Studio"

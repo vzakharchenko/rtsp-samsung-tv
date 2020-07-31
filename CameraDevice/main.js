@@ -75,7 +75,7 @@ var init = function () {
         if (document.hidden) {
             // Something you want to do when hide or exit.
         } else {
-            // Something you want to do when resume.
+            reload();
         }
     });
 

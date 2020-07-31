@@ -1,7 +1,7 @@
-const Stream = require('node-rtsp-stream');
 const {CronJob} = require('cron');
 const express = require("express");
 const fs = require("fs");
+const Stream = require('./index');
 
 const app = express();
 
@@ -15,7 +15,7 @@ console.error = () => {
 console.debug = () => {
 };
 
-function readChannel() {
+function readConfig() {
     let channelJson = {channels: []};
     const defaultChannelFile = './config/channels.json';
     if (fs.existsSync(defaultChannelFile)) {
@@ -33,8 +33,14 @@ function readChannel() {
         channelJson = overrideChannel;
     }
 
-    return channelJson.channels;
+    return channelJson;
 };
+
+const config = readConfig();
+
+function readChannels() {
+    return config.channels;
+}
 
 function readCurrentChannel() {
     const currentChannelFile = '.currentChannel';
@@ -55,7 +61,7 @@ function saveCurrentChannel() {
     fs.writeFileSync(currentChannelFile, JSON.stringify({currentChannel, width, height}));
 }
 
-const channels = readChannel();
+const channels = readChannels();
 
 let currentChannel = 0;
 let width = 1920;
@@ -75,13 +81,16 @@ function recreateStream() {
         streamUrl: channels[currentChannel].streamUrl,
         wsPort: 9999,
         ffmpegOptions: { // options ffmpeg flags
+            '-rtsp_transport':config.transport || 'udp',
             '-vf': `scale=${width}:${height}`,
+            '-threads': '1',
             '-nostats': '',
-            '-loglevel': 'quiet',
+            //'-loglevel': 'quiet',
             //'-stats': '', // an option with no neccessary value uses a blank string
-            '-r': 30,
+            '-r': 50,
         }
     });
+
 }
 
 recreateStream();

@@ -1,4 +1,5 @@
 {
+  "transport": "udp",
   "channels": [
     {
       "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/1"

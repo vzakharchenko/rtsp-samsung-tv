@@ -83,11 +83,10 @@ function recreateStream() {
         ffmpegOptions: { // options ffmpeg flags
             '-rtsp_transport':config.transport || 'udp',
             '-vf': `scale=${width}:${height}`,
-            '-threads': '1',
             '-nostats': '',
-            //'-loglevel': 'quiet',
+            '-loglevel': 'quiet',
             //'-stats': '', // an option with no neccessary value uses a blank string
-            '-r': 50,
+            '-r': 30,
         }
     });
 

@@ -49,7 +49,7 @@ pm2 start server.js
 ### add 4 cameras on one screen ![](img/add4Cameras.png) ![](img/added4Cameras.png)
 ### delete Camera ![](img/deleteCamera.png)
 
-### Protect Admin UI using keycloak SSO
+### Protect Admin UI using keycloak SSO (Optional)
 1. download keycloak.json from the keycloak admin ui.
 2. save keycloak.json to [./config/keycloak.json](/config)
 

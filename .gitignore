@@ -30,5 +30,5 @@ package-lock.json
 .sign
 userChannels.json
 .currentChannel
-CameraDevice.wgt
+keycloak.json
 

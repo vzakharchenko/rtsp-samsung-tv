@@ -18,8 +18,12 @@
   },
   "homepage": "https://github.com/vzakharchenko/rtsp-samsung-tv#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "cron": "^1.8.2",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "keycloak-connect": "^11.0.0",
     "node-rtsp-stream": "0.0.9",
     "querystring": "^0.2.0"
   }

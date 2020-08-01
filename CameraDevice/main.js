@@ -63,6 +63,26 @@ var reload = () =>{
     };
     xhr.send(null);
 }
+
+var getInfo = (callback) =>{
+    var xhr = new XMLHttpRequest();
+    const url = 'http://'+serverInfo.ip+':'+serverInfo.port+'/info?width='+window.innerWidth+'&height='+window.innerHeight
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function () {        // ready state event, will be executed once the server send back the data
+        if (xhr.readyState === xhr.DONE) {
+            if (xhr.status === 200) {
+                callback(JSON.parse(xhr.responseText))
+            } else {
+                console,error('There was a problem with the request.');
+            }
+        }
+    };
+    xhr.onerror = function (e) {
+        console.error(xhr.statusText);
+    };
+    xhr.send(null);
+}
+
 //
 // channelList()
 

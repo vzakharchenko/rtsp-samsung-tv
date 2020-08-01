@@ -6,6 +6,7 @@ Display  RTSP streams from IP Cameras on Samsung TV
 # Features
  - use server to convert rtsp streams using ffmpeg
  - support for multiple IP cameras (switch between cameras using remote control)
+ - Display 4 cameras streams on one screen
  - support udp and tcp transport
  - tizen samsung tv application
 
@@ -31,33 +32,40 @@ sudo env PATH=$PATH:/usr/bin /usr/local/lib/node_modules/pm2/bin/pm2 startup sys
 ```
 git clone https://github.com/vzakharchenko/rtsp-samsung-tv
 ```
-5. edit file rtsp-samsung-tv/channels.json (or create /opt/config/channels.json) and add rtsp streams
-```json
-{
-    "transport": "udp",
-    "channels":[
-        {
-          "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/1"
-        },
-        {
-          "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/n",
-           "transport": "tcp",
-        },
-        {
-          "streamUrl": "rtsp://USER:PASSWORD@<IP>/Streaming/Channels/n"
-        }
-    ]
-}
-```
-where
-transport: udp or tcp (default is udp)
 
-6. start server
+5. start server
 ```
 cd rtsp-samsung-tv
 pm2 start server.js
 ```
+6. open http:\\SERVER_IP:3004
 
+7. add  Camera and click Save ![](img/addnewCamera.png) ![](img/addedNewDevice.png)
+
+
+# Admin UI
+
+### add 1 Camera: ![](img/addnewCamera.png) ![](img/addedNewDevice.png)
+### add 4 cameras on one screen ![](img/add4Cameras.png) ![](img/added4Cameras.png)
+### delete Camera ![](img/deleteCamera.png) ![](img/added4Cameras.png)
+
+### Protect Admin UI using keycloak SSO
+1. download keycloak.json from the keycloak admin ui.
+2. save keycloak.json to [./config/keycloak.json](/config)
+
+example of keycloak.json
+```json
+{
+  "realm": "RTSP",
+  "auth-server-url": "https://localhost:8090/auth",
+  "ssl-required": "external",
+  "resource": "testClient",
+  "credentials": {
+    "secret": "secret"
+  },
+  "confidential-port": 0
+}
+```
 
 # Install Samsung Application
 

@@ -9,63 +9,58 @@
 
     <script src="main.js"></script>
     <style>
-        html, body {
-            width: 100%;
-            height: 100%;
-            margin: 0px;
-            border: 0;
-            overflow: hidden; /*  Disable scrollbars */
-            display: block;  /* No floating content on sides */
-        }
+
     </style>
 </head>
 
 <body>
-<canvas id="canvas" style="position:absolute; left:0px; top:0px;"></canvas>
+<table BGCOLOR="#000000" BORDER=0 CELLSPACING=0 CELLPADDING=0>
+    <tr>
+        <td>
+            <canvas id="canvas1"></canvas>
+        </td>
+        <td>
+            <canvas id="canvas3"></canvas>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <canvas id="canvas2"/>
+        </td>
+        <td>
+            <canvas id="canvas4"/>
+        </td>
+    </tr>
+</table>
 </body>
-<script>
-    (function() {
-        var
-            // Obtain a reference to the canvas element using its id.
-            htmlCanvas = document.getElementById('c'),
-            // Obtain a graphics context on the canvas element for drawing.
-            context = htmlCanvas.getContext('2d');
-
-        // Start listening to resize events and draw canvas.
-        initialize();
-
-        function initialize() {
-            // Register an event listener to call the resizeCanvas() function
-            // each time the window is resized.
-            window.addEventListener('resize', resizeCanvas, false);
-            // Draw canvas border for the first time.
-            resizeCanvas();
-        }
-
-        // Display custom canvas. In this case it's a blue, 5 pixel
-        // border that resizes along with the browser window.
-        function redraw() {
-            context.strokeStyle = 'blue';
-            context.lineWidth = '5';
-            context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
-        }
-
-        // Runs each time the DOM window resize event fires.
-        // Resets the canvas dimensions to match window,
-        // then draws the new borders accordingly.
-        function resizeCanvas() {
-            htmlCanvas.width = window.innerWidth;
-            htmlCanvas.height = window.innerHeight;
-            redraw();
-        }
-    })();
-
-</script>
 <script type="text/javascript" src="jsmpeg.min.js"></script>
 <script type="text/javascript">
-    const url = 'ws://' + serverInfo.ip + ':9999';
-    player = new JSMpeg.Player(url, {
-        canvas: document.getElementById('canvas') // Canvas should be a canvas DOM element
+    getInfo((resp) => {
+        var mode = resp.mode;
+        if (mode > 0) {
+            const url1 = 'ws://' + serverInfo.ip + ':9999';
+            new JSMpeg.Player(url1, {
+                canvas: document.getElementById('canvas1') // Canvas should be a canvas DOM element
+            })
+        }
+        if (mode > 1) {
+            const url2 = 'ws://' + serverInfo.ip + ':10000';
+            new JSMpeg.Player(url2, {
+                canvas: document.getElementById('canvas2') // Canvas should be a canvas DOM element
+            })
+        }
+        if (mode > 2) {
+            const url3 = 'ws://' + serverInfo.ip + ':10001';
+            new JSMpeg.Player(url3, {
+                canvas: document.getElementById('canvas3') // Canvas should be a canvas DOM element
+            })
+        }
+        if (mode > 3) {
+            const url4 = 'ws://' + serverInfo.ip + ':10002';
+            new JSMpeg.Player(url4, {
+                canvas: document.getElementById('canvas4') // Canvas should be a canvas DOM element
+            })
+        }
     })
 </script>
 </html>

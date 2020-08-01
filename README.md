@@ -1,7 +1,7 @@
 # rtsp-samsung-tv
 
 ## Description
-Display  RTSP streams from IP Cameras on Samsung TV
+Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 
 # Features
  - use server to convert rtsp streams using ffmpeg

@@ -37,7 +37,6 @@
   },
   "devDependencies": {
     "@rescripts/utilities": "0.0.7",
-    "react-app-rewired": "2.1.6",
-    "webpack": "4.42.0"
+    "react-app-rewired": "2.1.6"
   }
 }

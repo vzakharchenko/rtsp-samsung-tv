@@ -69,7 +69,7 @@ function saveConfig() {
     const configFile = {...config};
     delete configFile.file;
     const path = config.file === './config/channels.json' ? './config/userChannels.json' : config.file;
-    fs.writeFileSync(path, JSON.stringify(configFile), 'UTF-8');
+    fs.writeFileSync(path, JSON.stringify(configFile, null, 1), 'UTF-8');
     config = readConfig();
     channels = readChannels();
 }
@@ -94,7 +94,7 @@ function readCurrentChannel() {
 
 function saveCurrentChannel() {
     const currentChannelFile = '.currentChannel';
-    fs.writeFileSync(currentChannelFile, JSON.stringify({currentChannel, width, height}));
+    fs.writeFileSync(currentChannelFile, JSON.stringify({currentChannel, width, height}, null, 1));
 }
 
 let channels = readChannels();
@@ -203,7 +203,7 @@ app.get('/prev', (req, res) => {
 
 app.get('/sel', (req, res) => {
     var channel = req.query.channel;
-    if (channel){
+    if (channel) {
         currentChannel = channel;
     }
     var width0 = req.query.width;

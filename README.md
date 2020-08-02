@@ -7,11 +7,11 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
  - support more than 999 RTSP streams(support for multiple IP cameras).
  - switch channels(rtsp stream) using numpad on the remote contol
  - use server to convert rtsp streams using ffmpeg
- - [group rtsp streams on the obe channel (Display 4 cameras streams on one channel)](rtsp-samsung-tv#add-4-cameras-on-one-screen--)
+ - [group rtsp streams on the obe channel (Display 4 cameras streams on one channel)](#add-4-cameras-on-one-screen--)
  - support udp and tcp transport
  - tizen samsung tv application
- - [admin ui](rtsp-samsung-tv#admin-ui)
- - [protect admin ui(optional)](rtsp-samsung-tv#protect-admin-ui-using-keycloak-sso-optional)
+ - [admin ui](#admin-ui)
+ - [protect admin ui(optional)](#protect-admin-ui-using-keycloak-sso-optional)
 
 # Server Installation
 1. install git, ffmpeg

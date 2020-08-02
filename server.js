@@ -11,7 +11,7 @@ const {
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
 const corsOptions = {
     origin(o, callback) {
         callback(null, true);

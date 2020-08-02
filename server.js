@@ -196,8 +196,26 @@ app.get('/prev', (req, res) => {
     } else {
         currentChannel = channels.length;
     }
-    recreateStream();
     saveCurrentChannel();
+    recreateStream();
+    return res.send('OK');
+});
+
+app.get('/sel', (req, res) => {
+    var channel = req.query.channel;
+    if (channel){
+        currentChannel = channel;
+    }
+    var width0 = req.query.width;
+    if (width0) {
+        width = width0;
+    }
+    var height0 = req.query.height;
+    if (height0) {
+        height = height0;
+    }
+    saveCurrentChannel();
+    recreateStream();
     return res.send('OK');
 });
 

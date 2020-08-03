@@ -6,7 +6,7 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 # Features
  - support more than 999 RTSP streams(support for multiple IP cameras).
  - switch channels(rtsp stream) using numpad on the remote control
- - use server to convert rtsp streams using ffmpeg (I advise using a Raspberry Pi (or analog: cubieboard, Orange Pi , Banana Pi, Odroid) with Ubuntu on board)  
+ - use server to convert rtsp streams using ffmpeg  
  - [group rtsp streams on the obe channel (Display 4 cameras streams on one channel)](#add-4-cameras-on-one-screen--)
  - support udp and tcp transport
  - tizen samsung tv application
@@ -15,6 +15,9 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
  - [Voice Control](#voice-control)
 
 # Server Installation
+
+I advise using a Raspberry Pi or analog: cubieboard, Orange Pi , Banana Pi, Odroid,etc with Ubuntu on board.  
+[Install ubuntu on Raspberry Pi](https://ubuntu.com/download/raspberry-pi)  
 
 1. install git, ffmpeg
 ```

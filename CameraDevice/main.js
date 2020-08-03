@@ -1,6 +1,6 @@
 var serverInfo = {
-    ip: '192.100.200.148', // <-- Server IP
-    port: '3004',
+    ip: localStorage.getItem("SERVER.IP") || '0.0.0.0', // <-- Server IP
+    port:  localStorage.getItem("SERVER.PORT") || '3004',
 };
 
 var queue = [];
@@ -108,7 +108,7 @@ var sel0 = (c) => {
     xhr.send(null);
 }
 
-var getInfo = (callback) => {
+var getInfo = (callback, error) => {
     var xhr = new XMLHttpRequest();
     const url = 'http://' + serverInfo.ip + ':' + serverInfo.port + '/info?width=' + window.screen.width + '&height=' + window.screen.height
     xhr.open("GET", url, true);
@@ -117,11 +117,12 @@ var getInfo = (callback) => {
             if (xhr.status === 200) {
                 callback(JSON.parse(xhr.responseText))
             } else {
-                console, error('There was a problem with the request.');
+               window.location.href='/server.html'
             }
         }
     };
     xhr.onerror = function (e) {
+       	window.location.href='/server.html'
         console.error(xhr.statusText);
     };
     xhr.send(null);
@@ -217,7 +218,6 @@ var init = function () {
                 break;
         }
     }, true);
-    document.body.focus();
     const voicecontrol = tizen.voicecontrol;
     if (voicecontrol) {
         const client = voicecontrol.getVoiceControlClient();

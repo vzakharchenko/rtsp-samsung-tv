@@ -5,7 +5,7 @@ const session = require('express-session');
 let keycloak = null;
 
 function connectKeycloak(server) {
-  if (fs.existsSync('./config/keycloak.json')) {
+  if (fs.existsSync('./config/keycloak.json') || fs.existsSync('/opt/config/keycloak.json')) {
     const memoryStore = new session.MemoryStore();
 
     server.use(session({
@@ -15,7 +15,9 @@ function connectKeycloak(server) {
       store: memoryStore,
     }));
 
-    keycloak = new Keycloak({ store: memoryStore }, './config/keycloak.json');
+    keycloak = fs.existsSync('./config/keycloak.json')?
+        new Keycloak({ store: memoryStore }, './config/keycloak.json'):
+        new Keycloak({ store: memoryStore }, '/opt/config/keycloak.json');
     server.use(keycloak.middleware());
   }
 }

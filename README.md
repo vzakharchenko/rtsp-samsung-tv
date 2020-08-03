@@ -12,7 +12,7 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
  - tizen samsung tv application
  - [admin ui](#admin-ui)
  - [protect admin ui(optional)](#protect-admin-ui-using-keycloak-sso-optional)
- - Voice Control
+ - [Voice Control](#voice-control)
 
 # Server Installation
 1. install git, ffmpeg
@@ -97,7 +97,7 @@ var serverInfo = {
 # Voice Control
     1. Press VOICE button
     2. Say command
-## List of commands:
+ *List of commands:*  
  "Channel Up" (or the same on your language)
  "Channel Down" (or the same on your language)
  "1","2","3","4" ... "999"

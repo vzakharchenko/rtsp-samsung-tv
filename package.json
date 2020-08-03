@@ -1,6 +1,6 @@
 {
   "name": "rtsp-samsung-tv",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -33,6 +33,6 @@
     "querystring": "^0.2.0"
   },
   "bin": {
-    "RtspSamsung": "./binRtspSamsung/"
+    "RtspSamsung": "./bin/RtspSamsung"
   }
 }

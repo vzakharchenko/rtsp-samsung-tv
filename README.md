@@ -68,7 +68,7 @@ pm2 start `npm root -g`/rtsp-samsung-tv/server.js
 
 ### Protect Admin UI using keycloak SSO (Optional)
 1. download keycloak.json from the keycloak admin ui.
-2. save keycloak.json to [./config/keycloak.json](/config)
+2. save keycloak.json to [./config/keycloak.json](/config) or /opt/config
 
 example of keycloak.json
 ```json

@@ -1,6 +1,6 @@
 {
   "name": "rtsp-samsung-tv",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -29,9 +29,10 @@
     "cron": "^1.8.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "node-rtsp-stream": "0.0.9",
     "keycloak-connect": "^11.0.0",
-    "querystring": "^0.2.0"
+    "node-rtsp-stream": "0.0.9",
+    "querystring": "^0.2.0",
+    "ws": "^7.3.1"
   },
   "bin": {
     "RtspSamsung": "./bin/RtspSamsungServer "

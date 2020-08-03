@@ -13,6 +13,7 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
  - [admin ui](#admin-ui)
  - [protect admin ui(optional)](#protect-admin-ui-using-keycloak-sso-optional)
  - [Voice Control](#voice-control)
+ - [Remote Control](#remote-control)
 
 
 ![ipport.png](/img/ipport.png), ![camera1.png](/img/camera1.png), ![camera4.png](/img/camera4.png)
@@ -55,10 +56,10 @@ pm2 start server.js
 
 
 # Admin UI
-**Url**:  ```http:\\<SERVER_IP>:3004```  
-**add 1 Camera**: ![](img/addnewCamera.png) ![](img/addedNewDevice.png) ![camera1.png](/img/camera1.png)  
-**add 4 cameras on one screen**: ![](img/add4Cameras.png) ![](img/added4Cameras.png) ![camera4.png](/img/camera4.png)  
-**delete Camera** ![](img/deleteCamera.png)  
+## **Url**:  ```http:\\<SERVER_IP>:3004```  
+## **add 1 Camera**: ![](img/addnewCamera.png) ![](img/addedNewDevice.png) ![camera1.png](/img/camera1.png)  
+## **Add 4 cameras on one screen**: ![](img/add4Cameras.png) ![](img/added4Cameras.png) ![camera4.png](/img/camera4.png)  
+## **delete Camera** ![](img/deleteCamera.png)  
 
 ### Protect Admin UI using keycloak SSO (Optional)
 1. download keycloak.json from the keycloak admin ui.

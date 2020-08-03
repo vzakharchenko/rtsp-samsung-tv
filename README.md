@@ -97,10 +97,10 @@ var serverInfo = {
 # Voice Control
     1. Press VOICE button
     2. Say command
- *List of commands:*  
- "Channel Up" (or the same on your language)
- "Channel Down" (or the same on your language)
- "1","2","3","4" ... "999"
+ **List of commands:**  
+ "Channel Up" (or the same on your language)  
+ "Channel Down" (or the same on your language)  
+ "1","2","3","4" ... "999"  
 
 # Remote Control
 

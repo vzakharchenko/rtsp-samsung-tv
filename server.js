@@ -68,7 +68,7 @@ function saveConfig() {
     streams = [];
     const configFile = {...config};
     delete configFile.file;
-    const path = config.file === './config/channels.json' ? './config/userChannels.json' : config.file;
+    const path = !config.file || config.file === './config/channels.json' ? './config/userChannels.json' : config.file;
     fs.writeFileSync(path, JSON.stringify(configFile, null, 1), 'UTF-8');
     config = readConfig();
     channels = readChannels();
@@ -264,13 +264,13 @@ installCrons();
 
 app.use('/', protect(), express.static(__dirname + "/camera-admin-ui/build"));
 
-app.get('/admin/config/get', (req, res) => {
+app.get('/admin/config/get',  protect(),(req, res) => {
     return res.send(JSON.stringify({
         config
     }));
 });
 
-app.get('/admin/status/get', (req, res) => {
+app.get('/admin/status/get', protect(), (req, res) => {
     readCurrentChannel();
     return res.send(JSON.stringify({
         currentChannel,
@@ -279,7 +279,7 @@ app.get('/admin/status/get', (req, res) => {
     }));
 });
 
-app.post('/admin/status/save', (req, res) => {
+app.post('/admin/status/save', protect(), (req, res) => {
     const newStatus = req.body;
     currentChannel = newStatus.currentChannel;
     saveCurrentChannel();
@@ -292,7 +292,7 @@ app.post('/admin/status/save', (req, res) => {
     }));
 });
 
-app.post('/admin/config/save', (req, res) => {
+app.post('/admin/config/save', protect(), (req, res) => {
     const newConfig = req.body;
     config = {...config, ...newConfig};
     saveConfig();

@@ -66,10 +66,10 @@ var reload = () => {
     xhr.send(null);
 }
 
-function getChannel(ch){
+function getChannel(ch) {
     const value = queue.shift();
-    if (value){
-        ch.value=ch.value+''+value;
+    if (value) {
+        ch.value = ch.value + '' + value;
         getChannel(ch);
     }
     return ch;
@@ -77,15 +77,15 @@ function getChannel(ch){
 
 var sel = (c) => {
     queue.push(c);
-	if (!changeChannel){
-	 changeChannel = true;
-	 window.setTimeout(()=>{
-	     const ch = {value:''};
-	     const newch = getChannel(ch);
-         changeChannel = false;
-	     queue = [];
-	     sel0(newch.value)
-     },2000);
+    if (!changeChannel) {
+        changeChannel = true;
+        window.setTimeout(() => {
+            const ch = {value: ''};
+            const newch = getChannel(ch);
+            changeChannel = false;
+            queue = [];
+            sel0(newch.value)
+        }, 2000);
     }
 }
 var sel0 = (c) => {
@@ -136,7 +136,17 @@ var init = function () {
     console.log('init() called');
     window.tizen.tvinputdevice.registerKeyBatch([
         'ChannelUp',
-        'ChannelDown', "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]);
+        'ChannelDown',
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "0"]);
     document.addEventListener('visibilitychange', function () {
         if (document.hidden) {
             // Something you want to do when hide or exit.
@@ -208,6 +218,45 @@ var init = function () {
         }
     }, true);
     document.body.focus();
+    const voicecontrol = tizen.voicecontrol;
+    if (voicecontrol) {
+        const client = voicecontrol.getVoiceControlClient();
+        if (client) {
+            var commands = [
+                new tizen.VoiceControlCommand("ChannelUp"),
+                new tizen.VoiceControlCommand("ChannelDown"),
+                new tizen.VoiceControlCommand("Refresh"),
+                new tizen.VoiceControlCommand("Select"),
+                new tizen.VoiceControlCommand("OK"),
+
+            ];
+            for (var i = 0; i < 1000; i++) {
+                commands.push(new tizen.VoiceControlCommand(`${i}`));
+            }
+            try {
+                client.setCommandList(commands, "FOREGROUND");
+
+                var resultListenerCallback = function (event, list, result) {
+                    if (event === 'SUCCESS') {
+                        if (!isNaN(result)) {
+                            sel(result);
+                        }
+                        if (result === 'OK' || result === 'Refresh' || result === 'Select') {
+                            reload();
+                        }
+                    }
+                    console.log("Result callback - event: " + event + ", result: " + result);
+                }
+
+                client.addResultListener(resultListenerCallback);
+            } catch (e) {
+                console.error("Voice Control Error", e);
+            }
+
+        }
+
+    }
+
 };
 // window.onload can work without <body onload="">
 window.onload = init;

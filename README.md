@@ -49,16 +49,16 @@ git clone https://github.com/vzakharchenko/rtsp-samsung-tv
 cd rtsp-samsung-tv
 pm2 start server.js
 ```
-6. open http:\\SERVER_IP:3004
+6. open ```http:\\SERVER_IP:3004```
 
 7. add  Camera and click Save ![](img/addnewCamera.png) ![](img/addedNewDevice.png)
 
 
 # Admin UI
-
-### add 1 Camera: ![](img/addnewCamera.png) ![](img/addedNewDevice.png) ![camera1.png](/img/camera1.png)
-### add 4 cameras on one screen ![](img/add4Cameras.png) ![](img/added4Cameras.png) ![camera4.png](/img/camera4.png)
-### delete Camera ![](img/deleteCamera.png)
+**Url**:  ```http:\\<SERVER_IP>:3004```  
+**add 1 Camera**: ![](img/addnewCamera.png) ![](img/addedNewDevice.png) ![camera1.png](/img/camera1.png)  
+**add 4 cameras on one screen**: ![](img/add4Cameras.png) ![](img/added4Cameras.png) ![camera4.png](/img/camera4.png)  
+**delete Camera** ![](img/deleteCamera.png)  
 
 ### Protect Admin UI using keycloak SSO (Optional)
 1. download keycloak.json from the keycloak admin ui.

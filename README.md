@@ -17,47 +17,16 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 
 
 ![ipport.png](/img/ipport.png), ![camera1.png](/img/camera1.png), ![camera4.png](/img/camera4.png)
-# Short Server Installation
-```
-sudo apt-get install ffmpeg
-sudo npm i pm2 -g
-npm i rtsp-samsung-tv
-pm2 start `npm root -g`/rtsp-samsung-tv/server.js
-```
 # Server Installation
-
 I advise using a Raspberry Pi or analog: cubieboard, Orange Pi , Banana Pi, Odroid,etc with Ubuntu on board.
 [Install ubuntu on Raspberry Pi](https://ubuntu.com/download/raspberry-pi)
-
-1. install git, ffmpeg
 ```
-sudo apt-get install git
 sudo apt-get install ffmpeg
-```
-2. install node
-```
-sudo apt-get update
-sudo apt-get install curl
-sudo apt-get install snapd
-sudo snap install node --channel=14/stable --classic
-```
-3. install pm2
-```
 sudo npm i pm2 -g
-sudo env PATH=$PATH:/usr/bin /usr/local/lib/node_modules/pm2/bin/pm2 startup systemd -u ${currentUser} --hp ${HOME}
-```
-4. install server
-```
 npm i rtsp-samsung-tv
-```
-
-5. start server
-```
 pm2 start `npm root -g`/rtsp-samsung-tv/server.js
 ```
-6. open ```http:\\SERVER_IP:3004```
-
-7. add  Camera and click Save ![](img/addnewCamera.png) ![](img/addedNewDevice.png)
+open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/addnewCamera.png) ![](img/addedNewDevice.png)
 
 
 # Admin UI
@@ -66,7 +35,7 @@ pm2 start `npm root -g`/rtsp-samsung-tv/server.js
 ## **Add 4 cameras on one screen**: ![](img/add4Cameras.png) ![](img/added4Cameras.png) ![camera4.png](/img/camera4.png)
 ## **delete Camera** ![](img/deleteCamera.png)
 
-### Protect Admin UI using keycloak SSO (Optional)
+# Protect Admin UI using keycloak SSO (Optional)
 1. download keycloak.json from the keycloak admin ui.
 2. save keycloak.json to [./config/keycloak.json](/config) or /opt/config
 
@@ -84,7 +53,7 @@ example of keycloak.json
 }
 ```
 
-# Install Samsung Application
+# Install Samsung TV Application(Tizen Application)
 
 1. install java jdk
 2. install Tizen SDK on your PC [https://developer.tizen.org/development/tizen-studio/download](https://developer.tizen.org/development/tizen-studio/download)

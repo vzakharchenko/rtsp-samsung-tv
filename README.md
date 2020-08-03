@@ -15,7 +15,7 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
  - [Voice Control](#voice-control)
 
 
-![ipport.png](/img/ipport.png), ![camera1.png][/img/camera1.png], ![camera4.png][/img/camera4.png]
+![ipport.png](/img/ipport.png), ![camera1.png](/img/camera1.png), ![camera4.png](/img/camera4.png)
 
 # Server Installation
 
@@ -56,8 +56,8 @@ pm2 start server.js
 
 # Admin UI
 
-### add 1 Camera: ![](img/addnewCamera.png) ![](img/addedNewDevice.png) ![camera1.png][/img/camera1.png]
-### add 4 cameras on one screen ![](img/add4Cameras.png) ![](img/added4Cameras.png) ![camera4.png][/img/camera4.png]
+### add 1 Camera: ![](img/addnewCamera.png) ![](img/addedNewDevice.png) ![camera1.png](/img/camera1.png)
+### add 4 cameras on one screen ![](img/add4Cameras.png) ![](img/added4Cameras.png) ![camera4.png](/img/camera4.png)
 ### delete Camera ![](img/deleteCamera.png)
 
 ### Protect Admin UI using keycloak SSO (Optional)

@@ -41,7 +41,7 @@ where:
 **Default Pre ffmpeg Parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream)  
 **Default Post ffmpeg Parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream ```<POSTPARAMETERS>```)  
 ```
-ffmpeg <Default Pre ffmpeg Parameters> -i rtsp://stream <Default Post ffmpeg Parameters>```
+ffmpeg <Default Pre ffmpeg Parameters> -i rtsp://stream <Default Post ffmpeg Parameters>
 ```  
 
 ## Camera Specific Columns:  
@@ -53,7 +53,7 @@ ffmpeg <Default Pre ffmpeg Parameters> -i rtsp://stream <Default Post ffmpeg Par
 **Pre ffmpeg Parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream)  
 **Post ffmpeg Parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream ```<POSTPARAMETERS>```)  
 ```
-ffmpeg <Pre ffmpeg Parameters> -i rtsp://stream <Post ffmpeg Parameters>```
+ffmpeg <Pre ffmpeg Parameters> -i rtsp://stream <Post ffmpeg Parameters>
 ```  
 
 ## **Url**:  ```http:\\<SERVER_IP>:3004```  

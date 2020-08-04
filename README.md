@@ -33,6 +33,7 @@ open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/
 
 
 # Admin UI
+## **Url**:  ```http:\\<SERVER_IP>:3004```
 ![](/img/AdminUi.png)  
 
 where:  
@@ -55,8 +56,7 @@ ffmpeg <Default Pre ffmpeg Parameters> -i rtsp://stream <Default Post ffmpeg Par
 ```
 ffmpeg <Pre ffmpeg Parameters> -i rtsp://stream <Post ffmpeg Parameters>
 ```  
-
-## **Url**:  ```http:\\<SERVER_IP>:3004```  
+  
 ## **add 1 Camera**: ![](img/addnewCamera.png) ![](img/addedNewDevice.png) ![camera1.png](/img/camera1.png)
 ## **Add 4 cameras on one screen**: ![](img/add4Cameras.png) ![](img/added4Cameras.png) ![camera4.png](/img/camera4.png)
 ## **delete Camera** ![](img/deleteCamera.png)

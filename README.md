@@ -23,8 +23,8 @@ I advise using a Raspberry Pi or analog: cubieboard, Orange Pi , Banana Pi, Odro
 ```
 sudo apt-get install ffmpeg
 sudo npm i pm2 -g
-npm i rtsp-samsung-tv
-pm2 start `npm root -g`/rtsp-samsung-tv/server.js
+sudo npm i rtsp-samsung-tv -g
+sudo pm2 start `npm root -g`/rtsp-samsung-tv/server.js
 ```
 open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/addnewCamera.png) ![](img/addedNewDevice.png)
 

@@ -10,24 +10,48 @@ Mpeg1Muxer = function (options) {
     var key
     this.url = options.url
     this.ffmpegOptions = options.ffmpegOptions
+    const ffmpegOptionsDefault = {
+        '-f': 'mpegts',
+        '-codec:v': 'mpeg1video',
+    }
+    this.ffmpegChannelPre = options.ffmpegPreOptions;
     this.exitCode = undefined
     this.additionalFlags = []
+    this.additionalPreFlags = []
     if (this.ffmpegOptions) {
         for (key in this.ffmpegOptions) {
+            if (ffmpegOptionsDefault[key] != null) {
+                ffmpegOptionsDefault[key] = String(this.ffmpegOptions[key]);
+            } else {
+                this.additionalFlags.push(key)
+                if (String(this.ffmpegOptions[key]) !== '') {
+                    this.additionalFlags.push(String(this.ffmpegOptions[key]))
+                }
+            }
+        }
+    }
+    if (this.ffmpegChannelPre) {
+        for (key in this.ffmpegChannelPre) {
+            this.additionalPreFlags.push(key)
+            if (String(this.ffmpegChannelPre[key]) !== '') {
+                this.additionalPreFlags.push(String(this.ffmpegChannelPre[key]))
+            }
+        }
+    }
+
+    if (ffmpegOptionsDefault) {
+        for (key in ffmpegOptionsDefault) {
             this.additionalFlags.push(key)
-            if (String(this.ffmpegOptions[key]) !== '') {
-                this.additionalFlags.push(String(this.ffmpegOptions[key]))
+            if (String(ffmpegOptionsDefault[key]) !== '') {
+                this.additionalFlags.push(String(ffmpegOptionsDefault[key]))
             }
         }
     }
 
     this.spawnOptions = [
+        ...this.additionalPreFlags,
         "-i",
         this.url,
-        '-f',
-        'mpegts',
-        '-codec:v',
-        'mpeg1video',
         // additional ffmpeg options go here
         ...this.additionalFlags,
         '-'

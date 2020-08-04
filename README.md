@@ -20,11 +20,12 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 # Server Installation
 I advise using a Raspberry Pi or analog: cubieboard, Orange Pi , Banana Pi, Odroid,etc with Ubuntu on board.
 [Install ubuntu on Raspberry Pi](https://ubuntu.com/download/raspberry-pi)
-```
+```bash
 sudo apt-get install ffmpeg
 sudo npm i pm2 -g
 sudo npm i rtsp-samsung-tv -g
 sudo pm2 start `npm root -g`/rtsp-samsung-tv/server.js
+sudo env PATH=$PATH:/usr/bin `npm root -g`/pm2/bin/pm2 startup systemd -u ${currentUser} --hp ${HOME}
 ```
 open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/addnewCamera.png) ![](img/addedNewDevice.png)
 

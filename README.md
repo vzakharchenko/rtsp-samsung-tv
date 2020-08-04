@@ -14,6 +14,7 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
  - [protect admin ui(optional)](#protect-admin-ui-using-keycloak-sso-optional)
  - [Voice Control](#voice-control)
  - [Remote Control](#remote-control)
+ -  Supports parameters before "-i" and after it
 
 
 ![ipport.png](/img/ipport.png), ![camera1.png](/img/camera1.png), ![camera4.png](/img/camera4.png)
@@ -33,6 +34,29 @@ open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/
 
 # Admin UI
 ## **Url**:  ```http:\\<SERVER_IP>:3004```
+![](/img/AdminUi.png)  
+
+where:  
+**File** -  path to config file.  
+**Default Transport** - Default RTSP Transport. Applicable to all cameras  
+**Default Pre ffmpeg Parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream)  
+**Default Post ffmpeg Parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream ```<POSTPARAMETERS>```)  
+```
+ffmpeg <Default Pre ffmpeg Parameters> -i rtsp://stream <Default Post ffmpeg Parameters>
+```  
+
+## Camera Specific Columns:  
+**Status** - now on TV.  
+**Camera** - channel number.  
+**Camera Mode** - "1 Camera" : one camera on screen, "4 Cameras" : 4 cameras on one screen .  
+**rtsp Streams** - rtsp streams .   
+**Transport** - Camera RTSP Transport.  
+**Pre ffmpeg Parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream)  
+**Post ffmpeg Parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream ```<POSTPARAMETERS>```)  
+```
+ffmpeg <Pre ffmpeg Parameters> -i rtsp://stream <Post ffmpeg Parameters>
+```  
+  
 ## **add 1 Camera**: ![](img/addnewCamera.png) ![](img/addedNewDevice.png) ![camera1.png](/img/camera1.png)
 ## **Add 4 cameras on one screen**: ![](img/add4Cameras.png) ![](img/added4Cameras.png) ![camera4.png](/img/camera4.png)
 ## **delete Camera** ![](img/deleteCamera.png)

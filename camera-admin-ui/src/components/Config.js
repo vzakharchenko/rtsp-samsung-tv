@@ -1,4 +1,5 @@
 import React from 'react';
+import './Config.css';
 import {Alert, Button, Select, Spin, Table, Typography} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
 import {fetchData, sendData} from "../restCalls";
@@ -57,14 +58,104 @@ export default class Config extends React.Component {
                 dataIndex: 'value',
                 key: 'value',
                 render: (text, meta) => {
-                    return meta.key === '1' ? (
-                        <div>
-                            <Select defaultValue={text} style={{width: 120}}
-                                    onChange={this.handleMainTransportChange}>
-                                <Option value="udp">UDP</Option>
-                                <Option value="tcp">TCP</Option>
-                            </Select>
-                        </div>) : <a>{text}</a>
+                    if (meta.key === "1") {
+                        return (
+                            <div>
+                                <Select defaultValue={text} style={{width: 120}}
+                                        onChange={this.handleMainTransportChange}>
+                                    <Option value="udp">UDP</Option>
+                                    <Option value="tcp">TCP</Option>
+                                </Select>
+                            </div>)
+                    }
+                    if (meta.key === "2" || meta.key === "3") {
+                        const fieldName = meta.key === "3" ? 'ffmpeg' : 'ffmpegPre'
+                        return (
+                            <div>
+                                <div>
+                                    {
+                                        this.state.config.config[fieldName] ?
+                                            Object.entries(this.state.config.config[fieldName]).map((keyValue, index) => {
+                                                const key = keyValue[0];
+                                                const value = keyValue[1];
+                                                return (<div>
+                                                    <Typography.Text
+                                                        disabled>{key}
+                                                    </Typography.Text>
+                                                    <Typography.Text disabled>:</Typography.Text>
+                                                    <Typography.Text editable={{
+                                                        onChange: (str) => {
+                                                            const config = {...this.state.config};
+                                                            if (!config.config[fieldName]) {
+                                                                config.config[fieldName] = {};
+                                                            }
+                                                            config.config[fieldName][key] = str;
+                                                            this.save().then();
+                                                            this.setState({config});
+                                                        }
+                                                    }}>{value}</Typography.Text><Button size={"small"} type={"danger"}
+                                                                                        className={"smallButton"}
+                                                                                        onClick={
+                                                                                            () => {
+                                                                                                const config = {...this.state.config};
+                                                                                                if (!config.config[fieldName]) {
+                                                                                                    config.config[fieldName] = {};
+                                                                                                }
+                                                                                                delete config.config[fieldName][key];
+                                                                                                this.setState({config})
+                                                                                                this.save().then();
+                                                                                            }
+                                                                                        }>-</Button>
+                                                </div>);
+                                            }) : <div/>
+                                    }
+                                    {
+                                        <div>
+                                            <Typography.Text
+                                                editable={{
+                                                    onChange: (str) => {
+                                                        const ffmpeg = {...this.state[fieldName]};
+                                                        ffmpeg.key = str;
+                                                        ffmpeg.itemKey = -1;
+                                                        this.setState({ffmpeg});
+                                                    }
+                                                }}>{this.state[fieldName] && this.state[fieldName].itemKey === -1 ? this.state[fieldName].key : ''}
+                                            </Typography.Text>
+                                            <Typography.Text disabled>:</Typography.Text>
+                                            <Typography.Text editable={{
+                                                onChange: (str) => {
+
+                                                    const ffmpeg = {...this.state[fieldName]};
+                                                    ffmpeg.value = str;
+                                                    ffmpeg.valueItem = -1;
+                                                    this.setState({ffmpeg});
+                                                }
+                                            }}>{this.state[fieldName] && this.state[fieldName].valueItem === -1 ? this.state[fieldName].value : ''}</Typography.Text>
+                                            {this.state[fieldName].valueItem === -1 && this.state[fieldName].itemKey === -1 ?
+                                                <Button onClick={
+                                                    () => {
+                                                        const ffmpeg = {...this.state[fieldName]};
+                                                        const config = {...this.state.config};
+                                                        if (!config.config[fieldName]) {
+                                                            config.config[fieldName] = {};
+                                                        }
+                                                        config.config[fieldName][ffmpeg.key] = ffmpeg.value;
+                                                        this.setState({config})
+                                                        this.save().then(() => {
+                                                            const s = {};
+                                                            s[fieldName] = {};
+                                                            this.setState(s)
+                                                        });
+                                                    }
+                                                }>Add</Button>
+                                                : <Button disabled>Add</Button>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>)
+                    }
+                    return (<a>{text}</a>);
                 }
             }]
     }
@@ -280,6 +371,189 @@ export default class Config extends React.Component {
                 }
             },
             {
+                title: 'Pre FFmpeg Parameters',
+                dataIndex: 'ffmpegPre',
+                key: 'ffmpegPre',
+                render: (text, meta, index) => {
+                    return (<div>
+                        <div>
+                            {
+                                this.state.config.config.channels[index].ffmpegPre ?
+                                    Object.entries(this.state.config.config.channels[index].ffmpegPre).map((keyValue) => {
+                                        const key = keyValue[0];
+                                        const value = keyValue[1];
+                                        return (<div>
+                                            <Typography.Text
+                                                disabled>{key}
+                                            </Typography.Text>
+                                            <Typography.Text disabled>:</Typography.Text>
+                                            <Typography.Text editable={{
+                                                onChange: (str) => {
+                                                    const config = {...this.state.config};
+                                                    if (!config.config.channels[index].ffmpegPre) {
+                                                        config.config.channels[index].ffmpegPre = {};
+                                                    }
+                                                    config.config.channels[index].ffmpegPre[key] = str;
+                                                    this.save().then();
+                                                    this.setState({config});
+                                                }
+                                            }}>{value}</Typography.Text><Button size={"small"} type={"danger"}
+                                                                                className={"smallButton"} onClick={
+                                            () => {
+                                                const config = {...this.state.config};
+                                                if (!config.config.channels[index].ffmpegPre) {
+                                                    config.config.channels[index].ffmpegPre = {};
+                                                }
+                                                delete config.config.channels[index].ffmpegPre[key];
+                                                this.setState({config})
+                                                this.save().then();
+                                            }
+                                        }>-</Button>
+                                        </div>);
+                                    }) : <div/>
+                            }
+                            {
+                                <div>
+                                    <Typography.Text
+                                        editable={{
+                                            onChange: (str) => {
+                                                const ffmpeg = {...this.state.ffmpegPre};
+                                                ffmpeg.key = str;
+                                                ffmpeg.itemKey = index;
+                                                this.setState({ffmpegPre: ffmpeg});
+                                            }
+                                        }}>{this.state.ffmpegPre && this.state.ffmpegPre.itemKey === index ? this.state.ffmpegPre.key : ''}
+                                    </Typography.Text>
+                                    <Typography.Text disabled>:</Typography.Text>
+                                    <Typography.Text editable={{
+                                        onChange: (str) => {
+
+                                            const ffmpeg = {...this.state.ffmpegPre};
+                                            ffmpeg.value = str;
+                                            ffmpeg.valueItem = index;
+                                            this.setState({ffmpegPre: ffmpeg});
+                                        }
+                                    }}>{this.state.ffmpegPre && this.state.ffmpegPre.valueItem === index ? this.state.ffmpegPre.value : ''}</Typography.Text>
+                                    {this.state.ffmpegPre.valueItem === index && this.state.ffmpegPre.itemKey === index ?
+                                        <Button onClick={
+                                            () => {
+                                                const ffmpeg = {...this.state.ffmpegPre};
+                                                const config = {...this.state.config};
+                                                if (!config.config.channels[index].ffmpegPre) {
+                                                    config.config.channels[index].ffmpegPre = {};
+                                                }
+                                                config.config.channels[index].ffmpegPre[ffmpeg.key] = ffmpeg.value;
+                                                this.setState({config})
+                                                this.save().then(() => {
+                                                    this.setState({ffmpeg: {}})
+                                                });
+                                            }
+                                        }>Add</Button>
+                                        : <Button disabled>Add</Button>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>)
+                },
+            },
+            {
+                title: 'Post FFmpeg Parameters',
+                dataIndex: 'ffmpeg',
+                key: 'ffmpeg',
+                render: (text, meta, index) => {
+                    const cameraNum = Array.isArray(this.state.config.config.channels[index].streamUrl) ?
+                        this.state.config.config.channels[index].streamUrl.length : 1
+                    return (<div>
+                        <Typography.Text
+                            disabled>-vf</Typography.Text>
+                        <Typography.Text disabled>:</Typography.Text>
+                        <Typography.Text
+                            disabled>{`scale=${this.state.status.width / cameraNum}:${this.state.status.height / cameraNum}`}</Typography.Text>
+                        <br/>
+
+                        <div>
+                            {
+                                this.state.config.config.channels[index].ffmpeg ?
+                                    Object.entries(this.state.config.config.channels[index].ffmpeg).map((keyValue) => {
+                                        const key = keyValue[0];
+                                        const value = keyValue[1];
+                                        return (<div>
+                                            <Typography.Text
+                                                disabled>{key}
+                                            </Typography.Text>
+                                            <Typography.Text disabled>:</Typography.Text>
+                                            <Typography.Text editable={{
+                                                onChange: (str) => {
+                                                    const config = {...this.state.config};
+                                                    if (!config.config.channels[index].ffmpeg) {
+                                                        config.config.channels[index].ffmpeg = {};
+                                                    }
+                                                    config.config.channels[index].ffmpeg[key] = str;
+                                                    this.save().then();
+                                                    this.setState({config});
+                                                }
+                                            }}>{value}</Typography.Text><Button size={"small"} type={"danger"}
+                                                                                className={"smallButton"} onClick={
+                                            () => {
+                                                const config = {...this.state.config};
+                                                if (!config.config.channels[index].ffmpeg) {
+                                                    config.config.channels[index].ffmpeg = {};
+                                                }
+                                                delete config.config.channels[index].ffmpeg[key];
+                                                this.save().then();
+                                                this.setState({config})
+                                            }
+                                        }>-</Button>
+                                        </div>);
+                                    }) : <div/>
+                            }
+                            {
+                                <div>
+                                    <Typography.Text
+                                        editable={{
+                                            onChange: (str) => {
+                                                const ffmpeg = {...this.state.ffmpeg};
+                                                ffmpeg.key = str;
+                                                ffmpeg.itemKey = index;
+                                                this.setState({ffmpeg});
+                                            }
+                                        }}>{this.state.ffmpeg && this.state.ffmpeg.itemKey === index ? this.state.ffmpeg.key : ''}
+                                    </Typography.Text>
+                                    <Typography.Text disabled>:</Typography.Text>
+                                    <Typography.Text editable={{
+                                        onChange: (str) => {
+
+                                            const ffmpeg = {...this.state.ffmpeg};
+                                            ffmpeg.value = str;
+                                            ffmpeg.valueItem = index;
+                                            this.setState({ffmpeg});
+                                        }
+                                    }}>{this.state.ffmpeg && this.state.ffmpeg.valueItem === index ? this.state.ffmpeg.value : ''}</Typography.Text>
+                                    {this.state.ffmpeg.valueItem === index && this.state.ffmpeg.itemKey === index ?
+                                        <Button onClick={
+                                            () => {
+                                                const ffmpeg = {...this.state.ffmpeg};
+                                                const config = {...this.state.config};
+                                                if (!config.config.channels[index].ffmpeg) {
+                                                    config.config.channels[index].ffmpeg = {};
+                                                }
+                                                config.config.channels[index].ffmpeg[ffmpeg.key] = ffmpeg.value;
+                                                this.setState({config})
+                                                this.save().then(() => {
+                                                    this.setState({ffmpeg: {}})
+                                                });
+                                            }
+                                        }>Add</Button>
+                                        : <Button disabled>Add</Button>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>)
+                },
+            },
+            {
                 title: '',
                 dataIndex: 'actions',
                 key: 'actions',
@@ -314,10 +588,12 @@ export default class Config extends React.Component {
                     };
                     return (
                         <div>
-                            {index === 0 ? <Button disabled>UP</Button> : <Button onClick={onUp}>UP</Button>}
-                            {index === this.state.config.config.channels.length - 1 ? <Button disabled>DOWN</Button> :
-                                <Button onClick={onDown}>DOWN</Button>}
-                            <Button onClick={() => {
+                            {index === 0 ? <Button size={"small"} className={"smallButton"} disabled>UP</Button> :
+                                <Button size={"small"} className={"smallButton"} onClick={onUp}>UP</Button>}
+                            {index === this.state.config.config.channels.length - 1 ?
+                                <Button size={"small"} className={"smallButton"} disabled>DOWN</Button> :
+                                <Button size={"small"} className={"smallButton"} onClick={onDown}>DOWN</Button>}
+                            <Button size={"small"} type={"danger"} className={"smallButton"} onClick={() => {
                                 const config = {...this.state.config};
                                 config.config.channels = config.config.channels.filter((channel, i) => {
                                     return i !== index
@@ -341,7 +617,9 @@ export default class Config extends React.Component {
                     camera: index,
                     transport: channel.transport || loadedConfig.transport || 'udp',
                     mode: Array.isArray(channel.streamUrl) && channel.streamUrl.length > 1 ? 4 : 1,
-                    rtsp: channel.streamUrl
+                    rtsp: channel.streamUrl,
+                    ffmpeg: channel.ffmpeg,
+                    ffmpegPre: channel.ffmpegPre,
                 });
             })
         }
@@ -355,6 +633,17 @@ export default class Config extends React.Component {
                 name: 'Default Transport',
                 value: loadedConfig.transport,
             },
+            {
+                key: '2',
+                name: 'Default Pre ffmpeg Parameters',
+                value: loadedConfig.ffmpegPre,
+            },
+            {
+                key: '3',
+                name: 'Default Post ffmpeg Parameters',
+                value: loadedConfig.ffmpeg,
+            },
+
         ]
     }
 
@@ -366,6 +655,8 @@ export default class Config extends React.Component {
             error: null,
             status: null,
             newCamera: {},
+            ffmpeg: {},
+            ffmpegPre: {},
         };
         this.save = this.save.bind(this);
         this.handleMainTransportChange = this.handleMainTransportChange.bind(this);
@@ -374,6 +665,7 @@ export default class Config extends React.Component {
         this.cameraColumns = this.cameraColumns.bind(this);
         this.saveActiveChannel = this.saveActiveChannel.bind(this);
         this.addDatasource = this.addDatasource.bind(this);
+        this.commonColumns = this.commonColumns.bind(this);
     }
 
     async componentDidMount() {

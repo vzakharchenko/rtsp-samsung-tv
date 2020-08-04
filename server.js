@@ -36,24 +36,65 @@ function readConfig() {
     let channelJson = {channels: []};
     const defaultChannelFile = './config/channels.json';
     if (fs.existsSync(defaultChannelFile)) {
-        const defaultChannelJson = JSON.parse(fs.readFileSync(defaultChannelFile, 'UTF-8'));
+        const text = fs.readFileSync(defaultChannelFile, 'UTF-8');
+        const defaultChannelJson = text ? JSON.parse(text) : {};
         defaultChannelJson.file = defaultChannelFile;
         channelJson = defaultChannelJson;
 
     }
     const ovverideChannelFile = './config/userChannels.json';
     if (fs.existsSync(ovverideChannelFile)) {
-        const overrideChannel = JSON.parse(fs.readFileSync(ovverideChannelFile, 'UTF-8'));
+        const text = fs.readFileSync(ovverideChannelFile, 'UTF-8');
+        const overrideChannel = text ? JSON.parse(text) : {};
         overrideChannel.file = ovverideChannelFile;
         channelJson = overrideChannel;
     }
     const channelsFile = '/opt/config/channels.json';
     if (fs.existsSync(channelsFile)) {
-        const overrideChannel = JSON.parse(fs.readFileSync(channelsFile, 'UTF-8'));
+        const text = fs.readFileSync(channelsFile, 'UTF-8');
+        const overrideChannel = text ? JSON.parse(text) : {};
         overrideChannel.file = channelsFile;
         channelJson = overrideChannel;
     }
+    if (!channelJson.ffmpeg) {
+        channelJson.ffmpeg = {
+            '-nostats': '',
+            '-r': 30,
+            '-loglevel': 'quiet',
+            '-f': 'mpegts',
+            '-codec:v': 'mpeg1video',
+        }
+    }
 
+    if (!channelJson.ffmpegPre) {
+        channelJson.ffmpegPre = {}
+    }
+    if (!channelJson.transport) {
+        channelJson.transport = 'udp';
+    }
+    if (channelJson.transport === 'tcp') {
+        channelJson.ffmpegPre['-rtsp_transport'] = 'tcp';
+    } else if (channelJson.transport === 'udp') {
+        channelJson.ffmpegPre['-rtsp_transport'] = 'udp';
+    } else if (channelJson.transport === 'none') {
+        delete channelJson.ffmpegPre['-rtsp_transport'];
+    }
+    channelJson.channels.forEach((channel) => {
+        if (!channel.ffmpeg) {
+            channel.ffmpeg = {}
+        }
+
+        if (!channel.ffmpegPre) {
+            channel.ffmpegPre = {}
+        }
+        if (channel.transport === 'tcp') {
+            channel.ffmpegPre['-rtsp_transport'] = 'tcp';
+        } else if (channel.transport === 'udp') {
+            channel.ffmpegPre['-rtsp_transport'] = 'udp';
+        } else if (channel.transport === 'none') {
+            delete channel.ffmpegPre['-rtsp_transport'];
+        }
+    });
     return channelJson;
 };
 
@@ -145,18 +186,32 @@ function recreateStream() {
         for (let i = 0; i < mode; i++) {
             if ((i === 0 && selectChannel.streamUrl) || selectChannel.streamUrl[i]) {
                 var number = mode === 1 ? 1 : 2;
+                const ffmpegPre = config.ffmpegPre ? config.ffmpegPre : {};
+                const ffmpegPost = config.ffmpeg ? config.ffmpeg : {};
+                const ffmpegChannelPre = selectChannel.ffmpegPre ? selectChannel.ffmpegPre : {};
+                const ffmpegChannel = selectChannel.ffmpeg ? selectChannel.ffmpeg : {};
+                const ffmpegPreOptions = {
+                    ...ffmpegPre,
+                    ...ffmpegChannelPre
+                }
+                const ffmpegOptions = {
+                    ...{
+                        '-nostats': '',
+                        '-r': 30,
+                        '-loglevel': 'quiet',
+                    },
+                    ...ffmpegPost,
+                    ...ffmpegChannel,
+                    ...{
+                        '-vf': `scale=${width / number}:${height / number}`,
+                    }
+                };
                 const stream = new Stream({
                     name: currentChannel + ' ' + i,
                     streamUrl: Array.isArray(selectChannel.streamUrl) ? selectChannel.streamUrl[i] : selectChannel.streamUrl,
                     wsPort: 9999 + i,
-                    ffmpegOptions: { // options ffmpeg flags
-                        '-rtsp_transport': selectChannel.transport || config.transport || 'udp',
-                        '-vf': `scale=${width / number}:${height / number}`,
-                        '-nostats': '',
-                        //   '-loglevel': 'quiet',
-                        //'-stats': '', // an option with no neccessary value uses a blank string
-                        '-r': 30,
-                    }
+                    ffmpegOptions,
+                    ffmpegPreOptions
                 });
                 streams.push(stream);
             }
@@ -264,7 +319,7 @@ installCrons();
 
 app.use('/', protect(), express.static(__dirname + "/camera-admin-ui/build"));
 
-app.get('/admin/config/get',  protect(),(req, res) => {
+app.get('/admin/config/get', protect(), (req, res) => {
     return res.send(JSON.stringify({
         config
     }));
@@ -294,6 +349,22 @@ app.post('/admin/status/save', protect(), (req, res) => {
 
 app.post('/admin/config/save', protect(), (req, res) => {
     const newConfig = req.body;
+    if (newConfig.transport === 'tcp') {
+        newConfig.ffmpegPre['-rtsp_transport'] = 'tcp';
+    } else if (newConfig.transport === 'udp') {
+        newConfig.ffmpegPre['-rtsp_transport'] = 'udp';
+    } else if (newConfig.transport === 'none') {
+        delete newConfig.ffmpegPre['-rtsp_transport'];
+    }
+    newConfig.channels.forEach((channel) => {
+        if (channel.transport === 'tcp') {
+            channel.ffmpegPre['-rtsp_transport'] = 'tcp';
+        } else if (channel.transport === 'udp') {
+            channel.ffmpegPre['-rtsp_transport'] = 'udp';
+        } else if (channel.transport === 'none') {
+            delete channel.ffmpegPre['-rtsp_transport'];
+        }
+    });
     config = {...config, ...newConfig};
     saveConfig();
     recreateStream();

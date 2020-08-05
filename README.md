@@ -52,7 +52,7 @@ ffmpeg <Default Pre ffmpeg Parameters> -i rtsp://stream <Default Post ffmpeg Par
 **rtsp Streams** - rtsp streams .   
 **Transport** - Camera RTSP Transport.  
 **Pre ffmpeg Parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream)  
-**Post ffmpeg Parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream ```<POSTPARAMETERS>```)  
+**Post ffmpeg Parameters** - Parameters after "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream ```<POSTPARAMETERS>```)  
 ```
 ffmpeg <Pre ffmpeg Parameters> -i rtsp://stream <Post ffmpeg Parameters>
 ```  

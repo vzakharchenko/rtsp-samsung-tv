@@ -19,8 +19,6 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 
 ![ipport.png](/img/ipport.png), ![camera1.png](/img/camera1.png), ![camera4.png](/img/camera4.png)
 # Server Installation
-I advise using a Raspberry Pi or analog: cubieboard, Orange Pi , Banana Pi, Odroid,etc with Ubuntu on board.
-[Install ubuntu on Raspberry Pi](https://ubuntu.com/download/raspberry-pi)
 ```bash
 sudo apt-get install ffmpeg
 sudo npm i pm2 -g

@@ -1,10 +1,12 @@
 {
   "name": "rtsp-samsung-tv",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext .js server.js",
+    "lint:fix": "eslint --fix --ext .js server.js",
     "start": "node server.js"
   },
   "repository": {
@@ -34,7 +36,30 @@
     "querystring": "^0.2.0",
     "ws": "^7.3.1"
   },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.6.0",
+    "eslint-config": "^0.3.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.5"
+  },
   "bin": {
     "RtspSamsung": "./bin/RtspSamsungServer"
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "extends": "airbnb/base",
+    "env": {
+      "browser": false,
+      "jest": true
+    },
+    "rules": {
+      "no-console": 0,
+      "prefer-promise-reject-errors": 0,
+      "prefer-destructuring": 0,
+      "react/jsx-filename-extension": 0
+    }
   }
 }

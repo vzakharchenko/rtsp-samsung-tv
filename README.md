@@ -1,5 +1,5 @@
 # rtsp-samsung-tv
-
+[![npm version](https://badge.fury.io/js/rtsp-samsung-tv.svg)](https://badge.fury.io/js/rtsp-samsung-tv)  
 ## Description
 Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 

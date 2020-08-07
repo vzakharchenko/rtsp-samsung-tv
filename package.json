@@ -32,6 +32,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "keycloak-connect": "^11.0.0",
+    "mkdirp": "^1.0.4",
     "node-rtsp-stream": "0.0.9",
     "querystring": "^0.2.0",
     "ws": "^7.3.1"

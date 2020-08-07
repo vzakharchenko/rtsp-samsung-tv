@@ -4,6 +4,7 @@ const cors = require('cors');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const Stream = require('./index');
+const mkdirp = require('mkdirp');
 
 const {
   connectKeycloak, protect,
@@ -47,7 +48,7 @@ function readConfig() {
     defaultChannelJson.file = defaultChannelFile;
     channelJson = defaultChannelJson;
   }
-  const ovverideChannelFile = '~/.rtsp/userChannels.json';
+  const ovverideChannelFile = process.env.HOME+'/.rtsp/userChannels.json';
   if (fs.existsSync(ovverideChannelFile)) {
     const text = fs.readFileSync(ovverideChannelFile, 'UTF-8');
     const overrideChannel = text ? JSON.parse(text) : {};
@@ -122,8 +123,8 @@ function saveConfig() {
   delete configFile.file;
   let path = config.file;
   if (!config.file || config.file === './config/config.json') {
-    fs.mkdirSync('~/.rtsp/', { recursive: true });
-    path = '~/.rtsp/userConfig.json';
+    mkdirp.sync(process.env.HOME+'/.rtsp');
+    path = process.env.HOME+'/.rtsp/userChannels.json';
   }
   fs.writeFileSync(path, JSON.stringify(configFile, null, 1), 'UTF-8');
   config = readConfig();

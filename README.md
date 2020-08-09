@@ -22,10 +22,10 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 ```bash
 sudo apt-get install ffmpeg
 wget -qO- https://getpm2.com/install.sh | bash
-sudo env PATH=$PATH:/usr/bin `npm root -g`/pm2/bin/pm2 startup systemd -u ${currentUser} --hp ${HOME}
+sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u ${currentUser} --hp ${HOME}
 sudo npm i rtsp-samsung-tv -g
 sudo pm2 start `npm root -g`/rtsp-samsung-tv/server.js
-sudi pm2 save
+sudo pm2 save
 ```
 open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/addnewCamera.png) ![](img/addedNewDevice.png)
 

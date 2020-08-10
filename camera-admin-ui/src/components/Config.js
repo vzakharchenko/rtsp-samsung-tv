@@ -290,7 +290,7 @@ export default class Config extends React.Component {
                 key: 'status',
                 render: (status, meta, pos) => {
                     return status ?
-                        <Typography.Text>Current</Typography.Text>
+                        <a target="_blank" rel="noopener noreferrer" href="/camera.html">Current</a>
                         : <Button onClick={
                             () => {
                                 this.state.status.currentChannel = pos;

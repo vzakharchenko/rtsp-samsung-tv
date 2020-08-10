@@ -15,7 +15,7 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
  - [Voice Control](#voice-control)
  - [Remote Control](#remote-control)
  -  Supports parameters before "-i" and after it
- - [Raspberry Pi Hw acceleration](#)
+ - [Raspberry Pi Hw acceleration](#raspberry-pi-hw-acceleration-on-ffmpeg-raspbian-lite-image)
 
 
 ![ipport.png](/img/ipport.png), ![camera1.png](/img/camera1.png), ![camera4.png](/img/camera4.png)

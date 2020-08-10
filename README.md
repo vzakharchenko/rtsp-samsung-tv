@@ -30,28 +30,45 @@ sudo pm2 save
 ```
 open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/addnewCamera.png) ![](img/addedNewDevice.png)
 
+# Install Samsung TV Application(Tizen Application)
+
+1. install java jdk  
+2. install Tizen SDK on your PC [https://developer.tizen.org/development/tizen-studio/download](https://developer.tizen.org/development/tizen-studio/download)  
+3. in "Tizen Studio Package manager" install  "Tizen SDK Tools"  
+4. "Extension SDK" install "extras"  
+5. open "Tizen Studio"  
+6. File -> Open Project From File System  
+7. open rtsp-samsung-tv/CameraDevice  
+8. [Enable Development mode on your TV](https://developer.samsung.com/smarttv/develop/getting-started/using-sdk/tv-device.html)  
+9. open Device manager  
+10. click "Scan device"  
+11. set Connection to "On"  
+12. right click on your connection and select "Permit install"  
+13. in Tizen studio select project and run it on TV.Channel  
+14. setup server ip and port on TV. ![](/img/ipport.png)  
+
 
 # Admin UI
 ## **Url**:  ```http:\\<SERVER_IP>:3004```
 ![](/img/AdminUi.png)
 
 where:
-**File** -  path to config file.
-**Default Transport** - Default RTSP Transport. Applicable to all cameras
-**Default RTSP FFmpeg parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream)
-**Default Encode FFmpeg parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream ```<POSTPARAMETERS>```)
+**File** -  path to config file.  
+**Default Transport** - Default RTSP Transport. Applicable to all cameras  
+**Default RTSP FFmpeg parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream)  
+**Default Encode FFmpeg parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream ```<POSTPARAMETERS>```)  
 ```
 ffmpeg <Default Pre ffmpeg Parameters> -i rtsp://stream <Default Post ffmpeg Parameters>
 ```
 
 ## Camera Specific Columns:
-**Status** - now on TV.
-**Camera** - channel number.
-**Camera Mode** - "1 Camera" : one camera on screen, "4 Cameras" : 4 cameras on one screen .
-**rtsp Streams** - rtsp streams .
-**Transport** - Camera RTSP Transport.
-**RTSP FFmpeg parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream)
-**Encode FFmpeg parameters** - Parameters after "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream ```<POSTPARAMETERS>```)
+**Status** - now on TV.  
+**Camera** - channel number.  
+**Camera Mode** - "1 Camera" : one camera on screen, "4 Cameras" : 4 cameras on one screen .  
+**rtsp Streams** - rtsp streams .  
+**Transport** - Camera RTSP Transport.  
+**RTSP FFmpeg parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream)  
+**Encode FFmpeg parameters** - Parameters after "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream ```<POSTPARAMETERS>```)  
 ```
 ffmpeg <Pre ffmpeg Parameters> -i rtsp://stream <Post ffmpeg Parameters>
 ```
@@ -61,10 +78,10 @@ ffmpeg <Pre ffmpeg Parameters> -i rtsp://stream <Post ffmpeg Parameters>
 ## **delete Camera** ![](img/deleteCamera.png)
 
 # Protect Admin UI using keycloak SSO (Optional)
-1. download keycloak.json from the keycloak admin ui.
-2. save keycloak.json to [./config/keycloak.json](/config) or /opt/config
-
-example of keycloak.json
+1. download keycloak.json from the keycloak admin ui.   
+2. save keycloak.json to [./config/keycloak.json](/config) or /opt/config  
+  
+example of keycloak.json  
 ```json
 {
   "realm": "RTSP",
@@ -77,24 +94,6 @@ example of keycloak.json
   "confidential-port": 0
 }
 ```
-
-# Install Samsung TV Application(Tizen Application)
-
-1. install java jdk
-2. install Tizen SDK on your PC [https://developer.tizen.org/development/tizen-studio/download](https://developer.tizen.org/development/tizen-studio/download)
-3. in "Tizen Studio Package manager" install  "Tizen SDK Tools"
-4. "Extension SDK" install "extras"
-5. open "Tizen Studio"
-6. File -> Open Project From File System
-7. open rtsp-samsung-tv/CameraDevice
-8. [Enable Development mode on your TV](https://developer.samsung.com/smarttv/develop/getting-started/using-sdk/tv-device.html)
-9. open Device manager
-10. click "Scan device"
-11. set Connection to "On"
-12. right click on your connection and select "Permit install"
-13. in Tizen studio select project and run it on TV.Channel
-14. setup server ip and port on TV. ![](/img/ipport.png)
-
 # Raspberry Pi Hw acceleration on ffmpeg ([Raspbian Lite Image](https://www.raspberrypi.org/downloads/raspberry-pi-os/))
 1. build ffmpeg with mmal feature
 ```bash

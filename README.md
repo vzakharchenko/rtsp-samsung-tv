@@ -55,10 +55,10 @@ open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/
 where:
 **File** -  path to config file.  
 **Default Transport** - Default RTSP Transport. Applicable to all cameras  
-**Default RTSP FFmpeg parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream)  
-**Default Encode FFmpeg parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream ```<POSTPARAMETERS>```)  
+**Default RTSP FFmpeg parameters** - Parameters before "-i". Applicable to all cameras  
+**Default Encode FFmpeg parameters** - Parameters before "-i". Applicable to all cameras    
 ```
-ffmpeg <Default Pre ffmpeg Parameters> -i rtsp://stream <Default Post ffmpeg Parameters>
+ffmpeg <Default RTSP FFmpeg parameters> -i rtsp://stream <Default Encode FFmpeg parameters>
 ```
 
 ## Camera Specific Columns:
@@ -67,10 +67,10 @@ ffmpeg <Default Pre ffmpeg Parameters> -i rtsp://stream <Default Post ffmpeg Par
 **Camera Mode** - "1 Camera" : one camera on screen, "4 Cameras" : 4 cameras on one screen .  
 **rtsp Streams** - rtsp streams .  
 **Transport** - Camera RTSP Transport.  
-**RTSP FFmpeg parameters** - Parameters before "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream)  
-**Encode FFmpeg parameters** - Parameters after "-i". Applicable to all cameras (ffmpeg ```<PREPARAMETERS>``` -i rtsp://stream ```<POSTPARAMETERS>```)  
+**RTSP FFmpeg parameters** - Parameters before "-i". Applicable to all cameras  
+**Encode FFmpeg parameters** - Parameters after "-i". Applicable to all cameras  
 ```
-ffmpeg <Pre ffmpeg Parameters> -i rtsp://stream <Post ffmpeg Parameters>
+ffmpeg <RTSP FFmpeg parameters> -i rtsp://stream <Encode FFmpeg parameters>
 ```
 
 ## **add 1 Camera**: ![](img/addnewCamera.png) ![](img/addedNewDevice.png) ![camera1.png](/img/camera1.png)

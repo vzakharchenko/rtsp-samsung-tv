@@ -15,6 +15,7 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
  - [Voice Control](#voice-control)
  - [Remote Control](#remote-control)
  -  Supports parameters before "-i" and after it
+ - [Raspberry Pi Hw acceleration](#)
 
 
 ![ipport.png](/img/ipport.png), ![camera1.png](/img/camera1.png), ![camera4.png](/img/camera4.png)
@@ -93,6 +94,20 @@ example of keycloak.json
 12. right click on your connection and select "Permit install"
 13. in Tizen studio select project and run it on TV.Channel
 14. setup server ip and port on TV. ![](/img/ipport.png)
+
+# Raspberry Pi Hw acceleration on ffmpeg ([Raspbian Lite Image](https://www.raspberrypi.org/downloads/raspberry-pi-os/))
+1. build ffmpeg with mmal feature
+```bash
+sudo apt-get install libomxil-bellagio-dev
+sudo apt-get install libomxil-bellagio-bin
+git clone https://github.com/FFmpeg/FFmpeg
+cd FFmpeg
+git checkout origin/release/3.2
+sudo ./configure --arch=armel --target-os=linux --enable-gpl --enable-mmal  --enable-omx --enable-omx-rpi --enable-nonfree
+sudo make -j4
+sudo make install
+```
+2. ![](/img/RaspberryPiHW.png)
 
 # Voice Control
     1. Press VOICE button

@@ -1,6 +1,6 @@
 {
   "name": "rtsp-samsung-tv",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -60,7 +60,8 @@
       "no-console": 0,
       "prefer-promise-reject-errors": 0,
       "prefer-destructuring": 0,
-      "react/jsx-filename-extension": 0
+      "react/jsx-filename-extension": 0,
+      "no-underscore-dangle": 0
     }
   }
 }

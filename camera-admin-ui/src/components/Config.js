@@ -1,6 +1,6 @@
 import React from 'react';
 import './Config.css';
-import {Alert, Button, Select, Spin, Table, Typography} from 'antd';
+import {Alert, Button, Select, Spin, Checkbox, Table, Typography} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
 import {fetchData, sendData} from "../restCalls";
 
@@ -157,6 +157,20 @@ export default class Config extends React.Component {
                                     }
                                 </div>
                             </div>)
+                    }
+                    if (meta.key === "4") {
+                        return (<div>
+                            <Checkbox
+                                checked={!!this.state.config.config.killAll}
+                                onChange={(e)=>{
+                                const config = {...this.state.config};
+                                config.config.killAll = e.target.checked;
+                                this.setState(
+                                    {config}
+                                )
+                                this.save().then();
+                            }}></Checkbox>
+                        </div>)
                     }
                     return (<a>{text}</a>);
                 }
@@ -645,6 +659,11 @@ export default class Config extends React.Component {
                 name: 'Default Encode ffmpeg Parameters',
                 value: loadedConfig.ffmpeg,
             },
+            {
+                key: '4',
+                name: 'Kill all ffmpeg during restart',
+                value: loadedConfig.killAll,
+            },
 
         ]
     }
@@ -733,6 +752,7 @@ export default class Config extends React.Component {
                         <br/>
                         <Table columns={this.commonColumns()}
                                dataSource={commonDataSource}
+                               scroll={{ x: 'max-content' }}
                                pagination={{
                                    total: commonDataSource.length,
                                    pageSize: commonDataSource.length,
@@ -743,6 +763,7 @@ export default class Config extends React.Component {
                         <Typography.Text>Add new Camera</Typography.Text>
                         <br/>
                         <Table columns={this.addColumns()}
+                               scroll={{ x: 'max-content' }}
                                dataSource={this.addDatasource()}
                                pagination={{
                                    hideOnSinglePage: true
@@ -750,6 +771,7 @@ export default class Config extends React.Component {
                         <Typography.Text>Camera Settings</Typography.Text>
                         <br/>
                         <Table columns={this.cameraColumns()}
+                               scroll={{ x: 'max-content' }}
                                dataSource={cameraDatasource}
                                pagination={{
                                    total: cameraDatasource.length,

@@ -4,6 +4,7 @@ const cors = require('cors');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const mkdirp = require('mkdirp');
+const { exec } = require('child_process');
 const Stream = require('./index');
 
 const {
@@ -61,6 +62,9 @@ function readConfig() {
     const overrideChannel = text ? JSON.parse(text) : {};
     overrideChannel.file = channelsFile;
     channelJson = overrideChannel;
+  }
+  if (channelJson.killAll === undefined) {
+    channelJson.killAll = true;
   }
   if (!channelJson.ffmpeg) {
     channelJson.ffmpeg = {
@@ -139,6 +143,7 @@ function saveConfig() {
   config = readConfig();
   channels = readChannels();
 }
+
 function readCurrentChannel() {
   const currentChannelFile = '.currentChannel';
   if (fs.existsSync(currentChannelFile)) {
@@ -152,6 +157,7 @@ function readCurrentChannel() {
     width = 1080;
   }
 }
+
 function saveCurrentChannel() {
   const currentChannelFile = '.currentChannel';
   fs.writeFileSync(currentChannelFile, JSON.stringify({ currentChannel, width, height }, null, 1));
@@ -183,11 +189,27 @@ function getNextChannel(cChannel) {
   return nextChannel;
 }
 
-function recreateStream() {
+function killall() {
+  exec(
+    'killall ffmpeg',
+    (error, stdout, stderr) => {
+      console.debug(`stdout: ${stdout}`);
+      console.debug(`stderr: ${stderr}`);
+      if (error !== null) {
+        console.error(`exec error: ${error}`);
+      }
+    },
+  );
+}
+
+async function recreateStream() {
   streams.forEach(((stream) => {
     stream.mpeg1Muxer.stream.kill();
     stream.wsServer.close();
   }));
+  if (config.killAll) {
+    await killall();
+  }
   streams = [];
   const mode = getMode();
   readCurrentChannel();
@@ -230,9 +252,9 @@ function recreateStream() {
   }
 }
 
-recreateStream();
+recreateStream().then();
 
-app.get('/next', (req, res) => {
+app.get('/next', async (req, res) => {
   const width0 = req.query.width;
   if (width0) {
     width = width0;
@@ -243,11 +265,11 @@ app.get('/next', (req, res) => {
   }
   currentChannel = getNextChannel(currentChannel);
   saveCurrentChannel();
-  recreateStream();
+  await recreateStream();
   return res.send('OK');
 });
 
-app.get('/prev', (req, res) => {
+app.get('/prev', async (req, res) => {
   const nextChannel = currentChannel - 1;
   const width0 = req.query.width;
   if (width0) {
@@ -263,11 +285,11 @@ app.get('/prev', (req, res) => {
     currentChannel = channels.length;
   }
   saveCurrentChannel();
-  recreateStream();
+  await recreateStream();
   return res.send('OK');
 });
 
-app.get('/sel', (req, res) => {
+app.get('/sel', async (req, res) => {
   const channel = req.query.channel;
   if (channel) {
     currentChannel = channel;
@@ -281,11 +303,11 @@ app.get('/sel', (req, res) => {
     height = height0;
   }
   saveCurrentChannel();
-  recreateStream();
+  await recreateStream();
   return res.send('OK');
 });
 
-app.get('/reload', (req, res) => {
+app.get('/reload', async (req, res) => {
   const width0 = req.query.width;
   if (width0) {
     width = width0;
@@ -295,7 +317,7 @@ app.get('/reload', (req, res) => {
     height = height0;
   }
   saveCurrentChannel();
-  recreateStream();
+  await recreateStream();
   return res.send('OK');
 });
 
@@ -307,19 +329,19 @@ app.get('/info', cors(corsOptions), (req, res) => {
 });
 
 function installCrons() {
-  const cronJob = new CronJob('0 */2 * * * *', (() => {
+  const cronJob = new CronJob('0 */2 * * * *', (async () => {
     let error = false;
     streams.forEach(((stream) => {
       if (stream.mpeg1Muxer.stream.exitCode > 0
-            || !stream.mpeg1Muxer.stream.pid > 0
-            || !stream.mpeg1Muxer.inputStreamStarted
-            || stream.mpeg1Muxer.stream.killed
-          || stream.mpeg1Muxer.stream._closesGot > 0) { // eslint-disable-line  no-underscore-dangle
+                || !stream.mpeg1Muxer.stream.pid > 0
+                || !stream.mpeg1Muxer.inputStreamStarted
+                || stream.mpeg1Muxer.stream.killed
+                || stream.mpeg1Muxer.stream._closesGot > 0) {
         error = true;
       }
     }));
     if (error) {
-      recreateStream();
+      await recreateStream();
     }
   }), null, true, 'America/Los_Angeles');
   console.debug('System TZ next 5: ', cronJob.nextDates(5));
@@ -342,12 +364,12 @@ app.get('/admin/status/get', protect(), (req, res) => {
   }));
 });
 
-app.post('/admin/status/save', protect(), (req, res) => {
+app.post('/admin/status/save', protect(), async (req, res) => {
   const newStatus = req.body;
   currentChannel = newStatus.currentChannel;
   saveCurrentChannel();
   readCurrentChannel();
-  recreateStream();
+  await recreateStream();
   return res.send(JSON.stringify({
     currentChannel,
     width,
@@ -355,7 +377,7 @@ app.post('/admin/status/save', protect(), (req, res) => {
   }));
 });
 
-app.post('/admin/config/save', protect(), (req, res) => {
+app.post('/admin/config/save', protect(), async (req, res) => {
   const newConfig = req.body;
   if (newConfig.transport === 'tcp') {
     newConfig.ffmpegPre['-rtsp_transport'] = 'tcp';
@@ -376,7 +398,7 @@ app.post('/admin/config/save', protect(), (req, res) => {
   });
   config = { ...config, ...newConfig };
   saveConfig();
-  recreateStream();
+  await recreateStream();
   return res.send(JSON.stringify({
     config,
   }));

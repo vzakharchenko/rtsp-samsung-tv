@@ -3,8 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const bodyParser = require('body-parser');
-const Stream = require('./index');
 const mkdirp = require('mkdirp');
+const Stream = require('./index');
 
 const {
   connectKeycloak, protect,
@@ -48,7 +48,7 @@ function readConfig() {
     defaultChannelJson.file = defaultChannelFile;
     channelJson = defaultChannelJson;
   }
-  const ovverideChannelFile = process.env.HOME+'/.rtsp/userChannels.json';
+  const ovverideChannelFile = `${process.env.HOME}/.rtsp/userChannels.json`;
   if (fs.existsSync(ovverideChannelFile)) {
     const text = fs.readFileSync(ovverideChannelFile, 'UTF-8');
     const overrideChannel = text ? JSON.parse(text) : {};
@@ -70,6 +70,15 @@ function readConfig() {
       '-f': 'mpegts',
       '-codec:v': 'mpeg1video',
     };
+  }
+  if (!channelJson.ffmpeg['-codec:v']) {
+    channelJson.ffmpeg['-codec:v'] = 'mpeg1video';
+  }
+  if (!channelJson.ffmpeg['-f']) {
+    channelJson.ffmpeg['-f'] = 'mpegts';
+  }
+  if (!channelJson.ffmpeg['-r']) {
+    channelJson.ffmpeg['-r'] = '30';
   }
 
   if (!channelJson.ffmpegPre) {
@@ -123,8 +132,8 @@ function saveConfig() {
   delete configFile.file;
   let path = config.file;
   if (!config.file || config.file === './config/config.json') {
-    mkdirp.sync(process.env.HOME+'/.rtsp');
-    path = process.env.HOME+'/.rtsp/userChannels.json';
+    mkdirp.sync(`${process.env.HOME}/.rtsp`);
+    path = `${process.env.HOME}/.rtsp/userChannels.json`;
   }
   fs.writeFileSync(path, JSON.stringify(configFile, null, 1), 'UTF-8');
   config = readConfig();

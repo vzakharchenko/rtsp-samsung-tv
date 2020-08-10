@@ -69,7 +69,7 @@ export default class Config extends React.Component {
                             </div>)
                     }
                     if (meta.key === "2" || meta.key === "3") {
-                        const fieldName = meta.key === "3" ? 'ffmpeg' : 'ffmpegPre'
+                        const fieldName = (meta.key === "3" ? 'ffmpeg' : 'ffmpegPre')
                         return (
                             <div>
                                 <div>
@@ -117,18 +117,21 @@ export default class Config extends React.Component {
                                                         const ffmpeg = {...this.state[fieldName]};
                                                         ffmpeg.key = str;
                                                         ffmpeg.itemKey = -1;
-                                                        this.setState({ffmpeg});
+                                                        const state = {};
+                                                        state[fieldName] = ffmpeg;
+                                                        this.setState(state);
                                                     }
                                                 }}>{this.state[fieldName] && this.state[fieldName].itemKey === -1 ? this.state[fieldName].key : ''}
                                             </Typography.Text>
                                             <Typography.Text disabled>:</Typography.Text>
                                             <Typography.Text editable={{
                                                 onChange: (str) => {
-
                                                     const ffmpeg = {...this.state[fieldName]};
                                                     ffmpeg.value = str;
                                                     ffmpeg.valueItem = -1;
-                                                    this.setState({ffmpeg});
+                                                    const state = {};
+                                                    state[fieldName] = ffmpeg;
+                                                    this.setState(state);
                                                 }
                                             }}>{this.state[fieldName] && this.state[fieldName].valueItem === -1 ? this.state[fieldName].value : ''}</Typography.Text>
                                             {this.state[fieldName].valueItem === -1 && this.state[fieldName].itemKey === -1 ?
@@ -355,7 +358,6 @@ export default class Config extends React.Component {
                         <div>
                             <Select defaultValue={text} style={{width: 120}}
                                     onChange={(value) => {
-                                        debugger;
                                         console.log(`selected ${value}`);
                                         const config = {...this.state.config};
                                         config.config.channels[index].transport = value;
@@ -371,7 +373,7 @@ export default class Config extends React.Component {
                 }
             },
             {
-                title: 'Pre FFmpeg Parameters',
+                title: 'RTSP FFmpeg parameters',
                 dataIndex: 'ffmpegPre',
                 key: 'ffmpegPre',
                 render: (text, meta, index) => {
@@ -445,7 +447,7 @@ export default class Config extends React.Component {
                                                 config.config.channels[index].ffmpegPre[ffmpeg.key] = ffmpeg.value;
                                                 this.setState({config})
                                                 this.save().then(() => {
-                                                    this.setState({ffmpeg: {}})
+                                                    this.setState({ffmpegPre: {}})
                                                 });
                                             }
                                         }>Add</Button>
@@ -458,7 +460,7 @@ export default class Config extends React.Component {
                 },
             },
             {
-                title: 'Post FFmpeg Parameters',
+                title: 'Encode FFmpeg parameters',
                 dataIndex: 'ffmpeg',
                 key: 'ffmpeg',
                 render: (text, meta, index) => {
@@ -635,12 +637,12 @@ export default class Config extends React.Component {
             },
             {
                 key: '2',
-                name: 'Default Pre ffmpeg Parameters',
+                name: 'Default RTSP FFmpeg parameters',
                 value: loadedConfig.ffmpegPre,
             },
             {
                 key: '3',
-                name: 'Default Post ffmpeg Parameters',
+                name: 'Default Encode ffmpeg Parameters',
                 value: loadedConfig.ffmpeg,
             },
 

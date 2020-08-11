@@ -1,4 +1,3 @@
-const { CronJob } = require('cron');
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
@@ -328,26 +327,26 @@ app.get('/info', cors(corsOptions), (req, res) => {
   }));
 });
 
-function installCrons() {
-  const cronJob = new CronJob('0 */2 * * * *', (async () => {
-    let error = false;
-    streams.forEach(((stream) => {
-      if (stream.mpeg1Muxer.stream.exitCode > 0
-                || !stream.mpeg1Muxer.stream.pid > 0
-                || !stream.mpeg1Muxer.inputStreamStarted
-                || stream.mpeg1Muxer.stream.killed
-                || stream.mpeg1Muxer.stream._closesGot > 0) {
-        error = true;
-      }
-    }));
-    if (error) {
-      await recreateStream();
-    }
-  }), null, true, 'America/Los_Angeles');
-  console.debug('System TZ next 5: ', cronJob.nextDates(5));
-}
+// function installCrons() {
+//   const cronJob = new CronJob('0 */2 * * * *', (async () => {
+//     let error = false;
+//     streams.forEach(((stream) => {
+//       if (stream.mpeg1Muxer.stream.exitCode > 0
+//                 || !stream.mpeg1Muxer.stream.pid > 0
+//                 || !stream.mpeg1Muxer.inputStreamStarted
+//                 || stream.mpeg1Muxer.stream.killed
+//                 || stream.mpeg1Muxer.stream._closesGot > 0) {
+//         error = true;
+//       }
+//     }));
+//     if (error) {
+//       await recreateStream();
+//     }
+//   }), null, true, 'America/Los_Angeles');
+//   console.debug('System TZ next 5: ', cronJob.nextDates(5));
+// }
 
-installCrons();
+// installCrons();
 
 app.use('/', protect(), express.static(`${__dirname}/camera-admin-ui/build`));
 

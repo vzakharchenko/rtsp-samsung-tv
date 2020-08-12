@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .js server.js camera-admin-ui/src",
-    "lint:fix": "eslint --fix --ext .js server.js camera-admin-ui/src",
+    "lint:fix": "eslint --fix --ext .js server.js camera-admin-ui/src CameraDevice",
     "start": "node server.js"
   },
   "repository": {
@@ -70,6 +70,9 @@
       "browser": false,
       "jest": true
     },
+    "ignorePatterns": [
+      "*.min.js"
+    ],
     "rules": {
       "no-console": 0,
       "prefer-promise-reject-errors": 0,

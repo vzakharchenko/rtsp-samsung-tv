@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --ext .js server.js",
-    "lint:fix": "eslint --fix --ext .js server.js",
+    "lint": "eslint --ext .js server.js camera-admin-ui/src",
+    "lint:fix": "eslint --fix --ext .js server.js camera-admin-ui/src",
     "start": "node server.js"
   },
   "repository": {
@@ -22,7 +22,21 @@
     "rtsp",
     "tizen",
     "tizenTV",
-    "smartTV"
+    "smartTV",
+    "dvr",
+    "samsung-tv",
+    "samsung-smart-tv",
+    "rtsp-stream",
+    "rtsp-player",
+    "tizen-tv",
+    "remote-control",
+    "voice-control",
+    "voice-commands",
+     "ffmpeg",
+    "rtsp-samsung-tv",
+    "samsung-tv-application",
+    "rtsp-ffmpeg-parameters" ,
+    "ip-cameras"
   ],
   "homepage": "https://github.com/vzakharchenko/rtsp-samsung-tv#readme",
   "dependencies": {
@@ -61,7 +75,8 @@
       "prefer-promise-reject-errors": 0,
       "prefer-destructuring": 0,
       "react/jsx-filename-extension": 0,
-      "no-underscore-dangle": 0
+      "no-underscore-dangle": 0,
+      "no-undef": 0
     }
   }
 }

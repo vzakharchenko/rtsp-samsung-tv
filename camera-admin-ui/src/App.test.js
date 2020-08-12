@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'; // eslint-disable-line no-unused-vars
 import { render } from '@testing-library/react';
-import App from './App';
+import App from './App'; // eslint-disable-line no-unused-vars
 
 test('renders learn react link', () => {
   const { getByText } = render(<App />);

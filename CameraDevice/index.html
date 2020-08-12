@@ -38,26 +38,32 @@
     getInfo((resp) => {
         var mode = resp.mode;
         if (mode > 0) {
+
             const url1 = 'ws://' + serverInfo.ip + ':9999';
             new JSMpeg.Player(url1, {
+                onStalled : ()=>{
+                    reload();},
                 canvas: document.getElementById('canvas1') // Canvas should be a canvas DOM element
             })
         }
         if (mode > 1) {
             const url2 = 'ws://' + serverInfo.ip + ':10000';
             new JSMpeg.Player(url2, {
+                onStalled : ()=>{reload();},
                 canvas: document.getElementById('canvas2') // Canvas should be a canvas DOM element
             })
         }
         if (mode > 2) {
             const url3 = 'ws://' + serverInfo.ip + ':10001';
             new JSMpeg.Player(url3, {
+                onStalled : ()=>{reload();},
                 canvas: document.getElementById('canvas3') // Canvas should be a canvas DOM element
             })
         }
         if (mode > 3) {
             const url4 = 'ws://' + serverInfo.ip + ':10002';
             new JSMpeg.Player(url4, {
+                onStalled : ()=>{reload();},
                 canvas: document.getElementById('canvas4') // Canvas should be a canvas DOM element
             })
         }

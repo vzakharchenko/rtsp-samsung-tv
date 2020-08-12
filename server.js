@@ -189,7 +189,7 @@ function getNextChannel(cChannel) {
 }
 
 async function killall() {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     exec(
       'killall ffmpeg',
       (error, stdout, stderr) => {
@@ -197,10 +197,9 @@ async function killall() {
         console.debug(`stderr: ${stderr}`);
         if (error !== null) {
           console.error(`exec error: ${error}`);
-          reject(error);
-        } else {
-          resolve();
+          // reject(error);
         }
+        resolve();
       },
     );
   });

@@ -117,12 +117,12 @@ var getInfo = (callback, error) => {
             if (xhr.status === 200) {
                 callback(JSON.parse(xhr.responseText))
             } else {
-               window.location.href='/server.html'
+                window.location.href = '/server.html'
             }
         }
     };
     xhr.onerror = function (e) {
-       	window.location.href='/server.html'
+        window.location.href = '/server.html'
         console.error(xhr.statusText);
     };
     xhr.send(null);
@@ -149,11 +149,7 @@ var init = function () {
         "9",
         "0"]);
     document.addEventListener('visibilitychange', function () {
-        if (document.hidden) {
-            // Something you want to do when hide or exit.
-        } else {
-            reload();
-        }
+        reload();
     });
 
     // add eventListener for keydown

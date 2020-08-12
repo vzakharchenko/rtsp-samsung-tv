@@ -188,17 +188,22 @@ function getNextChannel(cChannel) {
   return nextChannel;
 }
 
-function killall() {
-  exec(
-    'killall ffmpeg',
-    (error, stdout, stderr) => {
-      console.debug(`stdout: ${stdout}`);
-      console.debug(`stderr: ${stderr}`);
-      if (error !== null) {
-        console.error(`exec error: ${error}`);
-      }
-    },
-  );
+async function killall() {
+  return new Promise((resolve, reject) => {
+    exec(
+      'killall ffmpeg',
+      (error, stdout, stderr) => {
+        console.debug(`stdout: ${stdout}`);
+        console.debug(`stderr: ${stderr}`);
+        if (error !== null) {
+          console.error(`exec error: ${error}`);
+          reject(error);
+        } else {
+          resolve();
+        }
+      },
+    );
+  });
 }
 
 async function recreateStream() {

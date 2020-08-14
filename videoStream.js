@@ -86,6 +86,9 @@ VideoStream.prototype.startMpeg1Stream = function () {
     this.mpeg1Muxer.on('exitWithError', () => {
         return this.emit('exitWithError')
     })
+    this.mpeg1Muxer.on('exitWithoutError', () => {
+        return this.emit('exitWithoutError')
+    })
     return this
 }
 

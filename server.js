@@ -207,7 +207,7 @@ async function killall() {
 
 async function recreateStream() {
   streams.forEach(((stream) => {
-    stream.mpeg1Muxer.stream.kill();
+    stream.mpeg1Muxer.kill();
     stream.wsServer.close();
   }));
   if (config.killAll) {
@@ -248,6 +248,12 @@ async function recreateStream() {
           wsPort: 9999 + i,
           ffmpegOptions,
           ffmpegPreOptions,
+        });
+        stream.mpeg1Muxer.on('exitWithError', () => {
+          recreateStream();
+        });
+        stream.mpeg1Muxer.on('exitWithoutError', () => {
+          recreateStream();
         });
         streams.push(stream);
       }

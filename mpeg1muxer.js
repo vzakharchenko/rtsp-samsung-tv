@@ -16,6 +16,8 @@ Mpeg1Muxer = function (options) {
     }
     this.ffmpegChannelPre = options.ffmpegPreOptions;
     this.exitCode = undefined
+    this.signal = undefined
+    this.killed = false;
     this.additionalFlags = []
     this.additionalPreFlags = []
     if (this.ffmpegOptions) {
@@ -59,6 +61,10 @@ Mpeg1Muxer = function (options) {
     this.stream = child_process.spawn(options.ffmpegPath, this.spawnOptions, {
         detached: false
     })
+    this.kill=()=>{
+        this.killed=true;
+        this.stream.kill();
+    }
     this.inputStreamStarted = true
     this.stream.stdout.on('data', (data) => {
         return this.emit('mpeg1data', data)
@@ -67,9 +73,16 @@ Mpeg1Muxer = function (options) {
         return this.emit('ffmpegStderr', data)
     })
     this.stream.on('exit', (code, signal) => {
-        if (code === 1) {
+        if (this.killed){
+            debugger;
+            return ;
+        }
+        if (code === 0) {
+            return this.emit('exitWithoutError')
+        } else {
             console.error('RTSP stream exited with error')
-            this.exitCode = 1
+            this.exitCode = code
+            this.signal = signal
             return this.emit('exitWithError')
         }
     })

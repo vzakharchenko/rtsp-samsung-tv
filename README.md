@@ -47,7 +47,7 @@ open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/
 10. click "Scan device" ![](img/deviceManager2.png)
 11. set Connection to "On"
 12. right click on your connection and select "Permit install" ![](img/deviceManager3.png)
-  12.1 If you see NO DUID For Selected Device ![](img/NoDUIDMessage.png) then you need
+  12.1 If you see NO DUID For Selected Device ![](img/NoDUIDMessage.png) then you need to [generate certificate](#generate-samsung-certificate) for your TV
 13. in Tizen studio select project and run it on TV.Channel ![](img/SelectDevice.jpeg) ![](img/RunAsTizenWeb.png)
 14. setup server ip and port on TV. ![](/img/ipport.png)
 
@@ -134,7 +134,7 @@ sudo make install
 5. Click Ok ![](img/GenerateCertificate7.png)
 6. Login to Samsung Account ![](img/GenerateCertificate8.png)
 7. Next ![](img/GenerateCertificate9.png)
-8. Add Individual DUID ![](img/GenerateCertificate10.png)
+8. Add [Individual DUID](#individual-duid) ![](img/GenerateCertificate10.png)
 9. Finish
 
 #  Individual DUID

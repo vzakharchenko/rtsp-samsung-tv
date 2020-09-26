@@ -37,21 +37,22 @@ open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/
 
 1. install java jdk
 2. install Tizen SDK on your PC [https://developer.tizen.org/development/tizen-studio/download](https://developer.tizen.org/development/tizen-studio/download)
-3. in "Tizen Studio Package manager" install  "Tizen SDK Tools" ![](img/TizenSDK.png)
-4. "Extension SDK" install "extras" ![](img/InstallAll.png)
-5. open "Tizen Studio"
-6. File -> Open Project From File System ![](img/FileImport.png)
-7. open rtsp-samsung-tv/CameraDevice (Linux path: ```/usr/local/lib/node_modules/rtsp-samsung-tv/CameraDevice```)![](img/importProject.png)
-8. [Enable Development mode on your TV](https://developer.samsung.com/smarttv/develop/getting-started/using-sdk/tv-device.html)
-9. open Device manager ![](img/deviceManager.png)
-10. click "Scan device" ![](img/deviceManager2.png)
-11. set Connection to "On"
-12. right click on your connection and select "Permit install" ![](img/deviceManager3.png)
+3. download application source ```git clone https://github.com/vzakharchenko/rtsp-samsung-tv.git```
+4. in "Tizen Studio Package manager" install  "Tizen SDK Tools" ![](img/TizenSDK.png)
+5. "Extension SDK" install "extras" ![](img/InstallAll.png)
+6. open "Tizen Studio"
+7. File -> Open Project From File System ![](img/FileImport.png)
+8. open rtsp-samsung-tv/CameraDevice![](img/importProject.png)
+9. [Enable Development mode on your TV](https://developer.samsung.com/smarttv/develop/getting-started/using-sdk/tv-device.html)
+10. open Device manager ![](img/deviceManager.png)
+11. click "Scan device" ![](img/deviceManager2.png)
+12. set Connection to "On"
+13. right click on your connection and select "Permit install" ![](img/deviceManager3.png)
   - If you see NO DUID For Selected Device  
   ![](img/NoDUIDMessage.png)  
     then you need to [generate certificate](#generate-samsung-certificate) for your TV  
-13. in Tizen studio select project and run it on TV.Channel ![](img/SelectDevice.jpeg) ![](img/RunAsTizenWeb.png)
-14. setup server ip and port on TV. ![](/img/ipport.png)
+14. in Tizen studio select project and run it on TV.Channel ![](img/SelectDevice.jpeg) ![](img/RunAsTizenWeb.png)
+15. setup server ip and port on TV. ![](/img/ipport.png)
 
 
 # Admin UI

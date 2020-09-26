@@ -33,7 +33,6 @@ userChannels.json
 keycloak.json
 package.json
 README.md
-CameraDevice
 yarn.lock
 yarn-error.log
 .currentChannel

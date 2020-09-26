@@ -37,8 +37,8 @@ open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/
 
 1. install java jdk
 2. install Tizen SDK on your PC [https://developer.tizen.org/development/tizen-studio/download](https://developer.tizen.org/development/tizen-studio/download)
-3. in "Tizen Studio Package manager" install  "Tizen SDK Tools"
-4. "Extension SDK" install "extras"
+3. in "Tizen Studio Package manager" install  "Tizen SDK Tools" ![](img/TizenSDK.png)
+4. "Extension SDK" install "extras" ![](img/InstallAll.png)
 5. open "Tizen Studio"
 6. File -> Open Project From File System ![](img/FileImport.png)
 7. open rtsp-samsung-tv/CameraDevice ![](img/importProject.png)
@@ -47,6 +47,7 @@ open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/
 10. click "Scan device" ![](img/deviceManager2.png)
 11. set Connection to "On"
 12. right click on your connection and select "Permit install" ![](img/deviceManager3.png)
+  12.1 If you see NO DUID For Selected Device ![](img/NoDUIDMessage.png) then you need
 13. in Tizen studio select project and run it on TV.Channel ![](img/SelectDevice.jpeg) ![](img/RunAsTizenWeb.png)
 14. setup server ip and port on TV. ![](/img/ipport.png)
 
@@ -123,3 +124,18 @@ sudo make install
 
 ![](/img/RemoteControl.png)
 
+# Generate Samsung Certificate
+
+1. Open "Certificate Manager" ![](img/GenerateCertificate.png)
+2. Add a new Samsung Certificate  ![](img/GenerateCertificate2.png) ![](img/GenerateCertificate3.png)
+3. Select DeviceType "TV" ![](img/GenerateCertificate4.png)
+4. Click Next ![](img/GenerateCertificate5.png)
+4. Type any name and password ![](img/GenerateCertificate6.png)
+5. Click Ok ![](img/GenerateCertificate7.png)
+6. Login to Samsung Account ![](img/GenerateCertificate8.png)
+7. Next ![](img/GenerateCertificate9.png)
+8. Add Individual DUID ![](img/GenerateCertificate10.png)
+9. Finish
+
+#  Individual DUID
+ On TV select "Settings"->"Support"->"About TV"-> Information About Smart Hub-> Unique Device Id ![](img/TV_DUID2.png)

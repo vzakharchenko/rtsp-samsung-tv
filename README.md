@@ -41,7 +41,7 @@ open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/
 4. "Extension SDK" install "extras"
 5. open "Tizen Studio"
 6. File -> Open Project From File System ![](img/FileImport.png)
-7. open rtsp-samsung-tv/CameraDevice ![](img/FileImport.png)
+7. open rtsp-samsung-tv/CameraDevice ![](img/importProject.png)
 8. [Enable Development mode on your TV](https://developer.samsung.com/smarttv/develop/getting-started/using-sdk/tv-device.html)
 9. open Device manager ![](img/deviceManager.png)
 10. click "Scan device" ![](img/deviceManager2.png)

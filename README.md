@@ -118,8 +118,8 @@ sudo make install
   - ```bash
     sudo raspi-config
     ```  
-  - * 7 Advanced Options* ![](/img/raspberry1.png)
-  - * A3 Memory Split * ![](/img/raspberry2.png)
+  -  *7 Advanced Options* ![](/img/raspberry1.png)
+  -  *A3 Memory Split* ![](/img/raspberry2.png)
   - set value *256* or more ![](/img/raspberry2.png)
 
 # Voice Control

@@ -28,7 +28,7 @@ sudo apt-get install ffmpeg
 wget -qO- https://getpm2.com/install.sh | bash
 sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u ${currentUser} --hp ${HOME}
 sudo npm i rtsp-samsung-tv -g
-sudo pm2 start `npm root -g`/rtsp-samsung-tv/server.js -i max
+sudo pm2 start `npm root -g`/rtsp-samsung-tv/server.js
 sudo pm2 save
 ```
 open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/addnewCamera.png) ![](img/addedNewDevice.png)
@@ -48,9 +48,9 @@ open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/
 11. click "Scan device" ![](img/deviceManager2.png)
 12. set Connection to "On"
 13. right click on your connection and select "Permit install" ![](img/deviceManager3.png)
-  - If you see NO DUID For Selected Device  
-  ![](img/NoDUIDMessage.png)  
-    then you need to [generate certificate](#generate-samsung-certificate) for your TV  
+  - If you see NO DUID For Selected Device
+  ![](img/NoDUIDMessage.png)
+    then you need to [generate certificate](#generate-samsung-certificate) for your TV
 14. in Tizen studio select project and run it on TV.Channel ![](img/SelectDevice.jpeg) ![](img/RunAsTizenWeb.png)
 15. setup server ip and port on TV. ![](/img/ipport.png)
 
@@ -114,6 +114,13 @@ sudo make -j4
 sudo make install
 ```
 2. ![](/img/RaspberryPiHW.png)
+3. increase the GPU memory?
+  - ```bash
+    sudo raspi-config
+    ```  
+  - * 7 Advanced Options* ![](/img/raspberry1.png)
+  - * A3 Memory Split * ![](/img/raspberry2.png)
+  - set value *256* or more ![](/img/raspberry2.png)
 
 # Voice Control
     1. Press VOICE button

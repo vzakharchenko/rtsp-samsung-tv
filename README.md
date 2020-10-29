@@ -120,7 +120,7 @@ sudo make install
     ```  
   -  *7 Advanced Options* ![](/img/raspberry1.png)
   -  *A3 Memory Split* ![](/img/raspberry2.png)
-  - set value *256* or more ![](/img/raspberry2.png)
+  - set value *256* or more ![](/img/raspberry3.png)
 
 # Voice Control
     1. Press VOICE button

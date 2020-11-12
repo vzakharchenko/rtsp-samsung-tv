@@ -17,7 +17,7 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
  - [protect admin ui(optional)](#protect-admin-ui-using-keycloak-sso-optional)  
  - [Voice Control](#voice-control)  
  - [Remote Control](#remote-control)  
- -  Supports parameters before "-i" and after it``` ffmpeg <Default RTSP FFmpeg parameters> -i rtsp://stream <Default Encode FFmpeg parameters> ````
+ -  Supports parameters before "-i" and after it ``` ffmpeg <Default RTSP FFmpeg parameters> -i rtsp://stream <Default Encode FFmpeg parameters> ````  
  - [Raspberry Pi Hw acceleration](#raspberry-pi-hw-acceleration-on-ffmpeg-raspbian-lite-image)  
 
 

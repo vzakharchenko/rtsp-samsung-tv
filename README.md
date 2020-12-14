@@ -5,7 +5,7 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 
 [![npm version](https://badge.fury.io/js/rtsp-samsung-tv.svg)](https://badge.fury.io/js/rtsp-samsung-tv)
 ![rtsp-samsung-tv CI](https://github.com/vzakharchenko/rtsp-samsung-tv/workflows/rtsp-samsung-tv%20CI/badge.svg)
-Please [Donate](https://secure.wayforpay.com/button/bf5d6c136e034)
+<button type="button" onclick="runWfpWdgt('https://secure.wayforpay.com/button/bf5d6c136e034');" style="display:inline-block!important;background:#f1f1f1 url('https://s3.eu-central-1.amazonaws.com/w4p-merch/button/bg7x2.png') no-repeat center right;background-size:cover;width: 256px!important;height:54px!important;border:1px solid #ccc!important;border-radius:14px!important;padding:18px!important;box-shadow:3px 2px 8px rgba(71,66,66,0.22)!important;text-align:left!important;outline:none!important;box-sizing:border-box!important;" onmouseover="this.style.opacity='0.8';" onmouseout="this.style.opacity='1';"><span style="font-family:Verdana,Arial,sans-serif!important;font-weight:bold!important;font-size:14px!important;color:#2094de!important;line-height:18px!important;vertical-align:middle!important;">Checkout</span></button>
 
 # Features
  - support more than 999 RTSP streams.
@@ -24,7 +24,7 @@ Please [Donate](https://secure.wayforpay.com/button/bf5d6c136e034)
 
 ![ipport.png](/img/ipport.png), ![camera1.png](/img/camera1.png), ![camera4.png](/img/camera4.png)
 
-# Please [Donate]()
+# Please [Donate](https://secure.wayforpay.com/button/bf5d6c136e034)
  donations helps developing and maintans the project.
  Please if you like our coding, donate me if you can, even small amount help me :)
  Donation Link: (https://secure.wayforpay.com/button/bf5d6c136e034)[https://secure.wayforpay.com/button/bf5d6c136e034]
@@ -157,4 +157,4 @@ sudo make install
  On TV select "Settings"->"Support"->"About TV"-> Information About Smart Hub-> Unique Device Id ![](img/TV_DUID2.png)
 
 
-# If you find these useful, please [Donate](https://secure.wayforpay.com/button/bf5d6c136e034)!
+# If you find these useful, please [Donate](https://secure.wayforpay.com/button/bf5d6c136e034)!  

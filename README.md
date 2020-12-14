@@ -5,7 +5,7 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 
 [![npm version](https://badge.fury.io/js/rtsp-samsung-tv.svg)](https://badge.fury.io/js/rtsp-samsung-tv)  
 ![rtsp-samsung-tv CI](https://github.com/vzakharchenko/rtsp-samsung-tv/workflows/rtsp-samsung-tv%20CI/badge.svg)  
-[<span style="font-family:Verdana,Arial,sans-serif!important;font-weight:bold!important;font-size:14px!important;color:#2094de!important;line-height:18px!important;vertical-align:middle!important;">Donate</span>](https://secure.wayforpay.com/button/bf5d6c136e034)  
+[![donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://secure.wayforpay.com/button/bf5d6c136e034)
 
 # Features
  - support more than 999 RTSP streams.  

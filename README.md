@@ -26,7 +26,7 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 
 # Please [Donate](https://secure.wayforpay.com/button/bf5d6c136e034)  
  Donations helps developing and maintain the project.  
- Donation Link: (https://secure.wayforpay.com/button/bf5d6c136e034)[https://secure.wayforpay.com/button/bf5d6c136e034]  
+ Donation Link: [https://secure.wayforpay.com/button/bf5d6c136e034](https://secure.wayforpay.com/button/bf5d6c136e034)  
 
 # Server Installation  
 ```bash

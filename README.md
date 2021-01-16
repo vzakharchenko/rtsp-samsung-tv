@@ -27,7 +27,35 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 # Please [Donate](https://secure.wayforpay.com/button/bf5d6c136e034)  
  Donations helps developing and maintain the project.  
  Donation Link: [https://secure.wayforpay.com/button/bf5d6c136e034](https://secure.wayforpay.com/button/bf5d6c136e034)  
-
+# Run Inside docker container
+- Linux x64 platform 
+```
+docker run -d --name=rtsp-samsung-tv  -p 3004:3004 --restart=always vassio/rtsp-samsung-tv:latest
+```
+- Linux x64 platform with external configuration
+```
+echo "{}" >/opt/channels.json
+docker run -d --name=smartthings-phone-presence-sensor  -p 3004:3004 -v /opt/channels.json:/opt/config/channels.json --restart=always vassio/rtsp-samsung-tv:latest
+```
+- Linux x64 platform with keycloak.json
+```
+echo "{}" >/opt/channels.json
+docker run -d --name=smartthings-phone-presence-sensor  -p 3004:3004 -v /opt/channels.json:/opt/config/channels.json -v  `pwd`/keycloak.json:/opt/config/keycloak.json --restart=always vassio/rtsp-samsung-tv:latest
+```
+- Linux arm64 platform 
+```
+docker run -d --name=rtsp-samsung-tv  -p 3004:3004 --restart=always vassio/rtsp-samsung-tv:latest_arm64
+```
+- Linux arm64 platform with external configuration
+```
+echo "{}" >/opt/channels.json
+docker run -d --name=smartthings-phone-presence-sensor  -p 3004:3004 -v /opt/channels.json:/opt/config/channels.json --restart=always vassio/rtsp-samsung-tv:latest_arm64
+```
+- Linux arm64 platform with keycloak.json
+```
+echo "{}" >/opt/channels.json
+docker run -d --name=smartthings-phone-presence-sensor  -p 3004:3004 -v /opt/channels.json:/opt/config/channels.json -v  `pwd`/keycloak.json:/opt/config/keycloak.json --restart=always vassio/rtsp-samsung-tv:latest_arm64
+```
 # Server Installation  
 ```bash
 sudo apt-get install ffmpeg

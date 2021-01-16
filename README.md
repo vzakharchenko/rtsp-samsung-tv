@@ -10,6 +10,7 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 # Features
  - support more than 999 RTSP streams.  
  - switch channels(rtsp stream) using numpad on the remote control  
+ - [Run Inside docker container](#run-inside-docker-container)
  - use server to convert rtsp streams using ffmpeg  
  - [group rtsp streams on the obe channel (Display 4 cameras streams on one channel)](#add-4-cameras-on-one-screen---)  
  - support udp and tcp transport  

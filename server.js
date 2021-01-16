@@ -97,6 +97,9 @@ function readConfig() {
   } else if (channelJson.transport === 'none') {
     delete channelJson.ffmpegPre['-rtsp_transport'];
   }
+  if (!channelJson.channels) {
+    channelJson.channels = [];
+  }
   channelJson.channels.forEach((channel) => {
     const ch = channel;
     if (!ch.ffmpeg) {
@@ -394,6 +397,10 @@ app.post('/admin/config/save', protect(), async (req, res) => {
     newConfig.ffmpegPre['-rtsp_transport'] = 'udp';
   } else if (newConfig.transport === 'none') {
     delete newConfig.ffmpegPre['-rtsp_transport'];
+  }
+
+  if (!newConfig.channels) {
+    newConfig.channels = [];
   }
   newConfig.channels.forEach((channel) => {
     const ch = channel;

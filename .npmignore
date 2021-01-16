@@ -37,3 +37,9 @@ yarn.lock
 yarn-error.log
 .currentChannel
 *.tgz
+connect.sh
+docker.publish.arm64.sh
+docker.publish.sh
+entrypoint.sh
+Dockerfile
+local.sh

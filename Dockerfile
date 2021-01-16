@@ -24,6 +24,7 @@ COPY camera-admin-ui/public /opt/rtsp-samsung-tv/camera-admin-ui/public
 COPY camera-admin-ui/src /opt/rtsp-samsung-tv/camera-admin-ui/src
 COPY camera-admin-ui/config-overrides.js /opt/rtsp-samsung-tv/camera-admin-ui/config-overrides.js
 RUN cd /opt/rtsp-samsung-tv/ && npm install
+RUN cd /opt/rtsp-samsung-tv/camera-admin-ui/ && yarn --network-timeout 100000
 RUN cd /opt/rtsp-samsung-tv/camera-admin-ui/ && yarn install
 RUN cd /opt/rtsp-samsung-tv/camera-admin-ui/ && yarn build
 

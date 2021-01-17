@@ -3,9 +3,9 @@
 Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 
 
-[![npm version](https://badge.fury.io/js/rtsp-samsung-tv.svg)](https://badge.fury.io/js/rtsp-samsung-tv)
-![rtsp-samsung-tv CI](https://github.com/vzakharchenko/rtsp-samsung-tv/workflows/rtsp-samsung-tv%20CI/badge.svg)
-[![donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://secure.wayforpay.com/button/bf5d6c136e034)
+[![npm version](https://badge.fury.io/js/rtsp-samsung-tv.svg)](https://badge.fury.io/js/rtsp-samsung-tv)  
+![rtsp-samsung-tv CI](https://github.com/vzakharchenko/rtsp-samsung-tv/workflows/rtsp-samsung-tv%20CI/badge.svg)  
+[![donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://secure.wayforpay.com/button/bf5d6c136e034)  
 
 # Features
  - support more than 999 RTSP streams.
@@ -23,7 +23,7 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
  - [Raspberry Pi Hw acceleration](#raspberry-pi-hw-acceleration-on-ffmpeg-raspbian-lite-image)
 
 
-![ipport.png](/img/ipport.png), ![camera1.png](/img/camera1.png), ![camera4.png](/img/camera4.png)
+![ipport.png](/img/ipport.png), ![camera1.png](/img/camera1.png), ![camera4.png](/img/camera4.png)  
 
 # Please [Donate](https://secure.wayforpay.com/button/bf5d6c136e034)
  Donations helps developing and maintain the project.
@@ -109,22 +109,22 @@ open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/
 ![](/img/AdminUi.png)
 
 where:
-**File** -  path to config file.
-**Default Transport** - Default RTSP Transport. Applicable to all cameras
-**Default RTSP FFmpeg parameters** - Parameters before "-i". Applicable to all cameras
-**Default Encode FFmpeg parameters** - Parameters before "-i". Applicable to all cameras
+- **File**  path to config file.
+- **Default Transport** Default RTSP Transport. Applicable to all cameras
+- **Default RTSP FFmpeg parameters** Parameters before "-i". Applicable to all cameras
+- **Default Encode FFmpeg parameters** Parameters before "-i". Applicable to all cameras
 ```
 ffmpeg <Default RTSP FFmpeg parameters> -i rtsp://stream <Default Encode FFmpeg parameters>
 ```
 
 ## Camera Specific Columns:
-**Status** - now on TV.
-**Camera** - channel number.
-**Camera Mode** - "1 Camera" : one camera on screen, "4 Cameras" : 4 cameras on one screen.
-**rtsp Streams** - rtsp streams.
-**Transport** - Camera RTSP Transport.
-**RTSP FFmpeg parameters** - Parameters before "-i". Applicable to all cameras
-**Encode FFmpeg parameters** - Parameters after "-i". Applicable to all cameras
+- **Status** now on TV.
+- **Camera** channel number.
+- **Camera Mode** "1 Camera" : one camera on screen, "4 Cameras" : 4 cameras on one screen.
+- **rtsp Streams** rtsp streams.
+- **Transport** Camera RTSP Transport.
+- **RTSP FFmpeg parameters** Parameters before "-i". Applicable to all cameras
+- **Encode FFmpeg parameters** Parameters after "-i". Applicable to all cameras
 ```
 ffmpeg <RTSP FFmpeg parameters> -i rtsp://stream <Encode FFmpeg parameters>
 ```
@@ -167,16 +167,16 @@ sudo make install
   - ```bash
     sudo raspi-config
     ```
-  -  **7 Advanced Options** ![](/img/raspberry1.png)
-  -  **A3 Memory Split** ![](/img/raspberry2.png)
-  - set value **256** or more ![](/img/raspberry3.png)
+-  **7 Advanced Options** ![](/img/raspberry1.png)
+-  **A3 Memory Split** ![](/img/raspberry2.png)
+-  set value **256** or more ![](/img/raspberry3.png)
 
 # Voice Control
     1. Press VOICE button
     2. Say command
  **List of commands:**
- "Channel Up" (or the same on your language)
- "Channel Down" (or the same on your language)
+ "Channel Up" (or the same on your language)  
+ "Channel Down" (or the same on your language)  
  "1","2","3","4" ... "999"
 
 # Remote Control

@@ -4,10 +4,11 @@ LABEL author="Vasyl Zakharchenko"
 LABEL email="vaszakharchenko@gmail.com"
 LABEL name="rtsp-samsung-tv"
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -y curl gnupg2 ca-certificates lsb-release wget
+RUN apt-get update && apt-get install -y gnupg2 ca-certificates lsb-release wget
 RUN update-ca-certificates --fresh
 RUN wget https://dl.yarnpkg.com/debian/pubkey.gpg
 RUN apt-key add pubkey.gpg
+RUN apt-get purge curl
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN curl -sSL https://deb.nodesource.com/setup_14.x | bash
 RUN apt-get update && apt-get install -y ffmpeg yarn  nodejs

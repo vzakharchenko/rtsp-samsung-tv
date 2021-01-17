@@ -1,4 +1,4 @@
-name: ci
+name: rtsp-samsung-tv Docker amd64 arm64 armv7
 
 on:
   push:

@@ -20,7 +20,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
       -
         name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_SECRET }}
@@ -34,4 +34,4 @@ jobs:
           push: true
           tags: |
             vassio/rtsp-samsung-tv:latest
-            vassio/rtsp-samsung-tv:1.1.18
+            vassio/rtsp-samsung-tv:1.1.19

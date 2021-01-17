@@ -1,6 +1,6 @@
 {
   "name": "rtsp-samsung-tv",
-  "version": "1.1.18",
+  "version": "1.1.19",
   "description": "Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)",
   "main": "server.js",
   "scripts": {

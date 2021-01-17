@@ -3,9 +3,9 @@
 Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 
 
-[![npm version](https://badge.fury.io/js/rtsp-samsung-tv.svg)](https://badge.fury.io/js/rtsp-samsung-tv)  
-![rtsp-samsung-tv CI](https://github.com/vzakharchenko/rtsp-samsung-tv/workflows/rtsp-samsung-tv%20CI/badge.svg)  
-[![donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://secure.wayforpay.com/button/bf5d6c136e034)  
+[![npm version](https://badge.fury.io/js/rtsp-samsung-tv.svg)](https://badge.fury.io/js/rtsp-samsung-tv)
+![rtsp-samsung-tv CI](https://github.com/vzakharchenko/rtsp-samsung-tv/workflows/rtsp-samsung-tv%20CI/badge.svg)
+[![donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://secure.wayforpay.com/button/bf5d6c136e034)
 
 # Features
  - support more than 999 RTSP streams.
@@ -23,53 +23,24 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
  - [Raspberry Pi Hw acceleration](#raspberry-pi-hw-acceleration-on-ffmpeg-raspbian-lite-image)
 
 
-![ipport.png](/img/ipport.png), ![camera1.png](/img/camera1.png), ![camera4.png](/img/camera4.png)  
+![ipport.png](/img/ipport.png), ![camera1.png](/img/camera1.png), ![camera4.png](/img/camera4.png)
 
 # Please [Donate](https://secure.wayforpay.com/button/bf5d6c136e034)
  Donations helps developing and maintain the project.
  Donation Link: [https://secure.wayforpay.com/button/bf5d6c136e034](https://secure.wayforpay.com/button/bf5d6c136e034)
 # Run Inside docker container
-- Linux x64 platform
 ```
 docker run -d --name=rtsp-samsung-tv  -p 3004:3004 --restart=always vassio/rtsp-samsung-tv:latest
 ```
-- Linux x64 platform with external configuration
+## Configuration on Host:
 ```
 echo "{}" >/opt/channels.json
 docker run -d --name=smartthings-phone-presence-sensor  -p 3004:3004 -v /opt/channels.json:/opt/config/channels.json --restart=always vassio/rtsp-samsung-tv:latest
 ```
-- Linux x64 platform with keycloak.json
+## Keycloak Protection
 ```
 echo "{}" >/opt/channels.json
 docker run -d --name=smartthings-phone-presence-sensor  -p 3004:3004 -v /opt/channels.json:/opt/config/channels.json -v  `pwd`/keycloak.json:/opt/config/keycloak.json --restart=always vassio/rtsp-samsung-tv:latest
-```
-- Linux arm64 platform
-```
-docker run -d --name=rtsp-samsung-tv  -p 3004:3004 --restart=always vassio/rtsp-samsung-tv:latest_arm64
-```
-- Linux arm64 platform with external configuration
-```
-echo "{}" >/opt/channels.json
-docker run -d --name=smartthings-phone-presence-sensor  -p 3004:3004 -v /opt/channels.json:/opt/config/channels.json --restart=always vassio/rtsp-samsung-tv:latest_arm64
-```
-- Linux arm64 platform with keycloak.json
-```
-echo "{}" >/opt/channels.json
-docker run -d --name=smartthings-phone-presence-sensor  -p 3004:3004 -v /opt/channels.json:/opt/config/channels.json -v  `pwd`/keycloak.json:/opt/config/keycloak.json --restart=always vassio/rtsp-samsung-tv:latest_arm64
-```
-- Linux armv7l platform
-```
-docker run -d --name=rtsp-samsung-tv  -p 3004:3004 --restart=always vassio/rtsp-samsung-tv:latest_armv7l
-```
-- Linux armv7l platform with external configuration
-```
-echo "{}" >/opt/channels.json
-docker run -d --name=smartthings-phone-presence-sensor  -p 3004:3004 -v /opt/channels.json:/opt/config/channels.json --restart=always vassio/rtsp-samsung-tv:latest_armv7l
-```
-- Linux armv7l platform with keycloak.json
-```
-echo "{}" >/opt/channels.json
-docker run -d --name=smartthings-phone-presence-sensor  -p 3004:3004 -v /opt/channels.json:/opt/config/channels.json -v  `pwd`/keycloak.json:/opt/config/keycloak.json --restart=always vassio/rtsp-samsung-tv:latest_armv7l
 ```
 # Server Installation
 ```bash
@@ -175,8 +146,8 @@ sudo make install
     1. Press VOICE button
     2. Say command
  **List of commands:**
- "Channel Up" (or the same on your language)  
- "Channel Down" (or the same on your language)  
+ "Channel Up" (or the same on your language)
+ "Channel Down" (or the same on your language)
  "1","2","3","4" ... "999"
 
 # Remote Control

@@ -10,8 +10,8 @@ RUN wget https://dl.yarnpkg.com/debian/pubkey.gpg
 RUN apt-key add pubkey.gpg
 RUN apt-get purge curl
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN curl -sSL https://deb.nodesource.com/setup_14.x | bash
-RUN apt-get update && apt-get install -y ffmpeg yarn  nodejs
+RUN wget -qO-  https://deb.nodesource.com/setup_14.x | bash
+RUN apt-get update && apt-get install -y ffmpeg yarn  nodejs, curl
 RUN npm i pm2 -g
 # Bundle APP files
 RUN mkdir -p /opt/rtsp-samsung-tv/

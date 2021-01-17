@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y curl gnupg2 ca-certificates
 RUN update-ca-certificates --fresh
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN curl -sL https://deb.nodesource.com/setup_15.x | bash -
+RUN curl -sSL https://deb.nodesource.com/setup_14.x | bash
 RUN apt-get update && apt-get install -y ffmpeg yarn  nodejs
 RUN npm i pm2 -g
 # Bundle APP files

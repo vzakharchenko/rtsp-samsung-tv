@@ -6,7 +6,6 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 [![npm version](https://badge.fury.io/js/rtsp-samsung-tv.svg)](https://badge.fury.io/js/rtsp-samsung-tv)
 ![rtsp-samsung-tv CI](https://github.com/vzakharchenko/rtsp-samsung-tv/workflows/rtsp-samsung-tv%20CI/badge.svg)
 ![rtsp-samsung-tv Docker amd64 arm64 armv7](https://github.com/vzakharchenko/rtsp-samsung-tv/workflows/rtsp-samsung-tv%20Docker%20amd64%20arm64%20armv7/badge.svg)
-[![donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://secure.wayforpay.com/button/bf5d6c136e034)
 
 # Features
  - support more than 999 RTSP streams.
@@ -26,9 +25,17 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 
 ![ipport.png](/img/ipport.png), ![camera1.png](/img/camera1.png), ![camera4.png](/img/camera4.png)
 
-# Please [Donate](https://secure.wayforpay.com/button/bf5d6c136e034)
- Donations helps developing and maintain the project.
- Donation Link: [https://secure.wayforpay.com/button/bf5d6c136e034](https://secure.wayforpay.com/button/bf5d6c136e034)
+# Server Installation
+```bash
+sudo apt-get install ffmpeg
+wget -qO- https://getpm2.com/install.sh | bash
+sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u ${currentUser} --hp ${HOME}
+sudo npm i rtsp-samsung-tv -g
+sudo pm2 start `npm root -g`/rtsp-samsung-tv/server.js
+sudo pm2 save
+```
+open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/addnewCamera.png) ![](img/addedNewDevice.png)
+
 # Run Inside docker container
 ```
 docker run -d --name=rtsp-samsung-tv  -p 3004:3004 --restart=always vassio/rtsp-samsung-tv:latest
@@ -43,16 +50,7 @@ docker run -d --name=smartthings-phone-presence-sensor  -p 3004:3004 -v /opt/cha
 echo "{}" >/opt/channels.json
 docker run -d --name=smartthings-phone-presence-sensor  -p 3004:3004 -v /opt/channels.json:/opt/config/channels.json -v  `pwd`/keycloak.json:/opt/config/keycloak.json --restart=always vassio/rtsp-samsung-tv:latest
 ```
-# Server Installation
-```bash
-sudo apt-get install ffmpeg
-wget -qO- https://getpm2.com/install.sh | bash
-sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u ${currentUser} --hp ${HOME}
-sudo npm i rtsp-samsung-tv -g
-sudo pm2 start `npm root -g`/rtsp-samsung-tv/server.js
-sudo pm2 save
-```
-open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/addnewCamera.png) ![](img/addedNewDevice.png)
+
 
 # Install Samsung TV Application(Tizen Application)
 
@@ -171,5 +169,3 @@ sudo make install
 #  Individual DUID
  On TV select "Settings"->"Support"->"About TV"-> Information About Smart Hub-> Unique Device Id ![](img/TV_DUID2.png)
 
-
-# If you find these useful, please [Donate](https://secure.wayforpay.com/button/bf5d6c136e034)!

@@ -180,6 +180,19 @@ export default class Config extends React.Component {
   }
 
   addColumns() {
+    const camera16 = [];
+    // eslint-disable-next-line no-plusplus
+    for (let i = 1; i < 17; i++) {
+      camera16.push(
+        (<Typography.Text editable={{
+          onChange: (str) => {
+            const newCamera = { ...this.state.newCamera };
+            newCamera[`camera${i}`] = str;
+            this.setState({ newCamera });
+          },
+        }}>{this.state.newCamera[`camera${i}`] || ''}</Typography.Text>),
+      );
+    }
     return [{
       title: 'Mode',
       dataIndex: 'mode',
@@ -196,47 +209,56 @@ export default class Config extends React.Component {
       title: 'rtsp Streams',
       dataIndex: 'rtsp',
       key: 'rtsp',
-      render: () => (this.state.newCamera.mode === 'multi' ? (
-                        <div>
-                            <Typography.Text editable={{
-                              onChange: (str) => {
-                                const newCamera = { ...this.state.newCamera };
-                                newCamera.camera1 = str;
-                                this.setState({ newCamera });
-                              },
-                            }}>{this.state.newCamera.camera1 || ''}</Typography.Text>
-                            <br/>
-                            <Typography.Text editable={{
-                              onChange: (str) => {
-                                const newCamera = { ...this.state.newCamera };
-                                newCamera.camera2 = str;
-                                this.setState({ newCamera });
-                              },
-                            }}>{this.state.newCamera.camera2 || ''}</Typography.Text>
-                            <br/>
-                            <Typography.Text editable={{
-                              onChange: (str) => {
-                                const newCamera = { ...this.state.newCamera };
-                                newCamera.camera3 = str;
-                                this.setState({ newCamera });
-                              },
-                            }}>{this.state.newCamera.camera3 || ''}</Typography.Text>
-                            <br/>
-                            <Typography.Text editable={{
-                              onChange: (str) => {
-                                const newCamera = { ...this.state.newCamera };
-                                newCamera.camera4 = str;
-                                this.setState({ newCamera });
-                              },
-                            }}>{this.state.newCamera.camera4 || ''}</Typography.Text>
-                            <br/>
-                        </div>) : <Typography.Text editable={{
-                          onChange: (str) => {
-                            const newCamera = { ...this.state.newCamera };
-                            newCamera.camera1 = str;
-                            this.setState({ newCamera });
-                          },
-                        }}>{this.state.newCamera.camera1 || ''}</Typography.Text>),
+      render: () => {
+        if (this.state.newCamera.mode === 'multi16') {
+          return <div>
+            {camera16.map((value) => <div>{value}<br/></div>)}
+          </div>;
+        }
+        if (this.state.newCamera.mode === 'multi') {
+          return <div>
+              <Typography.Text editable={{
+                onChange: (str) => {
+                  const newCamera = { ...this.state.newCamera };
+                  newCamera.camera1 = str;
+                  this.setState({ newCamera });
+                },
+              }}>{this.state.newCamera.camera1 || ''}</Typography.Text>
+              <br/>
+              <Typography.Text editable={{
+                onChange: (str) => {
+                  const newCamera = { ...this.state.newCamera };
+                  newCamera.camera2 = str;
+                  this.setState({ newCamera });
+                },
+              }}>{this.state.newCamera.camera2 || ''}</Typography.Text>
+              <br/>
+              <Typography.Text editable={{
+                onChange: (str) => {
+                  const newCamera = { ...this.state.newCamera };
+                  newCamera.camera3 = str;
+                  this.setState({ newCamera });
+                },
+              }}>{this.state.newCamera.camera3 || ''}</Typography.Text>
+              <br/>
+              <Typography.Text editable={{
+                onChange: (str) => {
+                  const newCamera = { ...this.state.newCamera };
+                  newCamera.camera4 = str;
+                  this.setState({ newCamera });
+                },
+              }}>{this.state.newCamera.camera4 || ''}</Typography.Text>
+              <br/>
+            </div>;
+        }
+        return <Typography.Text editable={{
+          onChange: (str) => {
+            const newCamera = { ...this.state.newCamera };
+            newCamera.camera1 = str;
+            this.setState({ newCamera });
+          },
+        }}>{this.state.newCamera.camera1 || ''}</Typography.Text>;
+      },
     },
     {
       title: '',
@@ -256,6 +278,26 @@ export default class Config extends React.Component {
                         )) {
           disabled = true;
         }
+        if (mode === 'multi16'
+                        && (!this.state.newCamera.camera1
+                            || !this.state.newCamera.camera2
+                            || !this.state.newCamera.camera3
+                            || !this.state.newCamera.camera4
+                            || !this.state.newCamera.camera5
+                            || !this.state.newCamera.camera6
+                            || !this.state.newCamera.camera7
+                            || !this.state.newCamera.camera8
+                            || !this.state.newCamera.camera9
+                            || !this.state.newCamera.camera10
+                            || !this.state.newCamera.camera11
+                            || !this.state.newCamera.camera12
+                            || !this.state.newCamera.camera13
+                            || !this.state.newCamera.camera14
+                            || !this.state.newCamera.camera15
+                            || !this.state.newCamera.camera16
+                        )) {
+          disabled = true;
+        }
         return disabled ? (<div>
                         <Button disabled>Save</Button>
                     </div>) : <div><Button onClick={
@@ -266,12 +308,32 @@ export default class Config extends React.Component {
                             newItem = {
                               streamUrl: this.state.newCamera.camera1,
                             };
-                          } else {
+                          } else if (mode === 'multi') {
                             newItem = {
                               streamUrl: [this.state.newCamera.camera1,
                                 this.state.newCamera.camera2,
                                 this.state.newCamera.camera3,
                                 this.state.newCamera.camera4],
+                            };
+                          } else {
+                            newItem = {
+                              streamUrl: [this.state.newCamera.camera1,
+                                this.state.newCamera.camera2,
+                                this.state.newCamera.camera3,
+                                this.state.newCamera.camera4,
+                                this.state.newCamera.camera5,
+                                this.state.newCamera.camera6,
+                                this.state.newCamera.camera7,
+                                this.state.newCamera.camera8,
+                                this.state.newCamera.camera9,
+                                this.state.newCamera.camera10,
+                                this.state.newCamera.camera11,
+                                this.state.newCamera.camera12,
+                                this.state.newCamera.camera13,
+                                this.state.newCamera.camera14,
+                                this.state.newCamera.camera15,
+                                this.state.newCamera.camera16,
+                              ],
                             };
                           }
 
@@ -286,11 +348,54 @@ export default class Config extends React.Component {
     }];
   }
 
+  userColumns() {
+    return [
+      {
+        title: 'Username',
+        dataIndex: 'username',
+        key: 'username',
+        render: (text, data) => (<div><Typography.Text editable={{
+          onChange: async (str) => {
+            this.state.config.config.users.find(((u) => u.userId === data.userId)).username = str;
+            await this.save();
+          },
+        }}>{text}</Typography.Text><br/></div>),
+      },
+      {
+        title: 'Password',
+        dataIndex: 'password',
+        key: 'password',
+        render: (text, data) => (<div><Typography.Text editable={{
+          onChange: async (str) => {
+            this.state.config.config.users.find(((u) => u.userId === data.userId)).password = str;
+            await this.save();
+          },
+        }}>*********</Typography.Text><br/></div>),
+      },
+    ];
+  }
+
   addDatasource() {
     const newCamera = this.state.newCamera;
     return [{
       mode: newCamera.mode || 'single',
-      rtsp: [newCamera.camera1, newCamera.camera2, newCamera.camera3, newCamera.camera4],
+      rtsp: [newCamera.camera1,
+        newCamera.camera2,
+        newCamera.camera3,
+        newCamera.camera4,
+        newCamera.camera5,
+        newCamera.camera6,
+        newCamera.camera7,
+        newCamera.camera8,
+        newCamera.camera9,
+        newCamera.camera10,
+        newCamera.camera11,
+        newCamera.camera12,
+        newCamera.camera13,
+        newCamera.camera14,
+        newCamera.camera15,
+        newCamera.camera16,
+      ],
     }];
   }
 
@@ -319,7 +424,14 @@ export default class Config extends React.Component {
         title: 'Camera Mode',
         dataIndex: 'mode',
         key: 'mode',
-        render: (text) => <a>{text === 1 ? '1 Camera' : '4 Cameras'}</a>,
+        render: (text) => {
+          if (text === 1) {
+            return '1 Camera';
+          } if (text === 4) {
+            return '4 Cameras';
+          }
+          return '16 Cameras';
+        },
       },
       {
         title: 'rtsp Streams',
@@ -624,6 +736,10 @@ export default class Config extends React.Component {
     return ret;
   }
 
+  userDatasource(loadedConfig) {
+    return loadedConfig.users;
+  }
+
   commonDatasource(loadedConfig) {
     return [
       {
@@ -719,6 +835,7 @@ export default class Config extends React.Component {
       const loadedConfig = config.config;
       const commonDataSource = this.commonDatasource(loadedConfig);
       const cameraDatasource = this.cameraDatasource(loadedConfig);
+      const userDatasource = this.userDatasource(loadedConfig);
       ret = <div>
                         {error ? <Alert message={error} type="error"/> : null
                         }
@@ -754,6 +871,18 @@ export default class Config extends React.Component {
                                  pageSize: cameraDatasource.length,
                                  hideOnSinglePage: true,
                                }}/>
+        {loadedConfig.connectionType === 'local' ? <div>
+          <Typography.Text>Admin User</Typography.Text>
+          <br/>
+          <Table columns={this.userColumns()}
+                 scroll={{ x: 'max-content' }}
+                 dataSource={userDatasource}
+                 pagination={{
+                   total: userDatasource.length,
+                   pageSize: userDatasource.length,
+                   hideOnSinglePage: true,
+                 }}/>
+        </div> : null}
                     </div>;
     }
 

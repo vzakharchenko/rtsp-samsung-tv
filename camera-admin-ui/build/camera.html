@@ -22,12 +22,12 @@
                     if (xhr.status === 200) {
                         callback()
                     } else {
-                        error('Error '+xhr.status,new Error(xhr.status))
+                        error('Error ' + xhr.status, new Error(xhr.status))
                     }
                 }
             };
             xhr.onerror = function (e) {
-                error(xhr.statusText,e);
+                error(xhr.statusText, e);
                 console.error(xhr.statusText);
             };
             xhr.send(null);
@@ -42,12 +42,12 @@
                     if (xhr.status === 200) {
                         callback(JSON.parse(xhr.responseText))
                     } else {
-                        error('Error '+xhr.status,new Error(xhr.status))
+                        error('Error ' + xhr.status, new Error(xhr.status))
                     }
                 }
             };
             xhr.onerror = function (e) {
-                error(xhr.statusText,e);
+                error(xhr.statusText, e);
                 console.error(xhr.statusText);
             };
             xhr.send(null);
@@ -59,51 +59,35 @@
 </head>
 
 <body>
-<table BGCOLOR="#000000" BORDER=0 CELLSPACING=0 CELLPADDING=0>
-    <tr>
-        <td>
-            <canvas id="canvas1"></canvas>
-        </td>
-        <td>
-            <canvas id="canvas3"></canvas>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <canvas id="canvas2"/>
-        </td>
-        <td>
-            <canvas id="canvas4"/>
-        </td>
-    </tr>
+<table id="canvas" BGCOLOR="#000000" BORDER=0 CELLSPACING=0 CELLPADDING=0>
 </table>
 </body>
 <script type="text/javascript" src="jsmpeg.min.js"></script>
 <script type="text/javascript">
-    reload(()=>getInfo((resp) => {
-        var mode = resp.mode;
-        if (mode > 0) {
-            const url1 = 'ws://' + serverInfo.ip + ':9999';
-            new JSMpeg.Player(url1, {
-                canvas: document.getElementById('canvas1') // Canvas should be a canvas DOM element
-            })
+    reload(() => getInfo((resp) => {
+        const mode = resp.mode;
+        let num = 1;
+        if (mode === 4) {
+            num = 2;
+        } else if (mode === 16) {
+            num = 4;
         }
-        if (mode > 1) {
-            const url2 = 'ws://' + serverInfo.ip + ':10000';
-            new JSMpeg.Player(url2, {
-                canvas: document.getElementById('canvas2') // Canvas should be a canvas DOM element
-            })
+        const table = document.getElementById("canvas");
+        const trs = [];
+        let tds = [];
+        for (let i = 1; i < mode + 1; i++) {
+            if (i !== 1 && ((i - 1) % (num) === 0)) {
+                trs.push('<tr>' + tds.join('\n') + '</tr>');
+                tds = [];
+            }
+            tds.push('<td> <canvas id="canvas' + i + '"/> </td>')
         }
-        if (mode > 2) {
-            const url3 = 'ws://' + serverInfo.ip + ':10001';
-            new JSMpeg.Player(url3, {
-                canvas: document.getElementById('canvas3') // Canvas should be a canvas DOM element
-            })
-        }
-        if (mode > 3) {
-            const url4 = 'ws://' + serverInfo.ip + ':10002';
-            new JSMpeg.Player(url4, {
-                canvas: document.getElementById('canvas4') // Canvas should be a canvas DOM element
+        trs.push('<tr>' + tds.join('\n') + '</tr>');
+        table.innerHTML = trs.join('\n')
+        for (let i = 0; i < mode; i++) {
+            const url = 'ws://' + serverInfo.ip + ':' + (9999 + i);
+            new JSMpeg.Player(url, {
+                canvas: document.getElementById('canvas' + (i + 1))
             })
         }
     }));

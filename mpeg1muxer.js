@@ -74,7 +74,6 @@ Mpeg1Muxer = function (options) {
     })
     this.stream.on('exit', (code, signal) => {
         if (this.killed){
-            debugger;
             return ;
         }
         if (code === 0) {

@@ -7,8 +7,8 @@ const { exec } = require('child_process');
 const Stream = require('./index');
 
 const {
-  connectKeycloak, protect,
-} = require('./keycloakConnection');
+  connectAuthentication, protect,
+} = require('./authenticationConnection');
 
 const app = express();
 
@@ -30,7 +30,8 @@ let height = 1080;
 let streams = [];
 
 app.use(cors(corsOptions));
-connectKeycloak(app);
+// eslint-disable-next-line no-use-before-define
+const connectionType = connectAuthentication(app, readConfig);
 
 console.log = () => {
 };
@@ -117,6 +118,16 @@ function readConfig() {
       delete ch.ffmpegPre['-rtsp_transport'];
     }
   });
+  if (!channelJson.users) {
+    channelJson.users = [
+      {
+        userId: 0,
+        username: 'admin',
+        password: 'admin',
+      },
+    ];
+  }
+  channelJson.connectionType = connectionType;
   return channelJson;
 }
 
@@ -172,8 +183,11 @@ function getMode() {
       mode = 1;
     } else if (channels[currentChannel].streamUrl.length === 0) {
       mode = 0;
-    } else {
+    } if (channels[currentChannel].streamUrl.length > 1
+        && channels[currentChannel].streamUrl.length <= 4) {
       mode = 4;
+    } else {
+      mode = 16;
     }
   } else {
     mode = 1;
@@ -223,7 +237,15 @@ async function recreateStream() {
   if (selectChannel) {
     for (let i = 0; i < mode; i++) { // eslint-disable-line no-plusplus
       if ((i === 0 && selectChannel.streamUrl) || selectChannel.streamUrl[i]) {
-        const number = mode === 1 ? 1 : 2;
+        let number = 1;
+        if (mode === 1) {
+          number = 1;
+        } else
+        if (mode === 4) {
+          number = 2;
+        } else {
+          number = 4;
+        }
         const ffmpegPre = config.ffmpegPre ? config.ffmpegPre : {};
         const ffmpegPost = config.ffmpeg ? config.ffmpeg : {};
         const ffmpegChannelPre = selectChannel.ffmpegPre ? selectChannel.ffmpegPre : {};

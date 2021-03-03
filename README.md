@@ -34,7 +34,7 @@ sudo npm i rtsp-samsung-tv -g
 sudo pm2 start `npm root -g`/rtsp-samsung-tv/server.js
 sudo pm2 save
 ```
-open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/addnewCamera.png) ![](img/addedNewDevice.png)
+open ```http:\\<SERVER_IP>:3004``` (Default Login: **admin**, Default Password: **admin**) and add a new  Camera and click Save ![](img/addnewCamera.png) ![](img/addedNewDevice.png)
 
 # Run Inside docker container
 ```

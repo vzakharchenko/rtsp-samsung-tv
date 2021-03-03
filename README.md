@@ -78,6 +78,8 @@ open ```http:\\<SERVER_IP>:3004``` and add a new  Camera and click Save ![](img/
 
 # Admin UI
 ## **Url**:  ```http:\\<SERVER_IP>:3004```
+- Default Login: **admin**
+- Password: **admin**
 ![](/img/AdminUi.png)
 
 where:
@@ -104,6 +106,9 @@ ffmpeg <RTSP FFmpeg parameters> -i rtsp://stream <Encode FFmpeg parameters>
 ## **add 1 Camera**: ![](img/addnewCamera.png) ![](img/addedNewDevice.png) ![camera1.png](/img/camera1.png)
 ## **Add 4 cameras on one screen**: ![](img/add4Cameras.png) ![](img/added4Cameras.png) ![camera4.png](/img/camera4.png)
 ## **delete Camera** ![](img/deleteCamera.png)
+
+# Protect Admin UI using Default Authentication
+Default user: **admin/admin**
 
 # Protect Admin UI using keycloak SSO (Optional)
 1. download keycloak.json from the keycloak admin ui.

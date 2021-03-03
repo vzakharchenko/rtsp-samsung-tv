@@ -21,6 +21,7 @@ COPY server.js /opt/rtsp-samsung-tv/server.js
 COPY mpeg1muxer.js /opt/rtsp-samsung-tv/mpeg1muxer.js
 COPY authenticationConnection.js /opt/rtsp-samsung-tv/authenticationConnection.js
 COPY index.js /opt/rtsp-samsung-tv/index.js
+COPY login /opt/rtsp-samsung-tv/login
 RUN mkdir -p /opt/rtsp-samsung-tv/camera-admin-ui
 RUN mkdir -p /opt/rtsp-samsung-tv/camera-admin-ui/build
 COPY camera-admin-ui/package.json /opt/rtsp-samsung-tv/camera-admin-ui/package.json

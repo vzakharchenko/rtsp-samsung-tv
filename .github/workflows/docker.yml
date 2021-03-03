@@ -1,4 +1,4 @@
-name: rtsp-samsung-tv Docker amd64 arm64 armv7 s390x 386
+name: rtsp-samsung-tv Docker amd64 arm64 armv7 s390x
 
 on:
   push:
@@ -29,8 +29,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile
-          platforms: linux/amd64,linux/arm/v7,linux/arm64
+          file: ./Dockerfile=
+          platforms: linux/amd64,linux/arm/v7,linux/arm64=
           push: true
           tags: |
             vassio/rtsp-samsung-tv:latest

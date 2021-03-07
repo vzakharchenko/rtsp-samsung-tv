@@ -6,6 +6,7 @@
 const serverInfo = {
   ip: localStorage.getItem('SERVER.IP') || '0.0.0.0', // <-- Server IP
   port: localStorage.getItem('SERVER.PORT') || '3004',
+  inited: localStorage.getItem('SERVER.INITED') || false,
 };
 
 let queue = [];
@@ -15,6 +16,7 @@ let changeChannel = false;
 const next = () => {
   const xhr = new XMLHttpRequest();
   const url = `http://${serverInfo.ip}:${serverInfo.port}/next?width=${window.screen.width}&height=${window.screen.height}`;
+  xhr.withCredentials = true;
   xhr.open('GET', url, true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === xhr.DONE) {
@@ -51,24 +53,54 @@ const prev = () => {
   xhr.send(null);
 };
 
-const reload = () => {
-  const xhr = new XMLHttpRequest();
-  const url = `http://${serverInfo.ip}:${serverInfo.port}/reload?width=${window.screen.width}&height=${window.screen.height}`;
-  xhr.open('GET', url, true);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === xhr.DONE) {
-      if (xhr.status === 200) {
-        console.log(xhr.responseText);
-        location.reload();
-      } else {
-        console, error('There was a problem with the request.');
+const getInfo = (callback, error) => {
+  if (!serverInfo.inited) {
+    window.location.href = '/server.html';
+  } else {
+    const xhr = new XMLHttpRequest();
+    const url = `http://${serverInfo.ip}:${serverInfo.port}/info?width=${window.screen.width}&height=${window.screen.height}`;
+    xhr.open('GET', url, true);
+    xhr.withCredentials = true;
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === xhr.DONE) {
+        if (xhr.status === 200) {
+          callback(JSON.parse(xhr.responseText));
+        } else {
+          window.location.href = '/server.html';
+        }
       }
-    }
-  };
-  xhr.onerror = function (e) {
-    console.error(xhr.statusText);
-  };
-  xhr.send(null);
+    };
+    xhr.onerror = function (e) {
+      window.location.href = '/server.html';
+      console.error(xhr.statusText);
+    };
+    xhr.send();
+  }
+};
+
+const reload = () => {
+  if (serverInfo.inited) {
+    const xhr = new XMLHttpRequest();
+    const url = `http://${serverInfo.ip}:${serverInfo.port}/reload?width=${window.screen.width}&height=${window.screen.height}`;
+    xhr.withCredentials = true;
+    xhr.open('GET', url, true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === xhr.DONE) {
+        if (xhr.status === 200) {
+          console.log(xhr.responseText);
+          location.reload();
+        } else {
+          console.error('There was a problem with the request.');
+        }
+      }
+    };
+    xhr.onerror = function (e) {
+      console.error(xhr.statusText);
+    };
+    xhr.send();
+  } else {
+    getInfo();
+  }
 };
 
 function getChannel(ch) {
@@ -90,7 +122,7 @@ const sel0 = (c) => {
         console.log(xhr.responseText);
         location.reload();
       } else {
-        console, error('There was a problem with the request.');
+        console.error('There was a problem with the request.');
       }
     }
   };
@@ -112,26 +144,6 @@ const sel = (c) => {
       sel0(newch.value);
     }, 2000);
   }
-};
-
-const getInfo = (callback, error) => {
-  const xhr = new XMLHttpRequest();
-  const url = `http://${serverInfo.ip}:${serverInfo.port}/info?width=${window.screen.width}&height=${window.screen.height}`;
-  xhr.open('GET', url, true);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === xhr.DONE) {
-      if (xhr.status === 200) {
-        callback(JSON.parse(xhr.responseText));
-      } else {
-        window.location.href = '/server.html';
-      }
-    }
-  };
-  xhr.onerror = function (e) {
-    window.location.href = '/server.html';
-    console.error(xhr.statusText);
-  };
-  xhr.send(null);
 };
 
 //

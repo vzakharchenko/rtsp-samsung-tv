@@ -46,6 +46,7 @@ input[type="number"]
                     if (xhr.status === 200) {
                         localStorage.setItem("SERVER.IP", ip);
                         localStorage.setItem("SERVER.PORT", port);
+                        localStorage.setItem("SERVER.INITED", 'true');
                         window.location.href = '/index.html'
                     } else {
                         console.error(xhr.responseText);

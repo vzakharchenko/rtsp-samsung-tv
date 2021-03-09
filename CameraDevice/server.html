@@ -39,7 +39,7 @@ input[type="number"]
 
         function getInfo(ip, port, errorCallBack) {
             var xhr = new XMLHttpRequest();
-            const url = 'http://' + ip + ':' + port + '/info?width=' + window.screen.width + '&height=' + window.screen.height
+            const url = 'http://' + ip + ':' + port + '/info?width=' + window.screen.width + '&height=' + window.screen.height;
             xhr.open("GET", url, true);
             xhr.onreadystatechange = function () {        // ready state event, will be executed once the server send back the data
                 if (xhr.readyState === xhr.DONE) {
@@ -47,7 +47,7 @@ input[type="number"]
                         localStorage.setItem("SERVER.IP", ip);
                         localStorage.setItem("SERVER.PORT", port);
                         localStorage.setItem("SERVER.INITED", 'true');
-                        window.location.href = '/index.html'
+                        window.location.href = 'index.html';
                     } else {
                         console.error(xhr.responseText);
                         errorCallBack(xhr.responseText);
@@ -65,7 +65,7 @@ input[type="number"]
             if (currentFocus === focusElements.length - 1) {
                 currentFocus = 0;
             } else {
-                currentFocus = currentFocus = 1;
+                currentFocus = currentFocus + 1;
             }
             focusElements[currentFocus].focus();
 
@@ -83,15 +83,15 @@ input[type="number"]
         function save() {
             const ip = document.getElementById("address").value;
             const port = document.getElementById("port").value;
-            getInfo(ip, port, (text) => {
+            getInfo(ip, port, function(text) {
                 document.getElementById("errorMessage").innerHTML = 'Server is Unavailable. '+text;
                 nextFocus();
             });
 
         }
 
-        window.onload = () => {
-            focusElements = document.getElementsByClassName("focus-ui")
+        window.onload = function(){
+            focusElements = document.getElementsByClassName("focus-ui");
             if (focusElements && focusElements[currentFocus]) {
                 focusElements[currentFocus].focus();
             }
@@ -119,13 +119,13 @@ input[type="number"]
                         break;
                 }
             }, true);
-            document.getElementById("address").value = localStorage.getItem("SERVER.IP") || '0.0.0.0'
-            document.getElementById("port").value = localStorage.getItem("SERVER.PORT") || '3004'
-            getInfo(document.getElementById("address").value, document.getElementById("port").value, (text)=>{
-                document.getElementById("errorMessage").innerHTML = 'Server is Unavailable. '+text
-            })
 
-        }
+            document.getElementById("address").value = localStorage.getItem("SERVER.IP") || '0.0.0.0';
+            document.getElementById("port").value = localStorage.getItem("SERVER.PORT") || '3004';
+            getInfo(document.getElementById("address").value, document.getElementById("port").value,
+                function(text){document.getElementById("errorMessage").innerHTML = 'Server is Unavailable. '+text; });
+
+        };
         // add eventListener for keydown
     </script>
 </head>

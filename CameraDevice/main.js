@@ -1,21 +1,23 @@
+'use strict';
+
 /* eslint no-sequences: 0 */ // --> OFF
 /* eslint no-unused-expressions: 0 */ // --> OFF
 /* eslint no-restricted-globals: 0 */ // --> OFF
 /* eslint no-unused-vars: 0 */ // --> OFF
 /* eslint func-names: 0 */ // --> OFF
-const serverInfo = {
+var serverInfo = {
   ip: localStorage.getItem('SERVER.IP') || '0.0.0.0', // <-- Server IP
   port: localStorage.getItem('SERVER.PORT') || '3004',
-  inited: localStorage.getItem('SERVER.INITED') || false,
+  inited: localStorage.getItem('SERVER.INITED') || false
 };
 
-let queue = [];
+var queue = [];
 
-let changeChannel = false;
+var changeChannel = false;
 
-const next = () => {
-  const xhr = new XMLHttpRequest();
-  const url = `http://${serverInfo.ip}:${serverInfo.port}/next?width=${window.screen.width}&height=${window.screen.height}`;
+var next = function next() {
+  var xhr = new XMLHttpRequest();
+  var url = 'http://' + serverInfo.ip + ':' + serverInfo.port + '/next?width=' + window.screen.width + '&height=' + window.screen.height;
   xhr.withCredentials = true;
   xhr.open('GET', url, true);
   xhr.onreadystatechange = function () {
@@ -33,9 +35,9 @@ const next = () => {
   };
   xhr.send(null);
 };
-const prev = () => {
-  const xhr = new XMLHttpRequest();
-  const url = `http://${serverInfo.ip}:${serverInfo.port}/prev?width=${window.screen.width}&height=${window.screen.height}`;
+var prev = function prev() {
+  var xhr = new XMLHttpRequest();
+  var url = 'http://' + serverInfo.ip + ':' + serverInfo.port + '/prev?width=' + window.screen.width + '&height=' + window.screen.height;
   xhr.open('GET', url, true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === xhr.DONE) {
@@ -53,68 +55,72 @@ const prev = () => {
   xhr.send(null);
 };
 
-const getInfo = (callback, error) => {
+var getInfo = function getInfo(callback, error) {
   if (!serverInfo.inited) {
     window.location.href = '/server.html';
   } else {
-    const xhr = new XMLHttpRequest();
-    const url = `http://${serverInfo.ip}:${serverInfo.port}/info?width=${window.screen.width}&height=${window.screen.height}`;
-    xhr.open('GET', url, true);
-    xhr.withCredentials = true;
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === xhr.DONE) {
-        if (xhr.status === 200) {
-          callback(JSON.parse(xhr.responseText));
-        } else {
-          window.location.href = '/server.html';
+    (function () {
+      var xhr = new XMLHttpRequest();
+      var url = 'http://' + serverInfo.ip + ':' + serverInfo.port + '/info?width=' + window.screen.width + '&height=' + window.screen.height;
+      xhr.open('GET', url, true);
+      xhr.withCredentials = true;
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === xhr.DONE) {
+          if (xhr.status === 200) {
+            callback(JSON.parse(xhr.responseText));
+          } else {
+            window.location.href = '/server.html';
+          }
         }
-      }
-    };
-    xhr.onerror = function (e) {
-      window.location.href = '/server.html';
-      console.error(xhr.statusText);
-    };
-    xhr.send();
+      };
+      xhr.onerror = function (e) {
+        window.location.href = '/server.html';
+        console.error(xhr.statusText);
+      };
+      xhr.send();
+    })();
   }
 };
 
-const reload = () => {
+var reload = function reload() {
   if (serverInfo.inited) {
-    const xhr = new XMLHttpRequest();
-    const url = `http://${serverInfo.ip}:${serverInfo.port}/reload?width=${window.screen.width}&height=${window.screen.height}`;
-    xhr.withCredentials = true;
-    xhr.open('GET', url, true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === xhr.DONE) {
-        if (xhr.status === 200) {
-          console.log(xhr.responseText);
-          location.reload();
-        } else {
-          console.error('There was a problem with the request.');
+    (function () {
+      var xhr = new XMLHttpRequest();
+      var url = 'http://' + serverInfo.ip + ':' + serverInfo.port + '/reload?width=' + window.screen.width + '&height=' + window.screen.height;
+      xhr.withCredentials = true;
+      xhr.open('GET', url, true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === xhr.DONE) {
+          if (xhr.status === 200) {
+            console.log(xhr.responseText);
+            location.reload();
+          } else {
+            console.error('There was a problem with the request.');
+          }
         }
-      }
-    };
-    xhr.onerror = function (e) {
-      console.error(xhr.statusText);
-    };
-    xhr.send();
+      };
+      xhr.onerror = function (e) {
+        console.error(xhr.statusText);
+      };
+      xhr.send();
+    })();
   } else {
     getInfo();
   }
 };
 
 function getChannel(ch) {
-  const value = queue.shift();
+  var value = queue.shift();
   if (value) {
-    ch.value = `${ch.value}${value}`; // eslint-disable-line no-param-reassign
+    ch.value = '' + ch.value + value; // eslint-disable-line no-param-reassign
     getChannel(ch);
   }
   return ch;
 }
 
-const sel0 = (c) => {
-  const xhr = new XMLHttpRequest();
-  const url = `http://${serverInfo.ip}:${serverInfo.port}/sel?channel=${c}&width=${window.screen.width}&height=${window.screen.height}`;
+var sel0 = function sel0(c) {
+  var xhr = new XMLHttpRequest();
+  var url = 'http://' + serverInfo.ip + ':' + serverInfo.port + '/sel?channel=' + c + '&width=' + window.screen.width + '&height=' + window.screen.height;
   xhr.open('GET', url, true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === xhr.DONE) {
@@ -132,13 +138,13 @@ const sel0 = (c) => {
   xhr.send(null);
 };
 
-const sel = (c) => {
+var sel = function sel(c) {
   queue.push(c);
   if (!changeChannel) {
     changeChannel = true;
-    window.setTimeout(() => {
-      const ch = { value: '' };
-      const newch = getChannel(ch);
+    window.setTimeout(function () {
+      var ch = { value: '' };
+      var newch = getChannel(ch);
       changeChannel = false;
       queue = [];
       sel0(newch.value);
@@ -150,27 +156,26 @@ const sel = (c) => {
 // channelList()
 
 // Initialize function
-const init = function () {
+var init = function init() {
   console.log('init() called');
-  window.tizen.tvinputdevice.registerKeyBatch([
-    'ChannelUp',
-    'ChannelDown',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '0']);
-  document.addEventListener('visibilitychange', () => {
+  tizen.tvinputdevice.registerKey('ChannelUp');
+  tizen.tvinputdevice.registerKey('ChannelDown');
+  tizen.tvinputdevice.registerKey('1');
+  tizen.tvinputdevice.registerKey('2');
+  tizen.tvinputdevice.registerKey('3');
+  tizen.tvinputdevice.registerKey('4');
+  tizen.tvinputdevice.registerKey('5');
+  tizen.tvinputdevice.registerKey('6');
+  tizen.tvinputdevice.registerKey('7');
+  tizen.tvinputdevice.registerKey('8');
+  tizen.tvinputdevice.registerKey('9');
+  tizen.tvinputdevice.registerKey('0');
+  document.addEventListener('visibilitychange', function () {
     reload();
   });
 
   // add eventListener for keydown
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', function (e) {
     switch (e.keyCode) {
       case 48:
         sel(0);
@@ -202,19 +207,24 @@ const init = function () {
       case 57:
         sel(9);
         break;
-      case 37: // LEFT arrow
+      case 37:
+        // LEFT arrow
         prev();
         break;
-      case 38: // UP arrow
+      case 38:
+        // UP arrow
         next();
         break;
-      case 39: // RIGHT arrow
+      case 39:
+        // RIGHT arrow
         next();
         break;
-      case 40: // DOWN arrow
+      case 40:
+        // DOWN arrow
         prev();
         break;
-      case 13: // OK button
+      case 13:
+        // OK button
         reload();
         break;
       case 427:
@@ -223,33 +233,28 @@ const init = function () {
       case 428:
         prev();
         break;
-      case 10009: // RETURN button
+      case 10009:
+        // RETURN button
         tizen.application.getCurrentApplication().exit();
         break;
       default:
-        console.log(`Key code : ${e.keyCode}`);
+        console.log('Key code : ' + e.keyCode);
         break;
     }
   }, true);
-  const voicecontrol = tizen.voicecontrol;
+  var voicecontrol = tizen.voicecontrol;
   if (voicecontrol) {
-    const client = voicecontrol.getVoiceControlClient();
+    var client = voicecontrol.getVoiceControlClient();
     if (client) {
-      const commands = [
-        new tizen.VoiceControlCommand('ChannelUp'),
-        new tizen.VoiceControlCommand('ChannelDown'),
-        new tizen.VoiceControlCommand('Refresh'),
-        new tizen.VoiceControlCommand('Select'),
-        new tizen.VoiceControlCommand('OK'),
-
-      ];
-      for (let i = 0; i < 1000; i++) { // eslint-disable-line no-plusplus
-        commands.push(new tizen.VoiceControlCommand(`${i}`));
+      var commands = [new tizen.VoiceControlCommand('ChannelUp'), new tizen.VoiceControlCommand('ChannelDown'), new tizen.VoiceControlCommand('Refresh'), new tizen.VoiceControlCommand('Select'), new tizen.VoiceControlCommand('OK')];
+      for (var i = 0; i < 1000; i++) {
+        // eslint-disable-line no-plusplus
+        commands.push(new tizen.VoiceControlCommand('' + i));
       }
       try {
         client.setCommandList(commands, 'FOREGROUND');
 
-        const resultListenerCallback = function (event, list, result) {
+        var resultListenerCallback = function resultListenerCallback(event, list, result) {
           if (event === 'SUCCESS') {
             if (!isNaN(result)) {
               sel(result);
@@ -258,7 +263,7 @@ const init = function () {
               reload();
             }
           }
-          console.log(`Result callback - event: ${event}, result: ${result}`);
+          console.log('Result callback - event: ' + event + ', result: ' + result);
         };
 
         client.addResultListener(resultListenerCallback);

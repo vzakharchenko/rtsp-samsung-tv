@@ -14,29 +14,18 @@ RUN wget -qO-  https://deb.nodesource.com/setup_14.x | bash
 RUN apt-get update && apt-get install -y ffmpeg yarn  nodejs curl
 RUN npm i pm2 -g
 # Bundle APP files
-RUN mkdir -p /opt/rtsp-samsung-tv/
-COPY package.json /opt/rtsp-samsung-tv/package.json
-COPY videoStream.js /opt/rtsp-samsung-tv/videoStream.js
-COPY server.js /opt/rtsp-samsung-tv/server.js
-COPY mpeg1muxer.js /opt/rtsp-samsung-tv/mpeg1muxer.js
-COPY authenticationConnection.js /opt/rtsp-samsung-tv/authenticationConnection.js
-COPY index.js /opt/rtsp-samsung-tv/index.js
-COPY login /opt/rtsp-samsung-tv/login
-RUN mkdir -p /opt/rtsp-samsung-tv/camera-admin-ui
-RUN mkdir -p /opt/rtsp-samsung-tv/camera-admin-ui/build
-COPY camera-admin-ui/package.json /opt/rtsp-samsung-tv/camera-admin-ui/package.json
-COPY camera-admin-ui/public /opt/rtsp-samsung-tv/camera-admin-ui/public
-COPY camera-admin-ui/src /opt/rtsp-samsung-tv/camera-admin-ui/src
-COPY camera-admin-ui/config-overrides.js /opt/rtsp-samsung-tv/camera-admin-ui/config-overrides.js
-RUN cd /opt/rtsp-samsung-tv/ && npm install
-RUN cd /opt/rtsp-samsung-tv/camera-admin-ui/ && yarn --network-timeout 100000
-RUN cd /opt/rtsp-samsung-tv/camera-admin-ui/ && yarn install
-RUN cd /opt/rtsp-samsung-tv/camera-admin-ui/ && yarn build
-
+RUN npm i rtsp-samsung-tv@1.1.22 -g
 # Install app dependencies
 ENV NPM_CONFIG_LOGLEVEL warn
 COPY entrypoint.sh /opt/entrypoint.sh
 RUN  chmod +x /opt/entrypoint.sh
 EXPOSE 3004
+EXPOSE 9999
+EXPOSE 10000
+EXPOSE 10001
+EXPOSE 10002
+EXPOSE 10003
+EXPOSE 10004
+
 ENTRYPOINT ["/opt/entrypoint.sh"]
 #CMD [ "pm2-runtime", "start", "pm2.json" ]

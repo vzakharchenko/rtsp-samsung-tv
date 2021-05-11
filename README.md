@@ -38,17 +38,17 @@ open ```http:\\<SERVER_IP>:3004``` (Default Login: **admin**, Default Password: 
 
 # Run Inside docker container
 ```
-docker run -d --name=rtsp-samsung-tv  -p 3004:3004 --restart=always vassio/rtsp-samsung-tv:latest
+docker run -d --name=rtsp-samsung-tv  -p 3004:3004 -p 9999-10004:9999-10004  --restart=always vassio/rtsp-samsung-tv:latest
 ```
 ## Configuration on Host:
 ```
 echo "{}" >/opt/channels.json
-docker run -d --name=smartthings-phone-presence-sensor  -p 3004:3004 -v /opt/channels.json:/opt/config/channels.json --restart=always vassio/rtsp-samsung-tv:latest
+docker run -d --name=rtsp-samsung-tv  -p 3004:3004 -p 9999-10004:9999-10004  -v /opt/channels.json:/opt/config/channels.json --restart=always vassio/rtsp-samsung-tv:latest
 ```
 ## Keycloak Protection
 ```
 echo "{}" >/opt/channels.json
-docker run -d --name=smartthings-phone-presence-sensor  -p 3004:3004 -v /opt/channels.json:/opt/config/channels.json -v  `pwd`/keycloak.json:/opt/config/keycloak.json --restart=always vassio/rtsp-samsung-tv:latest
+docker run -d --name=rtsp-samsung-tv  -p 3004:3004 -p 9999-10004:9999-10004  -v /opt/channels.json:/opt/config/channels.json -v  `pwd`/keycloak.json:/opt/config/keycloak.json --restart=always vassio/rtsp-samsung-tv:latest
 ```
 
 

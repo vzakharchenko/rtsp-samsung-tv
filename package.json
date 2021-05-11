@@ -1,6 +1,6 @@
 {
   "name": "rtsp-samsung-tv",
-  "version": "1.1.21",
+  "version": "1.1.22",
   "description": "Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)",
   "main": "server.js",
   "scripts": {
@@ -47,22 +47,22 @@
     "cron": "^1.8.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "keycloak-connect": "^12.0.1",
+    "keycloak-connect": "^13.0.0",
     "mkdirp": "^1.0.4",
     "node-rtsp-stream": "0.0.9",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "querystring": "^0.2.0",
-    "ws": "^7.4.2"
+    "querystring": "^0.2.1",
+    "ws": "^7.4.5"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.18.0",
+    "eslint": "^7.26.0",
     "eslint-config": "^0.3.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.22.0"
+    "eslint-plugin-react": "^7.23.2"
   },
   "bin": {
     "RtspSamsung": "./bin/RtspSamsungServer"

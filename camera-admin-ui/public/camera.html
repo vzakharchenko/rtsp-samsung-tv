@@ -35,7 +35,7 @@
 
         var getInfo = (callback, error) => {
             var xhr = new XMLHttpRequest();
-            const url = 'http://' + serverInfo.ip + ':' + serverInfo.port + '/info';
+            const url = 'http://' + serverInfo.ip + ':' + serverInfo.port + '/info'+'?width=' + window.screen.width + '&height=' + window.screen.height;
             xhr.open("GET", url, true);
             xhr.onreadystatechange = function () {        // ready state event, will be executed once the server send back the data
                 if (xhr.readyState === xhr.DONE) {

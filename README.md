@@ -140,8 +140,7 @@ sudo make install
 ```
 2. ![](/img/RaspberryPiHW.png)
 3. increase the GPU memory?
-  - 
-  ```bash
+  - ```bash
     sudo raspi-config
     ```
 -  **7 Advanced Options** ![](/img/raspberry1.png)

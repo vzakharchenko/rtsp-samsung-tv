@@ -27,8 +27,9 @@ Display  RTSP streams from IP Cameras on Samsung smart TV (Tizen TV)
 
 # Server Installation
 ```bash
+wget -qO-  https://deb.nodesource.com/setup_14.x | bash
 sudo apt-get install ffmpeg
-wget -qO- https://getpm2.com/install.sh | bash
+npm i pm2 -g
 sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u ${currentUser} --hp ${HOME}
 sudo npm i rtsp-samsung-tv -g
 sudo pm2 start `npm root -g`/rtsp-samsung-tv/server.js
@@ -166,6 +167,7 @@ sudo make install
 4. Click Next ![](img/GenerateCertificate5.png)
 4. Type any name and password ![](img/GenerateCertificate6.png)
 5. Click Ok ![](img/GenerateCertificate7.png)
+- **⚠ If the samsung account login page does not appear then please reboot your computer.**
 6. Login to Samsung Account ![](img/GenerateCertificate8.png)
 7. Next ![](img/GenerateCertificate9.png)
 8. Add [Individual DUID](#individual-duid) ![](img/GenerateCertificate10.png)

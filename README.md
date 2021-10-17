@@ -140,7 +140,8 @@ sudo make install
 ```
 2. ![](/img/RaspberryPiHW.png)
 3. increase the GPU memory?
-  - ```bash
+  - 
+  ```bash
     sudo raspi-config
     ```
 -  **7 Advanced Options** ![](/img/raspberry1.png)
@@ -166,8 +167,8 @@ sudo make install
 3. Select DeviceType "TV" ![](img/GenerateCertificate4.png)
 4. Click Next ![](img/GenerateCertificate5.png)
 4. Type any name and password ![](img/GenerateCertificate6.png)
-- **⚠ If the samsung account login page does not appear then please reboot your computer.**
 5. Click Ok ![](img/GenerateCertificate7.png)
+- **⚠ If the samsung account login page does not appear then please reboot your computer.**
 6. Login to Samsung Account ![](img/GenerateCertificate8.png)
 7. Next ![](img/GenerateCertificate9.png)
 8. Add [Individual DUID](#individual-duid) ![](img/GenerateCertificate10.png)

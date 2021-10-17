@@ -167,7 +167,7 @@ sudo make install
 4. Click Next ![](img/GenerateCertificate5.png)
 4. Type any name and password ![](img/GenerateCertificate6.png)
 5. Click Ok ![](img/GenerateCertificate7.png)
-6. Login to Samsung Account ![](img/GenerateCertificate8.png)
+6. Login to Samsung Account ![](img/GenerateCertificate8.png) **⚠ If the samsung account login page does not appear then please reboot your computer.**
 7. Next ![](img/GenerateCertificate9.png)
 8. Add [Individual DUID](#individual-duid) ![](img/GenerateCertificate10.png)
 9. Finish

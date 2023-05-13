@@ -225,7 +225,7 @@ async function killall() {
 async function recreateStream() {
   streams.forEach(((stream) => {
     stream.mpeg1Muxer.kill();
-    stream.wsServer.close();
+    stream.stop();
   }));
   if (config.killAll) {
     await killall();

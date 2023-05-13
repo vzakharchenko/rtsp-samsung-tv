@@ -29,6 +29,9 @@ util.inherits(VideoStream, events.EventEmitter)
 VideoStream.prototype.stop = function () {
     this.wsServer.close()
     this.stream.kill()
+    for (let client of this.wsServer.clients) {
+        client.close()
+    }
     this.inputStreamStarted = false
     return this
 }

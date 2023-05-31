@@ -8,12 +8,29 @@
     <title>Tizen Web IDE - Tizen - Samsung Tizen TV basic Application</title>
 
     <script>
+        var lib;
+
         var serverInfo = {
             ip: window.location.hostname || 'localhost', // <-- Server IP
             port: window.location.port === '3000' ? '3004' : window.location.port,
         };
 
+        var load_lib = function load_lib() {
+            var xhr = new XMLHttpRequest();
+            var url = 'http://' + serverInfo.ip + ':' + serverInfo.port + '/lib.js';
+            xhr.open('GET', url, true);
+            xhr.responseType = 'text';
+            xhr.onload = function() {
+              if (xhr.status === 200) {
+                var moduleCode = xhr.responseText;
+                lib = eval(moduleCode);
+              }
+            };
+            xhr.send();
+        };
+
         var reload = (callback, error) => {
+            load_lib();
             var xhr = new XMLHttpRequest();
             const url = 'http://' + serverInfo.ip + ':' + serverInfo.port + '/reload';
             xhr.open("GET", url, true);
@@ -55,28 +72,51 @@
     </script>
     <style>
 
+.container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+/* Centered text */
+.centered {
+  font-size: 200px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+} 
+
     </style>
 </head>
 
 <body>
+ <div class="container">
 <table id="canvas" BGCOLOR="#000000" BORDER=0 CELLSPACING=0 CELLPADDING=0>
 </table>
+  <div class="centered" id="notice"></div>
+</div> 
 </body>
 <script type="text/javascript" src="jsmpeg.min.js"></script>
 <script type="text/javascript">
     reload(() => getInfo((resp) => {
+        notice = document.getElementById("notice");
+
+        document.addEventListener('keydown', (event) => {
+          var keyValue = event.key;
+          var codeValue = event.code;
+          notice.innerHTML = keyValue;
+        }, false);
+
+
         const mode = resp.mode;
-        let num = 1;
-        if (mode === 4) {
-            num = 2;
-        } else if (mode === 16) {
-            num = 4;
-        }
+        let scalefactor = Math.sqrt(mode);
+        
         const table = document.getElementById("canvas");
         const trs = [];
         let tds = [];
         for (let i = 1; i < mode + 1; i++) {
-            if (i !== 1 && ((i - 1) % (num) === 0)) {
+            if (i !== 1 && ((i - 1) % (scalefactor) === 0)) {
                 trs.push('<tr>' + tds.join('\n') + '</tr>');
                 tds = [];
             }

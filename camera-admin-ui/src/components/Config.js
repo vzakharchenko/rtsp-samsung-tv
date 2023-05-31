@@ -839,20 +839,6 @@ export default class Config extends React.Component {
       ret = <div>
                         {error ? <Alert message={error} type="error"/> : null
                         }
-                        <Typography.Text>Common Settings</Typography.Text>
-                        <br/>
-                        <Typography.Text code>File: {loadedConfig.file}</Typography.Text>
-                        <br/>
-                        <Table columns={this.commonColumns()}
-                               dataSource={commonDataSource}
-                               scroll={{ x: 'max-content' }}
-                               pagination={{
-                                 total: commonDataSource.length,
-                                 pageSize: commonDataSource.length,
-                                 hideOnSinglePage: true,
-                               }}/>
-                        <br/>
-                        <br/>
                         <Typography.Text>Add new Camera</Typography.Text>
                         <br/>
                         <Table columns={this.addColumns()}
@@ -869,6 +855,19 @@ export default class Config extends React.Component {
                                pagination={{
                                  total: cameraDatasource.length,
                                  pageSize: cameraDatasource.length,
+                                 hideOnSinglePage: true,
+                               }}/>
+                        <br/>
+                        <Typography.Text>Common Settings</Typography.Text>
+                        <br/>
+                        <Typography.Text code>File: {loadedConfig.file}</Typography.Text>
+                        <br/>
+                        <Table columns={this.commonColumns()}
+                               dataSource={commonDataSource}
+                               scroll={{ x: 'max-content' }}
+                               pagination={{
+                                 total: commonDataSource.length,
+                                 pageSize: commonDataSource.length,
                                  hideOnSinglePage: true,
                                }}/>
         {loadedConfig.connectionType === 'local' ? <div>

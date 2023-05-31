@@ -6,6 +6,22 @@ const mkdirp = require('mkdirp');
 const { exec } = require('child_process');
 const Stream = require('./index');
 
+// TODO:   make channels 1-based, 0 as 10, or multi-digit entry
+//         remove need for "off" camera
+//         make "-" button toggle on/off
+//         make keyboard inputs work on camera.html
+//         Add 9-way, expose 16
+//         mixed tcp/udp config possible in 4/9/16-way?
+//         improve UI of app, for configuring address and port
+//         move content of .currentChannel to settings
+//         shut down ffmpeg if no clients
+//         let different clients stream different cams
+//         enable a/b/c/d buttons for cams
+//         give streams a name
+//       X make exit button work in addition to "back"
+//       X merge multiple -vf options, utilize OSD
+//         Never Blank (1) server shut down notice
+
 const {
   connectAuthentication, protect,
 } = require('./authenticationConnection');
@@ -33,8 +49,8 @@ app.use(cors(corsOptions));
 // eslint-disable-next-line no-use-before-define
 const connectionType = connectAuthentication(app, readConfig);
 
-console.log = () => {
-};
+//console.log = () => {
+//};
 console.error = () => {
 };
 console.debug = () => {
@@ -69,7 +85,7 @@ function readConfig() {
   if (!channelJson.ffmpeg) {
     channelJson.ffmpeg = {
       '-nostats': '',
-      '-r': 30,
+      '-r': 31,
       '-loglevel': 'quiet',
       '-f': 'mpegts',
       '-codec:v': 'mpeg1video',
@@ -82,7 +98,7 @@ function readConfig() {
     channelJson.ffmpeg['-f'] = 'mpegts';
   }
   if (!channelJson.ffmpeg['-r']) {
-    channelJson.ffmpeg['-r'] = '30';
+    channelJson.ffmpeg['-r'] = '32';
   }
 
   if (!channelJson.ffmpegPre) {
@@ -142,7 +158,8 @@ let channels = readChannels();
 function saveConfig() {
   streams.forEach(((stream) => {
     stream.mpeg1Muxer.stream.kill();
-    stream.wsServer.close();
+    //stream.wsServer.close();
+    stream.stop();
   }));
   streams = [];
   const configFile = { ...config };
@@ -234,18 +251,13 @@ async function recreateStream() {
   const mode = getMode();
   readCurrentChannel();
   const selectChannel = channels[currentChannel];
-  if (selectChannel) {
+  console.log('current channel is: ' + currentChannel);
+  //console.log(selectChannel);
+  if (selectChannel && selectChannel.streamUrl != 'off' ) {
     for (let i = 0; i < mode; i++) { // eslint-disable-line no-plusplus
       if ((i === 0 && selectChannel.streamUrl) || selectChannel.streamUrl[i]) {
-        let number = 1;
-        if (mode === 1) {
-          number = 1;
-        } else
-        if (mode === 4) {
-          number = 2;
-        } else {
-          number = 4;
-        }
+        let scalefactor = Math.sqrt(mode);
+
         const ffmpegPre = config.ffmpegPre ? config.ffmpegPre : {};
         const ffmpegPost = config.ffmpeg ? config.ffmpeg : {};
         const ffmpegChannelPre = selectChannel.ffmpegPre ? selectChannel.ffmpegPre : {};
@@ -254,18 +266,26 @@ async function recreateStream() {
           ...ffmpegPre,
           ...ffmpegChannelPre,
         };
-        const ffmpegOptions = {
+        //console.log( selectChannel.ffmpeg );
+        let ffmpegOptions = {
           ...{
             '-nostats': '',
-            '-r': 30,
+            '-r': 33,
             '-loglevel': 'quiet',
           },
           ...ffmpegPost,
           ...ffmpegChannel,
-          ...{
-            '-vf': `scale=${width / number}:${height / number}`,
-          },
+          //...{
+          //  '-vf': `scale=${width / scalefactor}:${height / scalefactor}`,
+          //},
         };
+        if (ffmpegOptions['-vf']) {
+            ffmpegOptions['-vf'] = ffmpegOptions['-vf'].replace( '`c`', currentChannel ).replace( '`n`', i )
+            ffmpegOptions['-vf'] += ',' + `scale=${width / scalefactor}:${height / scalefactor}`
+        } else {
+            ffmpegOptions['-vf'] = `scale=${width / scalefactor}:${height / scalefactor}`
+        }
+
         const stream = new Stream({
           name: `${currentChannel} ${i}`,
           streamUrl: Array.isArray(selectChannel.streamUrl)
@@ -287,6 +307,21 @@ async function recreateStream() {
 }
 
 recreateStream().then();
+
+app.get('/lib.js', async (req, res) => {
+  const fs = require('fs');
+  const path = require('path');
+  const currentDir = path.dirname(__filename);
+  const filePath = path.join(currentDir, 'lib.js');
+  console.log(filePath);
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      return;
+    }
+    return res.send(data);
+  });
+});
 
 app.get('/next', async (req, res) => {
   const width0 = req.query.width;
@@ -356,32 +391,15 @@ app.get('/reload', async (req, res) => {
 });
 
 app.get('/info', cors(corsOptions), (req, res) => {
+  readCurrentChannel();
   const mode = getMode();
+  const channelCount = channels.length;
   return res.send(JSON.stringify({
     mode,
+    currentChannel,
+    channelCount,
   }));
 });
-
-// function installCrons() {
-//   const cronJob = new CronJob('0 */2 * * * *', (async () => {
-//     let error = false;
-//     streams.forEach(((stream) => {
-//       if (stream.mpeg1Muxer.stream.exitCode > 0
-//                 || !stream.mpeg1Muxer.stream.pid > 0
-//                 || !stream.mpeg1Muxer.inputStreamStarted
-//                 || stream.mpeg1Muxer.stream.killed
-//                 || stream.mpeg1Muxer.stream._closesGot > 0) {
-//         error = true;
-//       }
-//     }));
-//     if (error) {
-//       await recreateStream();
-//     }
-//   }), null, true, 'America/Los_Angeles');
-//   console.debug('System TZ next 5: ', cronJob.nextDates(5));
-// }
-
-// installCrons();
 
 app.use('/', protect(), express.static(`${__dirname}/camera-admin-ui/build`));
 

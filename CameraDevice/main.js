@@ -101,10 +101,10 @@ var reload = function reload() {
 
 function getChannel(ch) {
   var value = queue.shift();
-  if (value) {
+  if (value !== undefined) {
     ch.value = '' + ch.value + value; // eslint-disable-line no-param-reassign
     getChannel(ch);
-  }
+  } 
   return ch;
 }
 
@@ -142,6 +142,7 @@ var sel0 = function sel0(c) {
 
 var sel = function sel(c) {
   queue.push(c);
+  notice.innerHTML=queue.join("")
   if (!changeChannel) {
     changeChannel = true;
     window.setTimeout(function () {
@@ -149,8 +150,8 @@ var sel = function sel(c) {
       var newch = getChannel(ch);
       changeChannel = false;
       queue = [];
-      sel0(newch.value);
-    }, 2000);
+      sel0(parseInt(newch.value));
+    }, 1000);
   }
 };
 
@@ -213,7 +214,6 @@ var init = function init() {
       case 55:
       case 56:
       case 57:
-        notice.innerHTML=e.keyCode - 48;
         sel(e.keyCode - 48);
         break;
       case 38: // UP arrow

@@ -13,42 +13,12 @@ var serverInfo = {
 
 var lib;
 
-var queue = [];
-
-var changeChannel = false;
-
 var req = function req( path ) {
   var xhr = new XMLHttpRequest();
   var url = 'http://' + serverInfo.ip + ':' + serverInfo.port + path;
   xhr.withCredentials = true;
   xhr.open('GET', url, true);
   return xhr;
-};
-
-var dorequest = function dorequest( path ) {
-  var xhr = req( path );
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === xhr.DONE) {
-      if (xhr.status === 200) {
-        console.log(xhr.responseText);
-        location.reload();
-      } else {
-        console.log('There was a problem with the request.');
-      }
-    }
-  };
-  xhr.onerror = function (e) {
-    console.log(xhr.statusText);
-  };
-  xhr.send();
-};
-
-var next = function next() {
-  dorequest('/next?width=' + window.screen.width + '&height=' + window.screen.height);
-};
-
-var prev = function prev() {
-  dorequest('/prev?width=' + window.screen.width + '&height=' + window.screen.height);
 };
 
 var getInfo = function getInfo(callback) {
@@ -99,22 +69,14 @@ var reload = function reload() {
   }
 };
 
-function getChannel(ch) {
-  var value = queue.shift();
-  if (value !== undefined) {
-    ch.value = '' + ch.value + value; // eslint-disable-line no-param-reassign
-    getChannel(ch);
-  } 
-  return ch;
-}
-
-var load_lib = function load_lib() {
+var load_lib = function load_lib( callback ) {
     var xhr = req('/lib.js');
     xhr.responseType = 'text';
     xhr.onload = function() {
       if (xhr.status === 200) {
         var moduleCode = xhr.responseText;
         lib = eval(moduleCode);
+        callback();
         //lib.alertme();
         //lib.foo();
       }
@@ -122,46 +84,10 @@ var load_lib = function load_lib() {
     xhr.send();
 };
 
-var sel0 = function sel0(c) {
-  var xhr = req('/sel?channel=' + c + '&width=' + window.screen.width + '&height=' + window.screen.height);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === xhr.DONE) {
-      if (xhr.status === 200) {
-        console.log(xhr.responseText);
-        location.reload();
-      } else {
-        console.log('There was a problem with the request.');
-      }
-    }
-  };
-  xhr.onerror = function (e) {
-    console.log(xhr.statusText);
-  };
-  xhr.send();
-};
-
-var sel = function sel(c) {
-  queue.push(c);
-  notice.innerHTML=queue.join("")
-  if (!changeChannel) {
-    changeChannel = true;
-    window.setTimeout(function () {
-      var ch = { value: '' };
-      var newch = getChannel(ch);
-      changeChannel = false;
-      queue = [];
-      sel0(parseInt(newch.value));
-    }, 1000);
-  }
-};
-
-//
-// channelList()
 
 // Initialize function
-var init = function init() {
+var main = function main() {
   console.log('init() called');
-  load_lib();
   let remotekeys = ['0','1','2','3','4','5','6','7','8','9',
        'ChannelUp',
        'ChannelDown',
@@ -214,19 +140,19 @@ var init = function init() {
       case 55:
       case 56:
       case 57:
-        sel(e.keyCode - 48);
+        lib.sel(e.keyCode - 48);
         break;
       case 38: // UP arrow
       case 39: // RIGHT arrow
       case 427:
         notice.innerHTML='+';
-        next();
+        lib.next();
         break;
       case 37: // LEFT arrow
       case 40: // DOWN arrow
       case 428:
         notice.innerHTML='-';
-        prev();
+        lib.prev();
         break;
       case 13: // OK button
         notice.innerHTML='Reload';
@@ -288,7 +214,7 @@ var init = function init() {
         var resultListenerCallback = function resultListenerCallback(event, list, result) {
           if (event === 'SUCCESS') {
             if (!isNaN(result)) {
-              sel(result);
+              lib.sel(result);
             }
             if (result === 'OK' || result === 'Refresh' || result === 'Select') {
               reload();
@@ -304,5 +230,9 @@ var init = function init() {
     }
   }
 };
+var init = function init() {
+  load_lib(main);
+};
+
 // window.onload can work without <body onload="">
 window.onload = init;

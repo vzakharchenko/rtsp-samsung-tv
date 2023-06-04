@@ -6,7 +6,9 @@ const mkdirp = require('mkdirp');
 const { exec } = require('child_process');
 const Stream = require('./index');
 
-// TODO:   make channels 1-based, 0 as 10, or multi-digit entry
+// TODO:   make channels 1-based
+//         wrap around(?) channels up/down
+//         obviate next/prev http calls, use channelCount to wrap in client
 //         remove need for "off" camera
 //         make "-" button toggle on/off
 //         make keyboard inputs work on camera.html
@@ -20,6 +22,7 @@ const Stream = require('./index');
 //         give streams a name
 //       X make exit button work in addition to "back"
 //       X merge multiple -vf options, utilize OSD
+//       X fix entry of "0" as channel digit
 //         Never Blank (1) server shut down notice
 
 const {

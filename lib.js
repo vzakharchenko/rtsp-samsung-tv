@@ -1,10 +1,5 @@
 { http: ( { 
-alertme : ( function alertme() {
-   alert('bingo');
-} ), 
-
 queue : [],
-
 changeChannel : false,
 
 req : ( function req( path ) {
@@ -14,39 +9,6 @@ req : ( function req( path ) {
   xhr.open('GET', url, true);
   return xhr;
 } ),
-
-sel0 : ( function sel0(c) {
-  var xhr = lib.req('/sel?channel=' + c + '&width=' + window.screen.width + '&height=' + window.screen.height);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === xhr.DONE) {
-      if (xhr.status === 200) {
-        console.log(xhr.responseText);
-        location.reload();
-      } else {
-        console.log('There was a problem with the request.');
-      }
-    }
-  };
-  xhr.onerror = function (e) {
-    console.log(xhr.statusText);
-  };
-  xhr.send();
-}),
-
-sel : ( function sel(c) {
-  lib.queue.push(c);
-  notice.innerHTML=lib.queue.join("")
-  if (!lib.changeChannel) {
-    lib.changeChannel = true;
-    window.setTimeout(function () {
-      var ch = { value: '' };
-      var newch = lib.queue.join("");
-      lib.changeChannel = false;
-      lib.queue = [];
-      lib.sel0(parseInt(newch));
-    }, 1000);
-  }
-}),
 
 dorequest : ( function dorequest( path ) {
   var xhr = lib.req( path );
@@ -72,6 +34,25 @@ next : ( function next() {
 
 prev : ( function prev() {
   lib.dorequest('/prev?width=' + window.screen.width + '&height=' + window.screen.height);
+}),
+
+sel0 : ( function sel0(c) {
+  lib.dorequest('/sel?channel=' + c + '&width=' + window.screen.width + '&height=' + window.screen.height);
+}),
+
+sel : ( function sel(c) {
+  lib.queue.push(c);
+  notice.innerHTML=lib.queue.join("")
+  if (!lib.changeChannel) {
+    lib.changeChannel = true;
+    window.setTimeout(function () {
+      var ch = { value: '' };
+      var newch = lib.queue.join("");
+      lib.changeChannel = false;
+      lib.queue = [];
+      lib.sel0(parseInt(newch));
+    }, 1000);
+  }
 }),
 
 render : ( function render(resp) {

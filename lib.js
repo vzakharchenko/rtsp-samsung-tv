@@ -100,6 +100,7 @@ render : ( function render(resp) {
       new JSMpeg.Player(url, {
           canvas: document.getElementById('canvas' + (i + 1)),
           onVideoDecode: function ondecode( ) { if ( frames == 60 ) { notice.innerHTML = ""; } else if ( frames < 60 ) { frames = frames + 1 } },
+          disableGl : true,
           //poster: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Sunflower_from_Silesia2.jpg/1600px-Sunflower_from_Silesia2.jpg?20091008132228',
           //onPlay: function a( ) { notice.innerHTML = "a" },
           //onPause: function b( ) { notice.innerHTML = "b" },

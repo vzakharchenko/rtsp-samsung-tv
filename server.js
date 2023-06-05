@@ -24,6 +24,11 @@ const Stream = require('./index');
 //       X merge multiple -vf options, utilize OSD
 //       X fix entry of "0" as channel digit
 //         Never Blank (1) server shut down notice
+//
+//         AUDIO?
+//         PTZ controls?
+//         Templates, break out params like IP & PORT?
+
 
 const {
   connectAuthentication, protect,

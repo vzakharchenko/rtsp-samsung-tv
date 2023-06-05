@@ -76,9 +76,14 @@ var load_lib = function load_lib( callback ) {
       if (xhr.status === 200) {
         var moduleCode = xhr.responseText;
         lib = eval(moduleCode);
-        callback();
-        //lib.alertme();
-        //lib.foo();
+        tizen.systeminfo.getPropertyValue("BUILD", function(result) {
+           if (result.model === "Emulator") {
+               // emulator needs some time before trying to load jsmpeg, apparently
+               let timeoutID = setTimeout(callback, 1500);
+           } else {
+               callback();
+           }
+        });
       }
     };
     xhr.send();
@@ -87,7 +92,6 @@ var load_lib = function load_lib( callback ) {
 
 // Initialize function
 var main = function main() {
-  console.log('init() called');
   let remotekeys = ['0','1','2','3','4','5','6','7','8','9',
        'ChannelUp',
        'ChannelDown',
@@ -114,11 +118,11 @@ var main = function main() {
        'PictureSize',           //10140
        'ChannelList',           //10073
      ];
-     for ( let k in remotekeys ) {
-         try {
-             tizen.tvinputdevice.registerKey(remotekeys[k]);
-         }
-         catch(err) { }         //okay if not all keys are defined
+  for ( let k in remotekeys ) {
+    try {
+       tizen.tvinputdevice.registerKey(remotekeys[k]);
+    }
+    catch(err) { }         //okay if not all keys are defined
   }
 
   document.addEventListener('visibilitychange', function () {
@@ -199,9 +203,15 @@ var main = function main() {
         break;
     }
   }, true);
+
   var voicecontrol = tizen.voicecontrol;
   if (voicecontrol) {
-    var client = voicecontrol.getVoiceControlClient();
+    var client 
+    try { 
+      client = voicecontrol.getVoiceControlClient();
+    } catch(e) {
+      console.log('Voice Client Error', e);
+    }
     if (client) {
       var commands = [new tizen.VoiceControlCommand('ChannelUp'), new tizen.VoiceControlCommand('ChannelDown'), new tizen.VoiceControlCommand('Refresh'), new tizen.VoiceControlCommand('Select'), new tizen.VoiceControlCommand('OK')];
       for (var i = 0; i < 1000; i++) {
@@ -230,6 +240,7 @@ var main = function main() {
     }
   }
 };
+
 var init = function init() {
   load_lib(main);
 };

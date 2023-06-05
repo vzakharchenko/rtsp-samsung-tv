@@ -17,6 +17,7 @@ VideoStream = function (options) {
     this.width = options.width
     this.height = options.height
     this.wsPort = options.wsPort
+    this.onClientClose = options.onClientClose
     this.inputStreamStarted = false
     this.stream = undefined
     this.startMpeg1Stream()
@@ -135,6 +136,7 @@ VideoStream.prototype.onSocketConnect = function (socket, request) {
     socket.remoteAddress = request.connection.remoteAddress
 
     return socket.on("close", (code, message) => {
+        this.onClientClose ( this );
         return console.log(`${this.name}: Disconnected WebSocket (` + this.wsServer.clients.size + " total)")
     })
 }

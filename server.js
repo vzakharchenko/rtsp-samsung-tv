@@ -6,23 +6,24 @@ const mkdirp = require('mkdirp');
 const { exec } = require('child_process');
 const Stream = require('./index');
 
-// TODO:   make channels 1-based
+// TODO:   
+//         make channels 1-based
+//         give streams a name
+//         mixed tcp/udp config possible in 4/9/16-way?
 //         wrap around(?) channels up/down
 //         obviate next/prev http calls, use channelCount to wrap in client
 //         remove need for "off" camera
 //         make "-" button toggle on/off
-//         make keyboard inputs work on camera.html
 //         Add 9-way, expose 16
-//         mixed tcp/udp config possible in 4/9/16-way?
 //         improve UI of app, for configuring address and port
 //         move content of .currentChannel to settings
-//         shut down ffmpeg if no clients
 //         let different clients stream different cams
 //         enable a/b/c/d buttons for cams
-//         give streams a name
+//       X make keyboard inputs work on camera.html
 //       X make exit button work in addition to "back"
 //       X merge multiple -vf options, utilize OSD
 //       X fix entry of "0" as channel digit
+//       X shut down ffmpeg if no clients
 //         Never Blank (1) server shut down notice
 //
 //         AUDIO?
@@ -247,11 +248,22 @@ async function killall() {
   });
 }
 
-async function recreateStream() {
+function clientClose( stream ) {
+  console.log("clientClose");
+  if ( stream.wsServer.clients.size == 0 ) {
+    dropAllStreams();
+  }
+}
+
+function dropAllStreams() {
   streams.forEach(((stream) => {
     stream.mpeg1Muxer.kill();
     stream.stop();
   }));
+}
+
+async function recreateStream() {
+  dropAllStreams();
   if (config.killAll) {
     await killall();
   }
@@ -299,6 +311,7 @@ async function recreateStream() {
           streamUrl: Array.isArray(selectChannel.streamUrl)
             ? selectChannel.streamUrl[i] : selectChannel.streamUrl,
           wsPort: 9999 + i,
+          onClientClose : clientClose,
           ffmpegOptions,
           ffmpegPreOptions,
         });

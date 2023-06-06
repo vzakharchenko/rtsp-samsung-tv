@@ -174,6 +174,15 @@ export default class Config extends React.Component {
                                 }}></Checkbox>
                         </div>);
           }
+          if (meta.key === '5') {
+            return (<div>
+                            <Typography.Text editable={{
+                              onChange: async (str) => {
+                                this.state.config.config.ffmpegPath = str;
+                                await this.save();
+                              },
+                            }}>{text}</Typography.Text><br/></div>);
+          }
           return (<a>{text}</a>);
         },
       }];
@@ -345,7 +354,8 @@ export default class Config extends React.Component {
                         }
                     }>Save</Button></div>;
       },
-    }];
+    },
+    ];
   }
 
   userColumns() {
@@ -419,6 +429,19 @@ export default class Config extends React.Component {
         dataIndex: 'camera',
         key: 'camera',
         render: (text) => <a>{text}</a>,
+      },
+      {
+        title: 'Title',
+        dataIndex: 'title',
+        key: 'title',
+        render: (text, meta, index) => (<div><Typography.Text editable={{
+          onChange: async (str) => {
+            const config = { ...this.state.config };
+            this.state.config.config.channels[index].title = str;
+            this.setState({ config });
+            this.save();
+          },
+        }}>{text}</Typography.Text><br/></div>),
       },
       {
         title: 'Camera Mode',
@@ -726,6 +749,7 @@ export default class Config extends React.Component {
           status: index + 1 === this.state.status.currentChannel,
           camera: index + 1,
           transport: channel.transport || loadedConfig.transport || 'udp',
+          title: channel.title,
           mode: Array.isArray(channel.streamUrl) && channel.streamUrl.length > 1 ? 4 : 1,
           rtsp: channel.streamUrl,
           ffmpeg: channel.ffmpeg,
@@ -761,6 +785,11 @@ export default class Config extends React.Component {
         key: '4',
         name: 'Kill all ffmpeg during restart',
         value: loadedConfig.killAll,
+      },
+      {
+        key: '5',
+        name: 'ffmpegPath',
+        value: loadedConfig.ffmpegPath,
       },
 
     ];

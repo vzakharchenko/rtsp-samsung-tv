@@ -7,16 +7,15 @@ const { exec } = require('child_process');
 const Stream = require('./index');
 
 // TODO:   
-//         give streams a name
+//         camera.html - Never Blank (1) server shut down notice
+//         admin - recognize server restart & reload(?) or catch JSON error
+//         Add 9-way, expose 16
 //         mixed tcp/udp config possible in 4/9/16-way?
 //         obviate next/prev http calls, use channelCount to wrap in client
-//         make "-" button toggle on/off
-//         Add 9-way, expose 16
-//         improve UI of app, for configuring address and port
+//         improve UI of TV app, for configuring address and port
 //         move content of .currentChannel to settings
 //         let different clients stream different cams
 //         enable a/b/c/d buttons for cams
-//         Never Blank (1) server shut down notice
 //       X make keyboard inputs work on camera.html
 //       X make exit button work in addition to "back"
 //       X merge multiple -vf options, utilize OSD
@@ -24,10 +23,17 @@ const Stream = require('./index');
 //       X shut down ffmpeg if no clients
 //       X make channels 1-based
 //       X wrap around(?) channels up/down
+//       X give streams a title
+//       X ffmpegPath, to allow script to override
 //
 //         AUDIO?
 //         PTZ controls?
 //         Templates, break out params like IP & PORT?
+
+// To Document:
+//         -vf:drawtext='fontsize=30:fontcolor=white:x=100:y=100:text=[`c`] %{localtime}'
+//              `c` = channel, `n` = stream number, `t` = title
+
 
 const {
   connectAuthentication, protect,
@@ -271,6 +277,7 @@ async function recreateStream() {
 
         const ffmpegPre = config.ffmpegPre ? config.ffmpegPre : {};
         const ffmpegPost = config.ffmpeg ? config.ffmpeg : {};
+        const ffmpegPath = config.ffmpegPath ? config.ffmpegPath : "ffmpeg";
         const ffmpegChannelPre = selectChannel.ffmpegPre ? selectChannel.ffmpegPre : {};
         const ffmpegChannel = selectChannel.ffmpeg ? selectChannel.ffmpeg : {};
         const ffmpegPreOptions = {
@@ -291,12 +298,14 @@ async function recreateStream() {
           //},
         };
         if (ffmpegOptions['-vf']) {
-            ffmpegOptions['-vf'] = ffmpegOptions['-vf'].replace( '`c`', currentChannel - 1).replace( '`n`', i )
+            ffmpegOptions['-vf'] = ffmpegOptions['-vf']
+                                   .replace( '`c`', currentChannel )
+                                   .replace( '`n`', i )
+                                   .replace( '`t`', selectChannel.title )
             ffmpegOptions['-vf'] += ',' + `scale=${width / scalefactor}:${height / scalefactor}`
         } else {
             ffmpegOptions['-vf'] = `scale=${width / scalefactor}:${height / scalefactor}`
         }
-
         const stream = new Stream({
           name: `${currentChannel} ${i}`,
           streamUrl: Array.isArray(selectChannel.streamUrl)
@@ -305,6 +314,7 @@ async function recreateStream() {
           onClientClose : clientClose,
           ffmpegOptions,
           ffmpegPreOptions,
+          ffmpegPath,
         });
         stream.mpeg1Muxer.on('exitWithError', () => {
           recreateStream();

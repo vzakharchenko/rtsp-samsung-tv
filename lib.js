@@ -69,7 +69,7 @@ render : ( function render(resp) {
   var frames = 0;
   var lastFrames = -1;
 
-  setInterval(function() { if ( frames == lastFrames ) { notice.innerHTML = "Video Stalled"; frames = 0 }; lastFrames = frames } , 10000);
+  setInterval(function() { if ( frames == lastFrames ) { notice.innerHTML = "Video Stalled"; alert(frames); frames = 0; lastFrames = -1 } else { lastFrames = frames } } , 10000);
 
   const table = document.getElementById("canvas");
   const trs = [];
@@ -87,7 +87,7 @@ render : ( function render(resp) {
       const url = 'ws://' + serverInfo.ip + ':' + (9999 + i);
       new JSMpeg.Player(url, {
           canvas: document.getElementById('canvas' + (i + 1)),
-          onVideoDecode: function ondecode( ) { if ( frames == 60 ) { notice.innerHTML = ""; } else if ( frames > 1000000 ) { frames = 10000 } else { frames = frames + 1 } },
+          onVideoDecode: function ondecode( ) { if ( frames == 60 ) { frames = 61; notice.innerHTML = ""; } else if ( frames > 1000000 ) { frames = 10000 } else { frames = frames + 1 } },
           disableGl : true,
           //poster: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Sunflower_from_Silesia2.jpg/1600px-Sunflower_from_Silesia2.jpg?20091008132228',
           //onPlay: function a( ) { notice.innerHTML = "a" },

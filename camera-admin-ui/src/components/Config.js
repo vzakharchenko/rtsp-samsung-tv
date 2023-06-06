@@ -409,7 +409,7 @@ export default class Config extends React.Component {
           ? <a target="_blank" rel="noopener noreferrer" href="/camera.html">Current</a>
           : <Button onClick={
                             () => {
-                              this.state.status.currentChannel = pos;
+                              this.state.status.currentChannel = 1 + pos;
                               this.saveActiveChannel().then();
                             }
                         }>Activate</Button>),
@@ -676,7 +676,7 @@ export default class Config extends React.Component {
             config.config.channels[index] = config.config.channels[index - 1];
             config.config.channels[index - 1] = v;
             const status = { ...this.state.status };
-            if (status.currentChannel === index) {
+            if (status.currentChannel - 1 === index) {
               status.currentChannel -= 1;
             }
             this.setState({ config, status });
@@ -690,7 +690,7 @@ export default class Config extends React.Component {
             config.config.channels[index] = config.config.channels[index + 1];
             config.config.channels[index + 1] = v;
             const status = { ...this.state.status };
-            if (status.currentChannel === index) {
+            if (status.currentChannel - 1 === index) {
               status.currentChannel += 1;
             }
             this.setState({ config, status });
@@ -723,8 +723,8 @@ export default class Config extends React.Component {
     if (loadedConfig.channels) {
       loadedConfig.channels.forEach((channel, index) => {
         ret.push({
-          status: index === this.state.status.currentChannel,
-          camera: index,
+          status: index + 1 === this.state.status.currentChannel,
+          camera: index + 1,
           transport: channel.transport || loadedConfig.transport || 'udp',
           mode: Array.isArray(channel.streamUrl) && channel.streamUrl.length > 1 ? 4 : 1,
           rtsp: channel.streamUrl,

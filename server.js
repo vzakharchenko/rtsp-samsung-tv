@@ -7,35 +7,34 @@ const { exec } = require('child_process');
 const Stream = require('./index');
 
 // TODO:   
-//         make channels 1-based
 //         give streams a name
 //         mixed tcp/udp config possible in 4/9/16-way?
-//         wrap around(?) channels up/down
 //         obviate next/prev http calls, use channelCount to wrap in client
-//         remove need for "off" camera
 //         make "-" button toggle on/off
 //         Add 9-way, expose 16
 //         improve UI of app, for configuring address and port
 //         move content of .currentChannel to settings
 //         let different clients stream different cams
 //         enable a/b/c/d buttons for cams
+//         Never Blank (1) server shut down notice
 //       X make keyboard inputs work on camera.html
 //       X make exit button work in addition to "back"
 //       X merge multiple -vf options, utilize OSD
 //       X fix entry of "0" as channel digit
 //       X shut down ffmpeg if no clients
-//         Never Blank (1) server shut down notice
+//       X make channels 1-based
+//       X wrap around(?) channels up/down
 //
 //         AUDIO?
 //         PTZ controls?
 //         Templates, break out params like IP & PORT?
-
 
 const {
   connectAuthentication, protect,
 } = require('./authenticationConnection');
 
 const app = express();
+var inSaveStatus = false;
 
 app.use(bodyParser.json({ limit: '50mb' }));
 const corsOptions = {
@@ -89,7 +88,7 @@ function readConfig() {
     channelJson = overrideChannel;
   }
   if (channelJson.killAll === undefined) {
-    channelJson.killAll = true;
+    channelJson.killAll = false;
   }
   if (!channelJson.ffmpeg) {
     channelJson.ffmpeg = {
@@ -187,7 +186,7 @@ function readCurrentChannel() {
   const currentChannelFile = '.currentChannel';
   if (fs.existsSync(currentChannelFile)) {
     const curJson = JSON.parse(fs.readFileSync(currentChannelFile, 'UTF-8'));
-    currentChannel = channels[Number(curJson.currentChannel)] ? Number(curJson.currentChannel) : 0;
+    currentChannel = channels[Number(curJson.currentChannel)-1] ? Number(curJson.currentChannel) : 0;
     width = Number(curJson.width);
     height = Number(curJson.height);
   } else {
@@ -204,13 +203,13 @@ function saveCurrentChannel() {
 
 function getMode() {
   let mode;
-  if (channels[currentChannel] && Array.isArray(channels[currentChannel].streamUrl)) {
-    if (channels[currentChannel].streamUrl.length === 1) {
+  if (channels[currentChannel-1] && Array.isArray(channels[currentChannel-1].streamUrl)) {
+    if (channels[currentChannel-1].streamUrl.length === 1) {
       mode = 1;
-    } else if (channels[currentChannel].streamUrl.length === 0) {
+    } else if (channels[currentChannel-1].streamUrl.length === 0) {
       mode = 0;
-    } if (channels[currentChannel].streamUrl.length > 1
-        && channels[currentChannel].streamUrl.length <= 4) {
+    } if (channels[currentChannel-1].streamUrl.length > 1
+        && channels[currentChannel-1].streamUrl.length <= 4) {
       mode = 4;
     } else {
       mode = 16;
@@ -222,14 +221,6 @@ function getMode() {
 }
 
 readCurrentChannel();
-
-function getNextChannel(cChannel) {
-  let nextChannel = cChannel + 1;
-  if (!channels[nextChannel]) {
-    nextChannel = 0;
-  }
-  return nextChannel;
-}
 
 async function killall() {
   return new Promise((resolve) => {
@@ -249,31 +240,31 @@ async function killall() {
 }
 
 function clientClose( stream ) {
-  console.log("clientClose");
   if ( stream.wsServer.clients.size == 0 ) {
-    dropAllStreams();
+    setTimeout(function () {
+      if ( stream.wsServer.clients.size == 0 ) {
+        stream.mpeg1Muxer.kill();
+        stream.stop();
+      }
+    }, 2000);
   }
 }
 
-function dropAllStreams() {
+async function recreateStream() {
   streams.forEach(((stream) => {
     stream.mpeg1Muxer.kill();
     stream.stop();
   }));
-}
-
-async function recreateStream() {
-  dropAllStreams();
   if (config.killAll) {
     await killall();
   }
   streams = [];
   const mode = getMode();
   readCurrentChannel();
-  const selectChannel = channels[currentChannel];
   console.log('current channel is: ' + currentChannel);
-  //console.log(selectChannel);
-  if (selectChannel && selectChannel.streamUrl != 'off' ) {
+
+  if (currentChannel != 0 ) {
+    const selectChannel = channels[currentChannel-1];
     for (let i = 0; i < mode; i++) { // eslint-disable-line no-plusplus
       if ((i === 0 && selectChannel.streamUrl) || selectChannel.streamUrl[i]) {
         let scalefactor = Math.sqrt(mode);
@@ -286,7 +277,7 @@ async function recreateStream() {
           ...ffmpegPre,
           ...ffmpegChannelPre,
         };
-        //console.log( selectChannel.ffmpeg );
+
         let ffmpegOptions = {
           ...{
             '-nostats': '',
@@ -300,7 +291,7 @@ async function recreateStream() {
           //},
         };
         if (ffmpegOptions['-vf']) {
-            ffmpegOptions['-vf'] = ffmpegOptions['-vf'].replace( '`c`', currentChannel ).replace( '`n`', i )
+            ffmpegOptions['-vf'] = ffmpegOptions['-vf'].replace( '`c`', currentChannel - 1).replace( '`n`', i )
             ffmpegOptions['-vf'] += ',' + `scale=${width / scalefactor}:${height / scalefactor}`
         } else {
             ffmpegOptions['-vf'] = `scale=${width / scalefactor}:${height / scalefactor}`
@@ -334,7 +325,6 @@ app.get('/lib.js', async (req, res) => {
   const path = require('path');
   const currentDir = path.dirname(__filename);
   const filePath = path.join(currentDir, 'lib.js');
-  console.log(filePath);
   fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
       console.error('Error reading file:', err);
@@ -345,6 +335,7 @@ app.get('/lib.js', async (req, res) => {
 });
 
 app.get('/next', async (req, res) => {
+  const nextChannel = currentChannel + 1;
   const width0 = req.query.width;
   if (width0) {
     width = width0;
@@ -353,7 +344,11 @@ app.get('/next', async (req, res) => {
   if (height0) {
     height = height0;
   }
-  currentChannel = getNextChannel(currentChannel);
+  if (nextChannel <= channels.length) {
+    currentChannel = nextChannel;
+  } else {
+    currentChannel = 0;
+  }
   saveCurrentChannel();
   await recreateStream();
   return res.send('OK');
@@ -369,7 +364,7 @@ app.get('/prev', async (req, res) => {
   if (height0) {
     height = height0;
   }
-  if (channels[nextChannel]) {
+  if (nextChannel >= 0) {
     currentChannel = nextChannel;
   } else {
     currentChannel = channels.length;

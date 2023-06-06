@@ -39,12 +39,18 @@
               notice.innerHTML = keyValue;
               if ( keyValue >= '0' && keyValue <= '9' ) {
                  lib.sel(keyValue);
-              } else if ( keyValue == 'ArrowUp' || keyValue == '+' ) {
+              } else if ( keyValue == 'ArrowUp' || keyValue == 'ArrowRight' ) {
                  notice.innerHTML = '+';
                  lib.next();
-              } else if ( keyValue == 'ArrowDown' || keyValue == '-' ) {
+              } else if ( keyValue == 'ArrowDown' || keyValue == 'ArrowLeft' ) {
                  notice.innerHTML = '-';
                  lib.prev();
+              } else if ( keyValue == 'Enter' ) {
+                 notice.innerHTML = 'Reload';
+                 reload();
+              } else if ( keyValue == 'r' ) {
+                 notice.innerHTML = 'Refresh';
+                 location.reload();
               }
             }, false);
         };
@@ -87,13 +93,18 @@
     </script>
     <style>
 
+.canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
 .container {
-  position: relative;
+  position: absolute;
   text-align: center;
   color: white;
   width: 100%;
   height: 100%;
-  position: absolute;
   top: 0;
   left: 0;
 }
@@ -112,7 +123,7 @@
 
 <body>
  <div class="container">
-<table id="canvas" BGCOLOR="#000000" BORDER=0 CELLSPACING=0 CELLPADDING=0>
+<table id="canvas" class="canvas" BGCOLOR="#000000" BORDER=0 CELLSPACING=0 CELLPADDING=0>
 </table>
   <div class="centered" id="notice"></div>
 </div> 

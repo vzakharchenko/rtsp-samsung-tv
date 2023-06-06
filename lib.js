@@ -61,7 +61,11 @@ render : ( function render(resp) {
   currentChannel = resp.currentChannel;
   channelCount = resp.channelCount;
   var notice = document.getElementById("notice");
-  notice.innerHTML = currentChannel + " of " + channelCount;
+  if (currentChannel == 0) {
+    notice.innerHTML = 'OFF';
+  } else {
+    notice.innerHTML = currentChannel + " of " + channelCount;
+  }
   var frames = 0;
 
   const table = document.getElementById("canvas");

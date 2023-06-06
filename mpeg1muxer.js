@@ -72,6 +72,9 @@ Mpeg1Muxer = function (options) {
     this.stream.stderr.on('data', (data) => {
         return this.emit('ffmpegStderr', data)
     })
+    this.stream.on('error', (e) => {
+         console.log('error spawning ffmpegPath: ' + e);
+    })
     this.stream.on('exit', (code, signal) => {
         if (this.killed){
             return ;

@@ -22,6 +22,8 @@ export default class Config extends React.Component {
       this.setState({ config: JSON.parse(config) });
     } catch (e) {
       this.setState({ error: e.message });
+      alert('The server likely restarted and you will need to log in again. (A)');
+      window.location.reload();
     } finally {
       this.setState(
         { loading: false },
@@ -40,6 +42,8 @@ export default class Config extends React.Component {
       this.setState({ status: JSON.parse(status) });
     } catch (e) {
       this.setState({ error: e.message });
+      alert('The server likely restarted and you will need to log in again. (B)');
+      window.location.reload();
     } finally {
       this.setState(
         { loading: false },
@@ -827,6 +831,8 @@ export default class Config extends React.Component {
       this.setState({ status: JSON.parse(status) });
     } catch (e) {
       this.setState({ error: e.message });
+      alert('The server likely restarted and you will need to log in again. (C)');
+      window.location.reload();
     } finally {
       this.setState(
         { loading: false },

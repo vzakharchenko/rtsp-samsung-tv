@@ -7,8 +7,8 @@ const { exec } = require('child_process');
 const Stream = require('./index');
 
 // TODO:   
-//         camera.html - Never Blank (1) server shut down notice
-//         admin - recognize server restart & reload(?) or catch JSON error
+//         make a better app icon
+//         help/info features in camera and web app
 //         Add 9-way, expose 16
 //         mixed tcp/udp config possible in 4/9/16-way?
 //         obviate next/prev http calls, use channelCount to wrap in client
@@ -25,6 +25,8 @@ const Stream = require('./index');
 //       X wrap around(?) channels up/down
 //       X give streams a title
 //       X ffmpegPath, to allow script to override
+//       X camera.html - Never Blank (1) server shut down notice
+//       X admin - recognize server restart & reload(?) or catch JSON error
 //
 //         AUDIO?
 //         PTZ controls?

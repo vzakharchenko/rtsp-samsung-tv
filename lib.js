@@ -69,7 +69,7 @@ render : ( function render(resp) {
   var frames = 0;
   var lastFrames = -1;
 
-  setInterval(function() { if ( frames == lastFrames ) { notice.innerHTML = "Video Stalled"; alert(frames); frames = 0; lastFrames = -1 } else { lastFrames = frames } } , 10000);
+  setInterval(function() { if ( frames == lastFrames ) { notice.innerHTML = "Video Stalled"; frames = 0; lastFrames = -1 } else { lastFrames = frames } } , 10000);
 
   const table = document.getElementById("canvas");
   const trs = [];

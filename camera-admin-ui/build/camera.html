@@ -9,6 +9,8 @@
 
     <script>
         var lib;
+        var showKeys = false;
+        var frames = 0;
 
         var serverInfo = {
             ip: window.location.hostname || 'localhost', // <-- Server IP
@@ -36,7 +38,10 @@
             document.addEventListener('keydown', (event) => {
               var keyValue = event.key;
               var codeValue = event.code;
-              notice.innerHTML = keyValue;
+              if ( showKeys ) {
+                  notice.innerHTML = keyValue;
+              }
+              frames = 0;
               if ( keyValue >= '0' && keyValue <= '9' ) {
                  lib.sel(keyValue);
               } else if ( keyValue == 'ArrowUp' || keyValue == 'ArrowRight' ) {
@@ -51,6 +56,11 @@
               } else if ( keyValue == 'r' ) {
                  notice.innerHTML = 'Refresh';
                  location.reload();
+              } else if ( keyValue == 'f' ) {
+                 notice.innerHTML = 'Fullscreen';
+                 lib.fullScreen();
+              } else if ( keyValue == '|' ) {
+                 showKeys = ! showKeys;
               }
             }, false);
         };

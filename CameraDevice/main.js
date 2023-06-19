@@ -6,7 +6,7 @@
 /* eslint no-unused-vars: 0 */ // --> OFF
 /* eslint func-names: 0 */ // --> OFF
 var serverInfo = {
-  ip: localStorage.getItem('SERVER.IP') || '192.168.2.2', // <-- Server IP
+  ip: localStorage.getItem('SERVER.IP') || '192.168.2.7', // <-- Server IP
   port: localStorage.getItem('SERVER.PORT') || '3004',
   inited: localStorage.getItem('SERVER.INITED') || false
 };

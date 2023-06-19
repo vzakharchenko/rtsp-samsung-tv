@@ -1,6 +1,7 @@
 { http: ( { 
 queue : [],
 changeChannel : false,
+loadExpected : false,
 
 req : ( function req( path ) {
   var xhr = new XMLHttpRequest();
@@ -59,10 +60,19 @@ fullScreen : ( function fullScreen() {
   fullScreenApi.requestFullScreen(document.documentElement);
 } ),
 
+handleSourceEstablished : ( function handleSourceEstablished() {
+  if ( !lib.loadExpected ) {
+      notice.innerHTML == "...";
+      lib.loadExpected = true;
+      location.reload();
+  }
+} ),
+
 render : ( function render(resp) {
   const mode = resp.mode;
   let scalefactor = Math.sqrt(mode);
   lib.initFullScreen();
+  lib.loadExpected = true;
 
   currentChannel = resp.currentChannel;
   channelCount = resp.channelCount;
@@ -92,15 +102,16 @@ render : ( function render(resp) {
       const url = 'ws://' + serverInfo.ip + ':' + (9999 + i);
       new JSMpeg.Player(url, {
           canvas: document.getElementById('canvas' + (i + 1)),
-          onVideoDecode: function ondecode( ) { if ( frames == 60 ) { frames = 61; notice.innerHTML = ""; } else if ( frames > 1000000 ) { frames = 10000 } else { frames = frames + 1 } },
+          onVideoDecode: function ondecode( ) { if ( frames == 60 ) { lib.loadExpected = false; frames = 61; notice.innerHTML = ""; } else if ( frames > 1000000 ) { frames = 10000 } else { frames = frames + 1 } },
+      
           disableGl : true,
+          onSourceEstablished: function sourceEstablished( ) { lib.handleSourceEstablished(); }
           //poster: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Sunflower_from_Silesia2.jpg/1600px-Sunflower_from_Silesia2.jpg?20091008132228',
-          //onPlay: function a( ) { notice.innerHTML = "a" },
-          //onPause: function b( ) { notice.innerHTML = "b" },
-          //onEnded: function c( ) { notice.innerHTML = "c" },
-          //onStalled: function d( ) { notice.innerHTML = "d" },
-          //onSourceEstablished: function e( ) { notice.innerHTML = "e" },
-          //onSourceCompleted: function f( ) { notice.innerHTML = "f" },
+          // onPlay: function a( ) { notice.innerHTML = "a" },
+          // onPause: function b( ) { notice.innerHTML = "b" },
+          // onEnded: function c( ) { notice.innerHTML = "c" },
+          // onStalled: function d( ) { notice.innerHTML = "d" },
+          // onSourceCompleted: function f( ) { notice.innerHTML = "f" },
       })
   }
 } ),

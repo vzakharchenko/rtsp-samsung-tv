@@ -6,16 +6,24 @@ const mkdirp = require('mkdirp');
 const { exec } = require('child_process');
 const Stream = require('./index');
 
+//         transport      may use $HOST $PORT
+//         protocol       may use $HOST $PORT $RESOLUTION
+//         camera         transport=t protocol=p (may override $HOST=h $PORT $RESOLUTION $OTHER...)
+//         subscription   camera=c may override $RESOLUTION
+
 // TODO:   
-//         make a better app icon
-//         help/info features in camera and web app
+//         default to no login, add option to enable
+//         on-screen status/help display(s) in TV and web apps
 //         Add 9-way, expose 16
 //         mixed tcp/udp config possible in 4/9/16-way?
 //         obviate next/prev http calls, use channelCount to wrap in client
+//         break out camera transport (i.e. rtsp vs. ncat) from protocol
 //         improve UI of TV app, for configuring address and port
+//         templates, parameters for config
 //         move content of .currentChannel to settings
 //         let different clients stream different cams
-//         enable a/b/c/d buttons for cams
+//             persistent URLs(?)
+//         enable a/b/c/d buttons for cam selection
 //       X make keyboard inputs work on camera.html
 //       X make exit button work in addition to "back"
 //       X merge multiple -vf options, utilize OSD
@@ -26,7 +34,9 @@ const Stream = require('./index');
 //       X give streams a title
 //       X ffmpegPath, to allow script to override
 //       X camera.html - Never Blank (1) server shut down notice
-//       X admin - recognize server restart & reload(?) or catch JSON error
+//       X web - recognize server restart & reload(?) or catch JSON error
+//       X web - full screen mode (f key)
+//       X make a better app icon
 //
 //         AUDIO?
 //         PTZ controls?

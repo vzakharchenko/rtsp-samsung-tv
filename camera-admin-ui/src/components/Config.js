@@ -22,6 +22,8 @@ export default class Config extends React.Component {
       this.setState({ config: JSON.parse(config) });
     } catch (e) {
       this.setState({ error: e.message });
+      alert('The server likely restarted and you will need to log in again. (A)');
+      window.location.reload();
     } finally {
       this.setState(
         { loading: false },
@@ -40,6 +42,8 @@ export default class Config extends React.Component {
       this.setState({ status: JSON.parse(status) });
     } catch (e) {
       this.setState({ error: e.message });
+      alert('The server likely restarted and you will need to log in again. (B)');
+      window.location.reload();
     } finally {
       this.setState(
         { loading: false },
@@ -174,16 +178,38 @@ export default class Config extends React.Component {
                                 }}></Checkbox>
                         </div>);
           }
+          if (meta.key === '5') {
+            return (<div>
+                            <Typography.Text editable={{
+                              onChange: async (str) => {
+                                this.state.config.config.ffmpegPath = str;
+                                await this.save();
+                              },
+                            }}>{text}</Typography.Text><br/></div>);
+          }
           return (<a>{text}</a>);
         },
       }];
   }
 
   addColumns() {
-    const camera16 = [];
+    const group9 = [];
+    const group16 = [];
     // eslint-disable-next-line no-plusplus
-    for (let i = 1; i < 17; i++) {
-      camera16.push(
+    for (let i = 1; i <= 9; i++) {
+      group9.push(
+        (<Typography.Text editable={{
+          onChange: (str) => {
+            const newCamera = { ...this.state.newCamera };
+            newCamera[`camera${i}`] = str;
+            this.setState({ newCamera });
+          },
+        }}>{this.state.newCamera[`camera${i}`] || ''}</Typography.Text>),
+      );
+    }
+    // eslint-disable-next-line no-plusplus
+    for (let i = 1; i <= 16; i++) {
+      group16.push(
         (<Typography.Text editable={{
           onChange: (str) => {
             const newCamera = { ...this.state.newCamera };
@@ -201,7 +227,9 @@ export default class Config extends React.Component {
                     <Select defaultValue={text} style={{ width: 120 }}
                             onChange={this.handleCameraChange}>
                         <Option value="single">1 Camera</Option>
-                        <Option value="multi">4 Cameras</Option>
+                        <Option value="multi4">4 Cameras</Option>
+                        <Option value="multi9">9 Cameras</Option>
+                        <Option value="multi16">16 Cameras</Option>
                     </Select>
                 </div>),
     },
@@ -212,10 +240,15 @@ export default class Config extends React.Component {
       render: () => {
         if (this.state.newCamera.mode === 'multi16') {
           return <div>
-            {camera16.map((value) => <div>{value}<br/></div>)}
+            {group16.map((value) => <div>{value}<br/></div>)}
           </div>;
         }
-        if (this.state.newCamera.mode === 'multi') {
+        if (this.state.newCamera.mode === 'multi9') {
+          return <div>
+            {group9.map((value) => <div>{value}<br/></div>)}
+          </div>;
+        }
+        if (this.state.newCamera.mode === 'multi4') {
           return <div>
               <Typography.Text editable={{
                 onChange: (str) => {
@@ -270,11 +303,24 @@ export default class Config extends React.Component {
         if (mode === 'single' && !this.state.newCamera.camera1) {
           disabled = true;
         }
-        if (mode === 'multi'
+        if (mode === 'multi4'
                         && (!this.state.newCamera.camera1
                             || !this.state.newCamera.camera2
                             || !this.state.newCamera.camera3
                             || !this.state.newCamera.camera4
+                        )) {
+          disabled = true;
+        }
+        if (mode === 'multi9'
+                        && (!this.state.newCamera.camera1
+                            || !this.state.newCamera.camera2
+                            || !this.state.newCamera.camera3
+                            || !this.state.newCamera.camera4
+                            || !this.state.newCamera.camera5
+                            || !this.state.newCamera.camera6
+                            || !this.state.newCamera.camera7
+                            || !this.state.newCamera.camera8
+                            || !this.state.newCamera.camera9
                         )) {
           disabled = true;
         }
@@ -308,12 +354,24 @@ export default class Config extends React.Component {
                             newItem = {
                               streamUrl: this.state.newCamera.camera1,
                             };
-                          } else if (mode === 'multi') {
+                          } else if (mode === 'multi4') {
                             newItem = {
                               streamUrl: [this.state.newCamera.camera1,
                                 this.state.newCamera.camera2,
                                 this.state.newCamera.camera3,
                                 this.state.newCamera.camera4],
+                            };
+                          } else if (mode === 'multi9') {
+                            newItem = {
+                              streamUrl: [this.state.newCamera.camera1,
+                                this.state.newCamera.camera2,
+                                this.state.newCamera.camera3,
+                                this.state.newCamera.camera4,
+                                this.state.newCamera.camera5,
+                                this.state.newCamera.camera6,
+                                this.state.newCamera.camera7,
+                                this.state.newCamera.camera8,
+                                this.state.newCamera.camera9],
                             };
                           } else {
                             newItem = {
@@ -345,7 +403,8 @@ export default class Config extends React.Component {
                         }
                     }>Save</Button></div>;
       },
-    }];
+    },
+    ];
   }
 
   userColumns() {
@@ -409,7 +468,7 @@ export default class Config extends React.Component {
           ? <a target="_blank" rel="noopener noreferrer" href="/camera.html">Current</a>
           : <Button onClick={
                             () => {
-                              this.state.status.currentChannel = pos;
+                              this.state.status.currentChannel = 1 + pos;
                               this.saveActiveChannel().then();
                             }
                         }>Activate</Button>),
@@ -421,6 +480,19 @@ export default class Config extends React.Component {
         render: (text) => <a>{text}</a>,
       },
       {
+        title: 'Title',
+        dataIndex: 'title',
+        key: 'title',
+        render: (text, meta, index) => (<div><Typography.Text editable={{
+          onChange: async (str) => {
+            const config = { ...this.state.config };
+            this.state.config.config.channels[index].title = str;
+            this.setState({ config });
+            this.save();
+          },
+        }}>{text}</Typography.Text><br/></div>),
+      },
+      {
         title: 'Camera Mode',
         dataIndex: 'mode',
         key: 'mode',
@@ -429,6 +501,8 @@ export default class Config extends React.Component {
             return '1 Camera';
           } if (text === 4) {
             return '4 Cameras';
+          } if (text === 9) {
+            return '9 Cameras';
           }
           return '16 Cameras';
         },
@@ -676,7 +750,7 @@ export default class Config extends React.Component {
             config.config.channels[index] = config.config.channels[index - 1];
             config.config.channels[index - 1] = v;
             const status = { ...this.state.status };
-            if (status.currentChannel === index) {
+            if (status.currentChannel - 1 === index) {
               status.currentChannel -= 1;
             }
             this.setState({ config, status });
@@ -690,7 +764,7 @@ export default class Config extends React.Component {
             config.config.channels[index] = config.config.channels[index + 1];
             config.config.channels[index + 1] = v;
             const status = { ...this.state.status };
-            if (status.currentChannel === index) {
+            if (status.currentChannel - 1 === index) {
               status.currentChannel += 1;
             }
             this.setState({ config, status });
@@ -723,10 +797,11 @@ export default class Config extends React.Component {
     if (loadedConfig.channels) {
       loadedConfig.channels.forEach((channel, index) => {
         ret.push({
-          status: index === this.state.status.currentChannel,
-          camera: index,
+          status: index + 1 === this.state.status.currentChannel,
+          camera: index + 1,
           transport: channel.transport || loadedConfig.transport || 'udp',
-          mode: Array.isArray(channel.streamUrl) && channel.streamUrl.length > 1 ? 4 : 1,
+          title: channel.title,
+          mode: Array.isArray(channel.streamUrl) ? Math.ceil(Math.sqrt(channel.streamUrl.length)) ** 2 : 1,
           rtsp: channel.streamUrl,
           ffmpeg: channel.ffmpeg,
           ffmpegPre: channel.ffmpegPre,
@@ -761,6 +836,11 @@ export default class Config extends React.Component {
         key: '4',
         name: 'Kill all ffmpeg during restart',
         value: loadedConfig.killAll,
+      },
+      {
+        key: '5',
+        name: 'ffmpegPath',
+        value: loadedConfig.ffmpegPath,
       },
 
     ];
@@ -798,6 +878,8 @@ export default class Config extends React.Component {
       this.setState({ status: JSON.parse(status) });
     } catch (e) {
       this.setState({ error: e.message });
+      alert('The server likely restarted and you will need to log in again. (C)');
+      window.location.reload();
     } finally {
       this.setState(
         { loading: false },
@@ -839,20 +921,6 @@ export default class Config extends React.Component {
       ret = <div>
                         {error ? <Alert message={error} type="error"/> : null
                         }
-                        <Typography.Text>Common Settings</Typography.Text>
-                        <br/>
-                        <Typography.Text code>File: {loadedConfig.file}</Typography.Text>
-                        <br/>
-                        <Table columns={this.commonColumns()}
-                               dataSource={commonDataSource}
-                               scroll={{ x: 'max-content' }}
-                               pagination={{
-                                 total: commonDataSource.length,
-                                 pageSize: commonDataSource.length,
-                                 hideOnSinglePage: true,
-                               }}/>
-                        <br/>
-                        <br/>
                         <Typography.Text>Add new Camera</Typography.Text>
                         <br/>
                         <Table columns={this.addColumns()}
@@ -869,6 +937,19 @@ export default class Config extends React.Component {
                                pagination={{
                                  total: cameraDatasource.length,
                                  pageSize: cameraDatasource.length,
+                                 hideOnSinglePage: true,
+                               }}/>
+                        <br/>
+                        <Typography.Text>Common Settings</Typography.Text>
+                        <br/>
+                        <Typography.Text code>File: {loadedConfig.file}</Typography.Text>
+                        <br/>
+                        <Table columns={this.commonColumns()}
+                               dataSource={commonDataSource}
+                               scroll={{ x: 'max-content' }}
+                               pagination={{
+                                 total: commonDataSource.length,
+                                 pageSize: commonDataSource.length,
                                  hideOnSinglePage: true,
                                }}/>
         {loadedConfig.connectionType === 'local' ? <div>

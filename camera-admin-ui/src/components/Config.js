@@ -193,10 +193,23 @@ export default class Config extends React.Component {
   }
 
   addColumns() {
-    const camera16 = [];
+    const group9 = [];
+    const group16 = [];
     // eslint-disable-next-line no-plusplus
-    for (let i = 1; i < 17; i++) {
-      camera16.push(
+    for (let i = 1; i <= 9; i++) {
+      group9.push(
+        (<Typography.Text editable={{
+          onChange: (str) => {
+            const newCamera = { ...this.state.newCamera };
+            newCamera[`camera${i}`] = str;
+            this.setState({ newCamera });
+          },
+        }}>{this.state.newCamera[`camera${i}`] || ''}</Typography.Text>),
+      );
+    }
+    // eslint-disable-next-line no-plusplus
+    for (let i = 1; i <= 16; i++) {
+      group16.push(
         (<Typography.Text editable={{
           onChange: (str) => {
             const newCamera = { ...this.state.newCamera };
@@ -214,7 +227,9 @@ export default class Config extends React.Component {
                     <Select defaultValue={text} style={{ width: 120 }}
                             onChange={this.handleCameraChange}>
                         <Option value="single">1 Camera</Option>
-                        <Option value="multi">4 Cameras</Option>
+                        <Option value="multi4">4 Cameras</Option>
+                        <Option value="multi9">9 Cameras</Option>
+                        <Option value="multi16">16 Cameras</Option>
                     </Select>
                 </div>),
     },
@@ -225,10 +240,15 @@ export default class Config extends React.Component {
       render: () => {
         if (this.state.newCamera.mode === 'multi16') {
           return <div>
-            {camera16.map((value) => <div>{value}<br/></div>)}
+            {group16.map((value) => <div>{value}<br/></div>)}
           </div>;
         }
-        if (this.state.newCamera.mode === 'multi') {
+        if (this.state.newCamera.mode === 'multi9') {
+          return <div>
+            {group9.map((value) => <div>{value}<br/></div>)}
+          </div>;
+        }
+        if (this.state.newCamera.mode === 'multi4') {
           return <div>
               <Typography.Text editable={{
                 onChange: (str) => {
@@ -283,11 +303,24 @@ export default class Config extends React.Component {
         if (mode === 'single' && !this.state.newCamera.camera1) {
           disabled = true;
         }
-        if (mode === 'multi'
+        if (mode === 'multi4'
                         && (!this.state.newCamera.camera1
                             || !this.state.newCamera.camera2
                             || !this.state.newCamera.camera3
                             || !this.state.newCamera.camera4
+                        )) {
+          disabled = true;
+        }
+        if (mode === 'multi9'
+                        && (!this.state.newCamera.camera1
+                            || !this.state.newCamera.camera2
+                            || !this.state.newCamera.camera3
+                            || !this.state.newCamera.camera4
+                            || !this.state.newCamera.camera5
+                            || !this.state.newCamera.camera6
+                            || !this.state.newCamera.camera7
+                            || !this.state.newCamera.camera8
+                            || !this.state.newCamera.camera9
                         )) {
           disabled = true;
         }
@@ -321,12 +354,24 @@ export default class Config extends React.Component {
                             newItem = {
                               streamUrl: this.state.newCamera.camera1,
                             };
-                          } else if (mode === 'multi') {
+                          } else if (mode === 'multi4') {
                             newItem = {
                               streamUrl: [this.state.newCamera.camera1,
                                 this.state.newCamera.camera2,
                                 this.state.newCamera.camera3,
                                 this.state.newCamera.camera4],
+                            };
+                          } else if (mode === 'multi9') {
+                            newItem = {
+                              streamUrl: [this.state.newCamera.camera1,
+                                this.state.newCamera.camera2,
+                                this.state.newCamera.camera3,
+                                this.state.newCamera.camera4,
+                                this.state.newCamera.camera5,
+                                this.state.newCamera.camera6,
+                                this.state.newCamera.camera7,
+                                this.state.newCamera.camera8,
+                                this.state.newCamera.camera9],
                             };
                           } else {
                             newItem = {
@@ -456,6 +501,8 @@ export default class Config extends React.Component {
             return '1 Camera';
           } if (text === 4) {
             return '4 Cameras';
+          } if (text === 9) {
+            return '9 Cameras';
           }
           return '16 Cameras';
         },
@@ -754,7 +801,7 @@ export default class Config extends React.Component {
           camera: index + 1,
           transport: channel.transport || loadedConfig.transport || 'udp',
           title: channel.title,
-          mode: Array.isArray(channel.streamUrl) && channel.streamUrl.length > 1 ? 4 : 1,
+          mode: Array.isArray(channel.streamUrl) ? Math.ceil(Math.sqrt(channel.streamUrl.length)) ** 2 : 1,
           rtsp: channel.streamUrl,
           ffmpeg: channel.ffmpeg,
           ffmpegPre: channel.ffmpegPre,

@@ -70,7 +70,7 @@ handleSourceEstablished : ( function handleSourceEstablished() {
 
 render : ( function render(resp) {
   const mode = resp.mode;
-  let scalefactor = Math.sqrt(mode);
+  let scalefactor = Math.ceil(Math.sqrt(mode));
   lib.initFullScreen();
   lib.loadExpected = true;
 

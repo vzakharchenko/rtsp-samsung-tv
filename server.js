@@ -13,8 +13,9 @@ const Stream = require('./index');
 
 // TODO:   
 //         default to no login, add option to enable
+//         remove the 1/4/9/16 distinction in the option to add a group of cameras, since the size is just inferred now
+//         make position (1,2,3...) an attribute, rather than depending on ordering in config file
 //         on-screen status/help display(s) in TV and web apps
-//         Add 9-way, expose 16
 //         mixed tcp/udp config possible in 4/9/16-way?
 //         obviate next/prev http calls, use channelCount to wrap in client
 //         break out camera transport (i.e. rtsp vs. ncat) from protocol
@@ -37,6 +38,7 @@ const Stream = require('./index');
 //       X web - recognize server restart & reload(?) or catch JSON error
 //       X web - full screen mode (f key)
 //       X make a better app icon
+//       X Add 9-way, expose 16
 //
 //         AUDIO?
 //         PTZ controls?
@@ -222,16 +224,7 @@ function saveCurrentChannel() {
 function getMode() {
   let mode;
   if (channels[currentChannel-1] && Array.isArray(channels[currentChannel-1].streamUrl)) {
-    if (channels[currentChannel-1].streamUrl.length === 1) {
-      mode = 1;
-    } else if (channels[currentChannel-1].streamUrl.length === 0) {
-      mode = 0;
-    } if (channels[currentChannel-1].streamUrl.length > 1
-        && channels[currentChannel-1].streamUrl.length <= 4) {
-      mode = 4;
-    } else {
-      mode = 16;
-    }
+    mode = Math.ceil(Math.sqrt(channels[currentChannel-1].streamUrl.length)) ** 2;
   } else {
     mode = 1;
   }
